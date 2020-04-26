@@ -20,7 +20,7 @@ elements = pd.DataFrame(result['stop'].tolist())
 storage = {'stop_uic':[],'stop_name':[],'connections':[],'connections_name':[]}
 
 for station in list_station_id:
-    storage['stop_uic'].append(station)
+    storage['stop_uic'].append(str(station))
     station_name =df[df['stop'] == station]['stop_by_name'].tolist()[0]
     storage['stop_name'].append(station_name)
     check = (elements == station).any(1)
