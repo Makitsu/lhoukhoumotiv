@@ -32,7 +32,7 @@ def plot_station(station):
 
 
         # add marker to the map
-        x,y = geometry.Point(row['geometry']).coords.xy
+        x,y = geometry.Point(row["geometry"]).coords.xy
         folium.CircleMarker(location=(y[0],x[0]),
                             radius=radius,
                             color=color,
@@ -40,42 +40,7 @@ def plot_station(station):
                             fill=True).add_to(folium_map)
     return folium_map
 
-def plot_station(station):
-    # generate a new map
-    folium_map = folium.Map(location=[48.8534, 2.3488],
-                            zoom_start=7,
-                            tiles="CartoDB dark_matter",
-                            width='100%')
-
-    # for each row in the data, add a cicle marker
-    for index, row in station.iterrows():
-
-        # generate the popup message that is shown on click.
-        popup_text = "<br>{}<br>{}<br>"
-        popup_text = popup_text.format(row["stop_name"],
-                                       row["stop_id"])
-
-        # radius of circles
-        radius = 10
-
-        # color="#FFCE00" # orange
-        # color="#007849" # green
-        color = "#E37222"  # tangerine
-        # color="#0375B4" # blue
-        # color="#FFCE00" # yellow
-        #color = "#0A8A9F"  # teal
-
-
-        # add marker to the map
-        x,y = row['geometry'].coords.xy
-        folium.CircleMarker(location=(y[0],x[0]),
-                            radius=radius,
-                            color=color,
-                            popup=popup_text,
-                            fill=True).add_to(folium_map)
-    return folium_map
-
-stop_df = pd.read_csv('../../data/temp/export_stop.csv',sep=';')
+stop_df = pd.read_pickle('../../data/temp/export_stop.pkl')
 print(stop_df)
 ##plot
 folium_map = plot_station(stop_df)
@@ -115,9 +80,9 @@ def get_railway_in_base(start_id, stop_id):
     else:
         return pd.DataFrame(columns=['id_start', 'id_stop', 'rail_id', 'geometry'])
 
-rail_df = get_railway_in_base(87686006,87763029)
-
-print(rail_df)
+# rail_df = get_railway_in_base(87686006,87763029)
+#
+# print(rail_df)
 
 #save temp file
 folium_map.save('../../data/temp/index.html')

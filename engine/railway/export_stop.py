@@ -84,3 +84,4 @@ stop_df = stop_df.groupby('stop_name').agg({'stop_id':'first',
 print(stop_df['train_type'])
 
 stop_df.to_csv('../../data/temp/export_stop.csv',sep=';', header=True , index=False)
+stop_df.to_pickle('../../data/temp/export_stop.pkl')
