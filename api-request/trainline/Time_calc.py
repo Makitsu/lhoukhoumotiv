@@ -35,7 +35,7 @@ for index, row in data.iterrows():
 		print(final_df)
 		print(row['stop_id'], ": terminé")
 		action_time = time.time() - looptime
-		# print(action_time)
+		print(action_time)
 		nb_result = len(a)
 		b = pd.DataFrame([[int(row['stop_id']), action_time, nb_result]], columns=["uic_station", "request_time","Nb_Results"])
 		requests_time = requests_time.append(b)
