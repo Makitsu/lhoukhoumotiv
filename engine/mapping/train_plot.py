@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 
 ### railway
-rail_code = gpd.read_file("shapefile/rail/lignes-lgv-et-par-ecartement.shp")[['code_ligne','catlig', 'geometry']]
+rail_code = gpd.read_file("../../data/shapefile/rail/lignes-lgv-et-par-ecartement.shp")[['code_ligne','catlig', 'geometry']]
 
 rail2 = gpd.read_file("shapefile/rail/formes-des-lignes-du-rfn.shp")
 

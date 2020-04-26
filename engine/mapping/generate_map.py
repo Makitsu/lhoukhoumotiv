@@ -23,9 +23,9 @@ start = time.time()
 
 # RETRIEVE DATA
 
-line_shape = gpd.read_file("shapefile/rail/formes-des-lignes-du-rfn.shp")[['code_ligne','libelle','mnemo', 'geometry']]
-train_station = gpd.read_file("shapefile/station/liste-des-gares.shp")[['code_uic','code_ligne', 'geometry']]
-line_info = gpd.read_file("shapefile/rail/lignes-lgv-et-par-ecartement.shp")[['code_ligne','lib_ligne','catlig','geometry']]
+line_shape = gpd.read_file("../../data/shapefile/rail/formes-des-lignes-du-rfn.shp")[['code_ligne','libelle','mnemo', 'geometry']]
+train_station = gpd.read_file("../../data/shapefile/station/liste-des-gares.shp")[['code_uic','code_ligne', 'geometry']]
+line_info = gpd.read_file("../../data/shapefile/rail/lignes-lgv-et-par-ecartement.shp")[['code_ligne','lib_ligne','catlig','geometry']]
 
 df_line = pd.DataFrame(line_shape,columns=['code_ligne','libelle','mnemo','geometry'])
 df_line_rail = pd.DataFrame(line_info)

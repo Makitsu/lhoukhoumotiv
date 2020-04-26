@@ -39,4 +39,4 @@ for station in list_station_id:
     storage['connections_name'].append(connections_name)
 final = pd.DataFrame(storage,columns=['stop_uic','stop_name','connections','connections_name'])
 
-final.to_csv('connections.csv',header=True,sep=';',index=False,encoding='utf-8')
+final.to_csv('../../data/temp/connections.csv',header=True,sep=';',index=False,encoding='utf-8')

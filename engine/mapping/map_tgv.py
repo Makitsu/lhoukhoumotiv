@@ -67,7 +67,7 @@ def plot_station(station):
 
 
         # add marker to the map
-        x,y = geometry.Point(row['geometry']).coords.xy
+        x,y = row['geometry'].coords.xy
         folium.CircleMarker(location=(y[0],x[0]),
                             radius=radius,
                             color=color,
@@ -75,8 +75,8 @@ def plot_station(station):
                             fill=True).add_to(folium_map)
     return folium_map
 
-stop_df = pd.read_csv('../dataexport_stop.csv',sep=';')
-
+stop_df = pd.read_csv('../../data/temp/export_stop.csv',sep=';')
+print(stop_df)
 ##plot
 folium_map = plot_station(stop_df)
 

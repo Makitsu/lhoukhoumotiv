@@ -1,14 +1,14 @@
-from datetime import datetime
+import datetime
 import pandas as pd
 
-from shapely import geometry
+import shapely.geometry as geometry
 
 calendar = {'service_id':  [],
         'week':  [],
         'start_date': [],
         'stop_date': []
         }
-calendar_file = open("export_sncf/calendar.txt", "r")
+calendar_file = open("../../data/export_sncf/calendar.txt", "r")
 calendar_file.readline() # get rid of first line
 for line in calendar_file:
     fields = line.split(",")
@@ -48,7 +48,7 @@ def find_date_by_service_id(service_id):
 
 ##Stop data
 stop_summary = {'stop_id': [], 'stop_name': [], 'point_wgs84': []}
-file = open("export_sncf/stops.txt", "r")
+file = open("../../data/export_sncf/stops.txt", "r")
 file.readline()  # get rid of first line
 for line in file:
     # split the line
@@ -87,7 +87,7 @@ trips = {'route_id':  [],
         'service_id':  [],
         'trip_id': [],
         }
-trips_file = open("export_sncf/trips.txt", "r")
+trips_file = open("../../data/export_sncf/trips.txt", "r")
 trips_file.readline()
 for line in trips_file:
     # split the line
@@ -108,7 +108,7 @@ def find_date_by_trip_id(trip_id):
 
 
 ##Times data
-file = open("export_sncf/stop_times.txt", "r")
+file = open("../../data/export_sncf/stop_times.txt", "r")
 file.readline() #get rid of first line
 
 #Initialize data structures
@@ -147,9 +147,9 @@ for line in file:
             .replace('StopPoint:OCEOUIGO-','')
         stops.append(stop_id)
         trip_summary['stop'].append(stop_id)
-        trip_summary['stop_by_name'].append(find_stop_name(stop_id))
-        trip_summary['stop_position_lon'].append(find_location_by_stop_id(stop_id).y)
-        trip_summary['stop_position_lat'].append(find_location_by_stop_id(stop_id).x)
+        trip_summary['stop_by_name'].append(find_stop_name(stop_id,stop_summary))
+        trip_summary['stop_position_lon'].append(find_location_by_stop_id(stop_id,stop_summary).y)
+        trip_summary['stop_position_lat'].append(find_location_by_stop_id(stop_id,stop_summary).x)
 file.close()
 
 # print(trip_summary['trip_id'][0])
@@ -200,5 +200,5 @@ print('number of trip today : '+str(len(df['trip_date'])))
 
 print(df.head(1))
 
-df.to_pickle('train_schedule.pkl')
+df.to_pickle('../../data/temp/train_schedule.pkl')
 df.to_csv('../../data/temp/train_schedule.csv',sep=';', header=True , index=False)
