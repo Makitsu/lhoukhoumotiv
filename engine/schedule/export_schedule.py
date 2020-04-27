@@ -87,6 +87,7 @@ trips = {'route_id':  [],
         'service_id':  [],
         'trip_id': [],
         }
+
 trips_file = open("../../data/export_sncf/trips.txt", "r")
 trips_file.readline()
 for line in trips_file:
@@ -194,7 +195,7 @@ df = pd.DataFrame(trip_summary,
 
 
 print('number of trip in april : '+str(len(df['trip_date'])))
-df = df[df['trip_date'].between(datetime.datetime(2020,4,23,00,00),datetime.datetime(2020,4,23,23,59))]
+#df = df[df['trip_date'].between(datetime.datetime(2020,4,23,00,00),datetime.datetime(2020,4,23,23,59))]
 
 print('number of trip today : '+str(len(df['trip_date'])))
 
