@@ -130,3 +130,4 @@ dmypy.json
 .idea
 .pkl
 /data/scraper/result.xlsx
+/api-request/trainline/temp
