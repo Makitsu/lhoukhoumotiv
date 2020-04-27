@@ -22,8 +22,8 @@ _DEFAULT_DATE_FORMAT = '%Y-%m-%dT%H:%M:%S%z'
 _BIRTHDATE_FORMAT = '%d/%m/%Y'
 _READABLE_DATE_FORMAT = "%d/%m/%Y %H:%M"
 _DEFAULT_SEARCH_TIMEZONE = 'Europe/Paris'
-_MAX_SERVER_RETRY = 1  # If a request is rejected, retry X times
-_TIME_AFTER_FAILED_REQUEST = 2 # and wait Y seconds after a rejected request
+_MAX_SERVER_RETRY = 2  # If a request is rejected, retry X times
+_TIME_AFTER_FAILED_REQUEST = 10 # and wait Y seconds after a rejected request
 
 ENFANT_PLUS = "SNCF.CarteEnfantPlus"
 JEUNE = "SNCF.Carte1225"
