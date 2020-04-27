@@ -59,19 +59,25 @@ print('Read data from stop file...')
 stop_summary = { 'stop_id':[],'stop_name':[],'train_type':[],'geometry':[]}
 file = open("../../data/export_sncf/stops.txt", "r")
 file.readline() #get rid of first line
+compatible = {'TGV inOui','TGV inOui ou TGV',' Ouigo',' TGV Lyria',' TERGV','TGV inOui (hebdomadaire)'}
 for line in file:
     # split the line
     fields = line.split(",")
     train_station = fields[1].replace('Gare de ', '').replace('"', '')
     current_station, type_of_train = find_station_in_tgv(train_station)
-    if  current_station != 'Not found':
-        stop_summary['stop_id'].append(fields[0].replace('OCE', '').replace('StopPoint:TGV-', '')
-                                       .replace('StopPoint:OUIGO-', '')
-                                       .replace('StopArea:', '')
-                                       .replace('StopPoint:TGV INOUI-', ''))
-        stop_summary['train_type'].append(type_of_train)
-        stop_summary['stop_name'].append(current_station)
-        stop_summary['geometry'].append(geometry.Point(float(fields[4]),float(fields[3])))
+    compat = False
+    for type in type_of_train:
+        if type in compatible:
+            compat = True
+    if compat:
+        if  current_station != 'Not found':
+            stop_summary['stop_id'].append(fields[0].replace('OCE', '').replace('StopPoint:TGV-', '')
+                                           .replace('StopPoint:OUIGO-', '')
+                                           .replace('StopArea:', '')
+                                           .replace('StopPoint:TGV INOUI-', ''))
+            stop_summary['train_type'].append(type_of_train)
+            stop_summary['stop_name'].append(current_station)
+            stop_summary['geometry'].append(geometry.Point(float(fields[4]),float(fields[3])))
 file.close()
 #match
 
@@ -80,8 +86,6 @@ stop_df = pd.DataFrame(stop_summary, columns = ['stop_id','stop_name','train_typ
 stop_df = stop_df.groupby('stop_name').agg({'stop_id':'first',
                              'train_type': 'first',
                              'geometry':'first' }).reset_index()
-
-print(stop_df['train_type'])
 
 stop_df.to_csv('../../data/temp/export_stop.csv',sep=';', header=True , index=False)
 stop_df.to_pickle('../../data/temp/export_stop.pkl')
