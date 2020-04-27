@@ -23,7 +23,7 @@ _BIRTHDATE_FORMAT = '%d/%m/%Y'
 _READABLE_DATE_FORMAT = "%d/%m/%Y %H:%M"
 _DEFAULT_SEARCH_TIMEZONE = 'Europe/Paris'
 _MAX_SERVER_RETRY = 2  # If a request is rejected, retry X times
-_TIME_AFTER_FAILED_REQUEST = 10 # and wait Y seconds after a rejected request
+_TIME_AFTER_FAILED_REQUEST = 6 # and wait Y seconds after a rejected request
 
 ENFANT_PLUS = "SNCF.CarteEnfantPlus"
 JEUNE = "SNCF.Carte1225"
@@ -59,8 +59,8 @@ class Client(object):
 
     def _get(self, url, expected_status_code=200):
         ret = self.session.get(url=url, headers=self.headers)
-        print("get : ",ret)
-        print(ret.elapsed.total_seconds())
+        #print("get : ",ret)
+        #print(ret.elapsed.total_seconds())
         if (ret.status_code != expected_status_code):
             raise ConnectionError(
                 'Status code {status} for url {url}\n{content}'.format(
@@ -75,8 +75,8 @@ class Client(object):
             ret = self.session.post(url=url,
                                     headers=self.headers,
                                     data=post_data)
-            print("post : ", ret)
-            print(ret.elapsed.total_seconds())
+            #print("post : ", ret)
+            #print(ret.elapsed.total_seconds())
             if (ret.status_code == expected_status_code):
                 break
             else:
@@ -108,24 +108,24 @@ class Trainline(object):
                 "departure_station_id": departure_station_id,
                 "systems": [
                     "sncf",
-                    "db",
+                    #"db",
                     "idtgv",
                     "ouigo",
-                    "trenitalia",
-                    "ntv",
-                    "hkx",
-                    "renfe",
-                    "cff",
-                    "benerail",
-                    "ocebo",
-                    "westbahn",
-                    "leoexpress",
-                    "locomore",
-                    "busbud",
-                    "flixbus",
-                    "distribusion",
-                    "cityairporttrain",
-                    "obb",
+                    # "trenitalia",
+                    # "ntv",
+                    # "hkx",
+                    # "renfe",
+                    # "cff",
+                    # "benerail",
+                    # "ocebo",
+                    # "westbahn",
+                    # "leoexpress",
+                    # "locomore",
+                    # "busbud",
+                    # "flixbus",
+                    # "distribusion",
+                    # "cityairporttrain",
+                    # "obb",
                     "timetable"
                 ]
             }
@@ -133,7 +133,7 @@ class Trainline(object):
         post_data = json.dumps(data)
         c = Client()
         ret = c._post(url=_SEARCH_URL, post_data=post_data)
-        print(ret)
+        #print(ret)
         return ret
 
 

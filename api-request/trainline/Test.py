@@ -8,7 +8,6 @@ from ExpectError import ExpectTimeout
 from runtest import connections
 
 start = time.time()
-data = pandas.read_csv('export_station.csv',sep=';')
 datetime = datetime.now().strftime("%d-%m-%Y_%I-%M-%S_%p")
 
 summary = {
@@ -20,7 +19,7 @@ final_df = pd.DataFrame(columns=["destination", "departure_date", "arrival_date"
                                "transportation_mean"])
 requests_time = pd.DataFrame(columns=["uic_station","request_time"])
 
-departure_id = 87391003
+departure_id = 87575001
 df_connections = connections(departure_id)
 
 for index, row in df_connections.iterrows():
@@ -52,6 +51,7 @@ for index, row in df_connections.iterrows():
 		b = pd.DataFrame([[int(row['station_uic_dest']), action_time, nb_result]],
 						 columns=["uic_station", "request_time", "Nb_Results"])
 		requests_time = requests_time.append(b)
+		pass
 
 	except TimeoutError:
 		action_time = time.time() - looptime
