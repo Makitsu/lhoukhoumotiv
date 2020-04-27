@@ -1,0 +1,181 @@
+swagger: "2.0"
+info:
+  description: "Lhoukhoumotiv server to display interesting day about travelling"
+  version: "1.0.0"
+  title: "Lhoukhoum"
+host: "lhoukhoume.swagger.io"
+basePath: "/v2"
+tags:
+- name: "trip"
+  description: "Access to trip information"
+- name: "station"
+  description: "Access to station information"
+- name: "workflow"
+  description: "control server workflow"
+schemes:
+- "https"
+- "http"
+paths:
+  /trip:
+    get:
+      tags:
+      - "trip"
+      summary: "Retrieve trip information"
+      description: ""
+      operationId: "getTrips"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "departure_station"
+        in: "query"
+        description: "date to look for information, default is today"
+        required: true
+        type: "string"
+      - name: "departure_date_range"
+        in: "query"
+        description: "departure date range (for instance 21/04/2021 between 8am and 10am )"
+        required: true
+        type: "string"
+      - name: "arrival_station"
+        in: "query"
+        description: "arrival train station (optional)"
+        required: false
+        type: "string"
+      - name: "params"
+        in: "query"
+        description: "list of additional parameters"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+      responses:
+        "200":
+          description: "return string (json) with all informations"
+          schema:
+            type: "string"
+        "400":
+          description: "Invalid status value"
+  /trip/map:
+    get:
+      tags:
+      - "trip"
+      summary: "Retrieve map generated from trip information"
+      description: ""
+      operationId: "getTripsMap"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "departure_station"
+        in: "query"
+        description: "date to look for information, default is today"
+        required: true
+        type: "string"
+      - name: "departure_date_range"
+        in: "query"
+        description: "departure date range (for instance between 8am and 10am)"
+        required: true
+        type: "string"
+      - name: "arrival_station"
+        in: "query"
+        description: "arrival train station (optional)"
+        required: false
+        type: "string"
+      - name: "params"
+        in: "query"
+        description: "list of additional parameters"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+      responses:
+        "200":
+          description: "success: return HTML file containing map"
+          schema:
+            type: "file"
+        "400":
+          description: "Invalid status value"
+  /station:
+    get:
+      tags:
+      - "station"
+      summary: "Retrieve station information by name"
+      description: "TBD"
+      operationId: "getStation"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "name of the train station to return"
+        required: true
+        type: "string"
+        format: "int64"
+      - name: "date"
+        in: "query"
+        description: "date to look for information, default is today"
+        required: false
+        type: "string"
+      - name: "type"
+        in: "query"
+        description: "type of information to retrieve (price, bars...)"
+        required: false
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "string"
+        "400":
+          description: "Invalid status value"
+  /station/map:
+    get:
+      tags:
+      - "station"
+      summary: "Retrieve station map by name"
+      description: "TBD"
+      operationId: "getStationMap"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "name of the train station to return"
+        required: true
+        type: "string"
+        format: "int64"
+      - name: "elems"
+        in: "query"
+        description: "filter to apply to map"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+      responses:
+        "200":
+          description: "success: return HTML file containing map of the station"
+          schema:
+            type: "file"
+        "400":
+          description: "Invalid status value"
+  /server/status:
+    get:
+      tags:
+      - "workflow"
+      summary: "Retrieve server status"
+      description: "TBD"
+      operationId: "getServerStatus"
+      produces:
+      - "application/xml"
+      - "application/json"
+      responses:
+        "200":
+          description: "success: return HTML file containing map of the station"
+          schema:
+            type: "file"
+        "400":
+          description: "Invalid status value"
+  

@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_csv('../../data/temp/train_schedule.csv',sep=';')
+df = pd.read_csv('../../../data/temp/train_schedule.csv', sep=';')
 
 list_station_id = df['stop'].unique().tolist()
 
