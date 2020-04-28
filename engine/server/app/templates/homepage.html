@@ -1,0 +1,36 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<div id="app">
+{% block header %}
+<div class="header">
+    <h1>Lhoukhoumotiv</h1>
+      <h4 id="tagline">Voyagez partout (en france) !</h4>
+    <div id="info">
+        <p>Envie de voyager ? Regardez cette carte :-) </p>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        <label for="gender">Search</label>
+      <select id='gender' name='gender' value="{{ request.form['gender'] }}">
+        <option value="None">price</option>
+        <option value="Female">time</option>
+        <option value="Male">don't care</option>
+      </select>
+        <label for="start_station">Departure station :</label>
+        <select id="start_station" name="start_station" value="{{ request.form['start_station'] }}">
+            {% for station in stations %}
+                <option value="{{ station }}">{{ station }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for="time">When ?</label>
+        <input id="time" type="time" name="time" value="{{ request.form['time'] }}">
+      <input type="submit" value="Search">
+    </form>
+{% endblock %}
+
+{% include 'station_map.html' %}
+
+</div>
