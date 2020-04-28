@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import time
 
 start = time.time()
@@ -20,18 +21,9 @@ for index, row in result.iterrows():
     row['stop_by_name'] = list(dict.fromkeys(row['stop_by_name']))
 result = result[~result['stop'].apply(pd.Series).duplicated()]
 
-#result.to_csv('../../data/temp/connections2.csv',header=True,sep=';',index=False,encoding='utf-8')
+total_frequency = df.shape[0]
 
-# foreign_uic = {80110684,80143099,80142281,80140087,80143198,80143313,80143503,80290346,80291039,
-#                 80021402,80203471,80253914,80196980,80142778,80253914,80196980,#deutchland
-#                 82001000,#Luxembourg
-#                 87756403,#Monaco
-#                 88140010,#Belgique
-#                 83002022,83016451,83002485,83002048,83002220,83002451#Italie
-#                }
-
-
-storage = {'stop_uic':[],'stop_name':[],'connections':[],'connections_name':[]}
+storage = {'stop_uic':[],'stop_name':[],'frequency':[],'connections':[],'connections_name':[]}
 
 print(stop_df['stop_id'])
 for station in list_station_id:
@@ -40,6 +32,8 @@ for station in list_station_id:
         storage['stop_uic'].append(str(station))
         station_name = df[df['stop'] == station]['stop_by_name'].tolist()[0]
         storage['stop_name'].append(str(station_name))
+        frequency_nb = np.sum(df['stop']== station)/total_frequency
+        storage['frequency'].append(frequency_nb)
         connections = []
         connections_name = []
         for index,row in result.iterrows():
@@ -54,7 +48,7 @@ for station in list_station_id:
                             connections_name.append(other_name)
         storage['connections'].append(connections)
         storage['connections_name'].append(connections_name)
-final = pd.DataFrame(storage,columns=['stop_uic','stop_name','connections','connections_name'])
+final = pd.DataFrame(storage,columns=['stop_uic','stop_name','frequency','connections','connections_name'])
 
 final.to_csv('../../data/temp/connections.csv',header=True,sep=';',index=False,encoding='utf-8')
 
