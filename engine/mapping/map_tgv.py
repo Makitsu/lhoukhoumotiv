@@ -6,11 +6,12 @@ from shapely import geometry
 from shapely import wkt
 import geocoder
 
-connection_df = pd.read_csv('../../data/temp/connections.csv',sep=";")
+connections_df = pd.read_csv('../../data/temp/connections.csv',sep=";")
 
 def connections(station_uic):
-    df_connection = pd.DataFrame(columns=["origin","stop_id"])
-    df = connection_df
+    df_connection = pd.DataFrame(columns=["origin","stop_id","frequency"])
+    df = connections_df
+    #df['stop_id'] = df['stop_uic']
     station_uic = [int(i) for i in station_uic]
 
     for index,row in df.iterrows():
@@ -18,15 +19,22 @@ def connections(station_uic):
             connections = row['connections'].replace('[','').\
                             replace(']','').split(', ')
             a = int(row["stop_uic"])
+
             for connection in connections:
                 df_temp = pd.DataFrame(columns=["origin","stop_id"])
                 df_temp['origin'] = [a]
                 df_temp["stop_id"] = [connection]
+                df_freq = df[df['stop_uic'].isin(df_temp['stop_id'])]
+                df_freq = df_freq['frequency'].astype(float)
+                df_temp['frequency'] = float(df_freq)
+                #df_temp = pd.merge(df_temp,df[['stop_id','frequency']],on='stop_id')
                 df_connection = df_connection.append(df_temp)
 
     return df_connection
 
 def plot_station(origin, connection):
+    #compute the frequency average
+    freq_av = connections_df.frequency.mean()
     # generate a new map
     g = geocoder.ip('me')
     folium_map = folium.Map(location=[g.lat, g.lng],
@@ -54,11 +62,17 @@ def plot_station(origin, connection):
                   # fill=True
                   ).add_to(folium_map)
 
-        # Plot the conections
+        # Plot the connections
         for index, row in connection.iterrows():
+            size = 20 * float(row['frequency']/connection.frequency.mean())
+            if size < 15:
+                size = 15
+            if size > 30:
+                size = 30
+            print(size)
             if row['origin'] == int(current_origin):
                 icon_path = r"C:\Users\lhoum\Documents\Project\lhoukhoumotiv\engine\mapping\folium_add\placeholder.png"
-                icon_station = folium.features.CustomIcon(icon_image=icon_path, icon_size=(20, 20))
+                icon_station = folium.features.CustomIcon(icon_image=icon_path, icon_size=(size, size))
             # generate the popup message that is shown on click.
                 popup_text = "<br>{}<br>{}<br>"
                 popup_text = popup_text.format(row["stop_name"],
@@ -93,7 +107,7 @@ def init(departure_station):
     departure_station = str(departure_station).replace('(', '').replace(')', '').split(', ')
     destination_list = connections(departure_station)
     connection_df = stop_df[stop_df['stop_id'].isin(destination_list['stop_id'])]
-    connection_df = pd.merge(connection_df,destination_list[['origin','stop_id']],on='stop_id')
+    connection_df = pd.merge(connection_df,destination_list[['origin','frequency','stop_id']],on='stop_id')
     origin_df = stop_df[stop_df['stop_id'].isin(departure_station)]
     #print(connection_df)
     #print(origin_df)
@@ -142,8 +156,13 @@ def init(departure_station):
 # # print(rail_df)
 
 #save temp file
-
+folium.LayerControl()
 #Enter here the departure station(s) !!!! No string pls !!!! Thanks, la bise, le bécot
-requests = 87113001, 87686006, 87391003, 87271007
+#PARIS
+#requests = 87113001, 87686006, 87391003, 87271007
+#POITIERS
+#requests = 87575001
+#BREST
+requests = 87474007
 init(requests)
 #connections(requests)
