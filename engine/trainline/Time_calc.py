@@ -7,7 +7,7 @@ from ExpectError import ExpectTimeout
 
 
 start = time.time()
-data = pandas.read_csv('export_station.csv',sep=';')
+data = pandas.read_csv('export_station.csv', sep=';')
 
 
 summary = {
