@@ -58,7 +58,7 @@ def plot_station(origin, connection):
         #fg["{}".format(current_origin)] = folium.FeatureGroup(name=current_name, show=False)
         #folium_map.add_child(fg["{}".format(current_origin)])
         #marker_cluster["{}".format(current_origin)] = MarkerCluster().add_to(fg["{}".format(current_origin)])
-        icon_path_departure = r"C:\Users\lhoum\Documents\Project\lhoukhoumotiv\engine\mapping\folium_add\station.png"
+        icon_path_departure = r"folium_add\station.png"
         icon_departure = folium.features.CustomIcon(icon_image=icon_path_departure, icon_size=(20, 20))
         popup_text = "<br>{}<br>{}<br>"
         popup_text = popup_text.format(row["stop_name"],
@@ -81,7 +81,7 @@ def plot_station(origin, connection):
             if size > 30:
                 size = 30
             if row['origin'] == int(current_origin):
-                icon_path = r"C:\Users\lhoum\Documents\Project\lhoukhoumotiv\engine\mapping\folium_add\placeholder.png"
+                icon_path = r"folium_add\placeholder.png"
                 icon_station = folium.features.CustomIcon(icon_image=icon_path, icon_size=(size, size))
             # generate the popup message that is shown on click.
                 popup_text = "<br>{}<br>{}<br>"
