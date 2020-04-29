@@ -4,10 +4,8 @@ import folium
 from folium.plugins import MarkerCluster
 import pandas as pd
 from shapely import geometry
+from shapely import wkt
 import geocoder
-import time
-
-start = time.time()
 
 connections_df = pd.read_csv('../../data/temp/connections.csv',sep=";")
 
@@ -38,25 +36,23 @@ def connections(station_uic):
 def plot_station(origin, connection):
     # generate a new map
     g = geocoder.ip('me')
-
-    #fg={}
-    #marker_cluster={}
+    folium_map = folium.Map(location=[g.lat, g.lng],
+                            zoom_start=6,
+                            #tiles='https://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}.png'
+                            #, attr=str("Tiles &copy; Esri &mdash; Source: USGS, Esri, TANA, DeLorme, and NPS"),
+                            tiles ='https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png'
+                            , attr=str('&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>')
+                            , width='100%')
+    fg={}
+    marker_cluster={}
 
 
     # Plot the departure station
     for index, row in origin.iterrows():
-        folium_map = folium.Map(location=[g.lat, g.lng],
-                                zoom_start=6,
-                                # tiles='https://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}.png'
-                                # , attr=str("Tiles &copy; Esri &mdash; Source: USGS, Esri, TANA, DeLorme, and NPS"),
-                                tiles='https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png'
-                                , attr=str(
-                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>')
-                                , width='100%')
         current_origin = row['stop_id']
         current_name = row['stop_name']
-        #fg["{}".format(current_origin)] = folium.FeatureGroup(name=current_name, show=False)
-        #folium_map.add_child(fg["{}".format(current_origin)])
+        fg["{}".format(current_origin)] = folium.FeatureGroup(name=current_name, show=False)
+        folium_map.add_child(fg["{}".format(current_origin)])
         #marker_cluster["{}".format(current_origin)] = MarkerCluster().add_to(fg["{}".format(current_origin)])
         icon_path_departure = r"C:\Users\lhoum\Documents\Project\lhoukhoumotiv\engine\mapping\folium_add\station.png"
         icon_departure = folium.features.CustomIcon(icon_image=icon_path_departure, icon_size=(20, 20))
@@ -70,7 +66,7 @@ def plot_station(origin, connection):
                   # color=color,
                   ,popup=popup_text,
                   # fill=True
-                  ).add_to(folium_map)
+                  ).add_to(fg["{}".format(current_origin)])
 
         # Plot the connections
         for index, row in connection.iterrows():
@@ -80,6 +76,7 @@ def plot_station(origin, connection):
                 size = 15
             if size > 30:
                 size = 30
+            print(size)
             if row['origin'] == int(current_origin):
                 icon_path = r"C:\Users\lhoum\Documents\Project\lhoukhoumotiv\engine\mapping\folium_add\placeholder.png"
                 icon_station = folium.features.CustomIcon(icon_image=icon_path, icon_size=(size, size))
@@ -105,13 +102,12 @@ def plot_station(origin, connection):
                                     #color=color,
                                     ,popup=popup_text,
                                     #fill=True
-                                    ).add_to(folium_map)
+                                    ).add_to(fg["{}".format(current_origin)])
                 folium.PolyLine(locations=([[y_connection[0],x_connection[0]],[y_origin[0],x_origin[0]]]),
-                                            color="grey", weight=0.5, opacity=0.5).add_to(folium_map)
+                                            color="grey", weight=0.5, opacity=0.5).add_to(fg["{}".format(current_origin)])
 
-        #folium.LayerControl().add_to(folium_map)
-        folium_map.save('../../engine/server/lhoukhoum/static/map/{}_{}.html'.format(current_origin,current_name))
-        print("Map {} - {} saved".format(current_origin,current_name))
+    folium.LayerControl().add_to(folium_map)
+    return folium_map
 
 def init(departure_station):
     stop_df = pd.read_pickle('../../data/temp/export_stop.pkl')
@@ -120,9 +116,10 @@ def init(departure_station):
     connection_df = stop_df[stop_df['stop_id'].isin(destination_list['stop_id'])]
     connection_df = pd.merge(connection_df,destination_list[['origin','frequency','stop_id']],on='stop_id')
     origin_df = stop_df[stop_df['stop_id'].isin(departure_station)]
-    plot_station(origin_df,connection_df)
     #print(origin_df)
     ##plot
+    folium_map = plot_station(origin_df,connection_df)
+    folium_map.save('../../data/temp/index.html')
 
 # if os.path.isfile('save_df.csv') == True:
 #     with open('save_df.csv', "r") as file:
@@ -178,4 +175,3 @@ init(requests)
 #connections(requests)
 
 
-print(time.time()-start)
