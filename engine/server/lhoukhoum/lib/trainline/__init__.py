@@ -12,6 +12,7 @@ import time
 import uuid
 import os
 import copy
+import pandas
 
 __author__ = """Thibault Ducret"""
 __email__ = 'hello@tducret.com'
@@ -41,8 +42,7 @@ _SPECIAL_CARDS = [TGVMAX]
 _DEFAULT_PASSENGER_BIRTHDATE = "01/01/1980"
 
 _SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
-_STATIONS_CSV = os.path.join(_SCRIPT_PATH, "stations_mini4.csv")
-
+_STATIONS_CSV = os.path.join(_SCRIPT_PATH, "index_station.csv")
 
 class Client(object):
     """ Do the requests with the servers """
@@ -970,4 +970,3 @@ def _station_to_dict(filename,b, csv_delimiter=';'):
         station_name = csv_delimiter.join(line.split(csv_delimiter)[2:])
         station_dict[station_id] = station_name
     return station_dict
-

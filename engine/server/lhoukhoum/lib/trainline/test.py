@@ -5,15 +5,25 @@ import requests
 import pandas as pd
 from datetime import datetime
 from ExpectError import ExpectTimeout
-from runtest import connections
+
+
+def connections(station_uic):
+    df_connection = pd.DataFrame(columns=["station_uic_dest"])
+    df = pandas.read_csv('connections.csv', sep=';')
+
+    for index,row in df.iterrows():
+        if row['stop_uic'] == station_uic:
+            connections = row['connections'].replace('[','').\
+                            replace(']','').split(', ')
+            for connection in connections:
+                df_temp = pd.DataFrame([[connection]],columns=["station_uic_dest"])
+                df_connection = df_connection.append(df_temp)
+
+    return df_connection
 
 start = time.time()
 datetime = datetime.now().strftime("%d-%m-%Y_%I-%M-%S_%p")
 
-summary = {
-	'stop_id':[],
-	'stop_name':[],
-}
 
 final_df = pd.DataFrame(columns=["destination", "departure_date", "arrival_date", "duration", "number_of_segments", "price", "currency",
                                "transportation_mean"])

@@ -1,5 +1,7 @@
 import sys
 import time
+import traceback
+
 
 class ExpectTimeout(object):
     def __init__(self, seconds, print_traceback=True, mute=False):

@@ -3,7 +3,7 @@
 
 """CLI tool for trainline."""
 import click
-import trainline
+import __init__
 from datetime import datetime, timedelta
 
 # Usage : trainline_cli.py --help
@@ -67,7 +67,7 @@ def main(departure, arrival, next, transport, verbose):
         print("Search trips from {} to {}, between {} and {}\n".format(
             departure, arrival, from_date, to_date))
 
-    results = trainline.search(
+    results = __init__.search(
         departure_station=departure,
         arrival_station=arrival,
         from_date=from_date,
