@@ -17,15 +17,16 @@ def connections(station_uic):
         if row['stop_uic'] in station_uic:
             connections = row['connections'].replace('[','').\
                             replace(']','').split(', ')
+            a = int(row["stop_uic"])
             for connection in connections:
                 df_temp = pd.DataFrame(columns=["origin","stop_id"])
-                df_temp['origin'] = row["stop_uic"]
+                df_temp['origin'] = [a]
                 df_temp["stop_id"] = [connection]
                 df_connection = df_connection.append(df_temp)
 
     return df_connection
 
-def plot_station(origin, connection, line):
+def plot_station(origin, connection):
     # generate a new map
     g = geocoder.ip('me')
     folium_map = folium.Map(location=[g.lat, g.lng],
@@ -38,13 +39,14 @@ def plot_station(origin, connection, line):
 
     # Plot the departure station
     for index, row in origin.iterrows():
+        current_origin = row['stop_id']
         icon_path_departure = r"C:\Users\lhoum\Documents\Project\lhoukhoumotiv\engine\mapping\folium_add\station.png"
         icon_departure = folium.features.CustomIcon(icon_image=icon_path_departure, icon_size=(20, 20))
         popup_text = "<br>{}<br>{}<br>"
         popup_text = popup_text.format(row["stop_name"],
                                        row["stop_id"])
-        x, y = geometry.Point(row["geometry"]).coords.xy
-        folium.Marker(location=(y[0], x[0]),
+        x_origin, y_origin = geometry.Point(row["geometry"]).coords.xy
+        folium.Marker(location=(y_origin[0], x_origin[0]),
                   icon=icon_departure
                   # radius=radius,
                   # color=color,
@@ -52,35 +54,37 @@ def plot_station(origin, connection, line):
                   # fill=True
                   ).add_to(folium_map)
 
-    # Plot the conections
-    for index, row in connection.iterrows():
-        icon_path = r"C:\Users\lhoum\Documents\Project\lhoukhoumotiv\engine\mapping\folium_add\placeholder.png"
-        icon_station = folium.features.CustomIcon(icon_image=icon_path, icon_size=(20, 20))
-        # generate the popup message that is shown on click.
-        popup_text = "<br>{}<br>{}<br>"
-        popup_text = popup_text.format(row["stop_name"],
-                                       row["stop_id"])
-        # radius of circles
-        #radius = 10
-        # color="#FFCE00" # orange
-        # color="#007849" # green
-        #color = "#E37222"  # tangerine
-        # color="#0375B4" # blue
-        # color="#FFCE00" # yellow
-        #color = "#0A8A9F"  # teal
+        # Plot the conections
+        for index, row in connection.iterrows():
+            if row['origin'] == int(current_origin):
+                icon_path = r"C:\Users\lhoum\Documents\Project\lhoukhoumotiv\engine\mapping\folium_add\placeholder.png"
+                icon_station = folium.features.CustomIcon(icon_image=icon_path, icon_size=(20, 20))
+            # generate the popup message that is shown on click.
+                popup_text = "<br>{}<br>{}<br>"
+                popup_text = popup_text.format(row["stop_name"],
+                                           row["stop_id"])
+            # radius of circles
+            #radius = 10
+            # color="#FFCE00" # orange
+            # color="#007849" # green
+            #color = "#E37222"  # tangerine
+            # color="#0375B4" # blue
+            # color="#FFCE00" # yellow
+            #color = "#0A8A9F"  # teal
 
-        # add marker to the map
+            # add marker to the map
 
-        x,y = geometry.Point(row["geometry"]).coords.xy
-        folium.Marker(location=(y[0],x[0]),
-                            icon=icon_station
-                            #radius=radius,
-                            #color=color,
-                            ,popup=popup_text,
-                            #fill=True
-                            ).add_to(folium_map)
+                x_connection,y_connection = geometry.Point(row["geometry"]).coords.xy
+                folium.Marker(location=(y_connection[0],x_connection[0]),
+                                    icon=icon_station
+                                    #radius=radius,
+                                    #color=color,
+                                    ,popup=popup_text,
+                                    #fill=True
+                                    ).add_to(folium_map)
+                folium.PolyLine(locations=([[y_connection[0],x_connection[0]],[y_origin[0],x_origin[0]]]),
+                                            color="grey", weight=0.5, opacity=0.5).add_to(folium_map)
 
-    #for index, row in line.iterrows():
 
     return folium_map
 
@@ -89,13 +93,12 @@ def init(departure_station):
     departure_station = str(departure_station).replace('(', '').replace(')', '').split(', ')
     destination_list = connections(departure_station)
     connection_df = stop_df[stop_df['stop_id'].isin(destination_list['stop_id'])]
-    #connection_df = pd.merge(connection_df,destination_list[['origin','stop_id']],on='stop_id')
-    print(connection_df)
+    connection_df = pd.merge(connection_df,destination_list[['origin','stop_id']],on='stop_id')
     origin_df = stop_df[stop_df['stop_id'].isin(departure_station)]
     #print(connection_df)
     #print(origin_df)
     ##plot
-    folium_map = plot_station(origin_df,connection_df,destination_list)
+    folium_map = plot_station(origin_df,connection_df)
     folium_map.save('../../data/temp/index.html')
 
 # if os.path.isfile('save_df.csv') == True:
@@ -141,6 +144,6 @@ def init(departure_station):
 #save temp file
 
 #Enter here the departure station(s) !!!! No string pls !!!! Thanks, la bise, le bécot
-requests = 87575001, 87756056
+requests = 87113001, 87686006, 87391003, 87271007
 init(requests)
 #connections(requests)
