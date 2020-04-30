@@ -15,7 +15,7 @@ def homepage():
         #                        years=years,
         #                        date=date,
         #                        location=location)
-        return render_template('homepage.html', stations=station_list)
+        return render_template('index.html', stations=station_list)
     elif request.method == 'POST':
         return redirect('/')
 

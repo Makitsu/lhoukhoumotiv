@@ -11,6 +11,10 @@ _STOP_CONNECTIONS_LIST =[[87212027, 87171926, 87192039, 87141002, 87147322, 8717
 
 _STOP = {'uic':_STOP_LIST,'connections':_STOP_CONNECTIONS_LIST}
 
+data_to_store_df = pandas.DataFrame(
+        columns=["destination", "departure_date", "arrival_date", "duration", "number_of_segments", "price", "currency",
+                 "transportation_mean"])
+
 def _get_connections(station_uic_int):
     df = pandas.DataFrame(_STOP,columns=['uic','connections'])
     for index,row in df.iterrows():
@@ -29,6 +33,7 @@ def _string_from_datetime(date_datetime):
 
 def import_trip(*args):
     print('Start batch to import trip prices...')
+    start = time.time()
     if len(args) == 0:
         print('No args found. Exit')
         raise ValueError
@@ -44,7 +49,8 @@ def import_trip(*args):
             departure_id = args[1]
             print('Import price for station n°',args[1],'...')
             connections = _get_connections(departure_id)
-            return get_trip_information(departure_id,connections,date)
+            data_to_store_df.append(get_trip_information(departure_id,connections,date))
+            print(time.time() - start)
 
         #case 2: treat a list of uic
         elif isinstance(args[1], list):
@@ -52,29 +58,37 @@ def import_trip(*args):
             print('Import price for stations', args[1], '...')
             for station in args[1]:
                 connections = _get_connections(station)
-                return get_trip_information(station, connections,date)
+                data_to_store_df.append(get_trip_information(station, connections,date))
+                print(time.time() - start)
         #case 3: treat all station
         else:
             print('Import price for all stations...')
-            for station in __init__._get_all_stations():
+            for station in _get_all_stations():
                 connections = _get_connections(station)
-                return get_trip_information(station, connections, date)
-
-    return "abort import..."
+                data_to_store_df.append(get_trip_information(station, connections, date))
+                print(time.time() - start)
+    else:
+        print('Import price for all stations...')
+        for station in _get_all_stations():
+            connections = _get_connections(station)
+            data_to_store_df.append(get_trip_information(station, connections, date))
+            print(time.time()-start)
+    print(time.time() - start)
+    data_to_store_df.to_csv('../temp/tl_export_{}.csv'.format(datetime),header=True,index=False,sep=';')
 
 def get_trip_information(departure_uic_int,connections_uic_list_int,from_date,*args):
     #dataframe to retrieve results from api request
-    api_df = pandas.DataFrame(
+    query_df = pandas.DataFrame(
         columns=["destination", "departure_date", "arrival_date", "duration", "number_of_segments", "price", "currency",
                  "transportation_mean"])
 
     for connection_stop in connections_uic_list_int:
         looptime = time.time()
         try:
-            from_date_str = _string_from_datetime(from_date)
+            from_date_str = _string_from_datetime(from_date.replace(month=5,day=1,hour=00,minute=00))
             #determine time range
             if len(args) == 0:
-                to_date_str = _string_from_datetime(from_date.replace(hour=23,minute=59))
+                to_date_str = _string_from_datetime(from_date.replace(month=5,day=1,hour=23,minute=59))
             else:
                 to_date_str = _string_from_datetime(args[0])
             print("look for results from",from_date_str," to ",to_date_str)
@@ -86,9 +100,8 @@ def get_trip_information(departure_uic_int,connections_uic_list_int,from_date,*a
                 to_date=to_date_str)
             #retrieve result
             query_df = resultats.df()
-            final_df = api_df.append(query_df)
-            final_df = final_df.fillna(connection_stop)
-            print("trip [",str(connection_stop),"->",str(departure_uic_int), "] terminé")
+            query_df = query_df.fillna(connection_stop)
+            print("trip [",str(departure_uic_int),"->",str(connection_stop), "] terminé")
             action_time = time.time() - looptime
             print("Temps total requête : ", action_time)
         except requests.ConnectionError:
@@ -102,5 +115,5 @@ def get_trip_information(departure_uic_int,connections_uic_list_int,from_date,*a
             print("Temps total requête (error - TimeOut) : ", action_time)
             pass
 
-    return api_df
+    return query_df
 

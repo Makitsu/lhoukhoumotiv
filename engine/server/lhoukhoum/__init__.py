@@ -18,7 +18,7 @@ def create_app():
 
     scheduler = BackgroundScheduler(daemon=True)
     #batch to retrieve data
-    scheduler.add_job(batch.batch_price, 'interval', minutes=1,start_date=datetime.datetime.now())
+    scheduler.add_job(batch.batch_price, 'interval', days=1,start_date=datetime.datetime.now().replace(minute=17))
 
     # #batch to retrieve sncf schedule
     # scheduler.add_job(func=batch.batch_schedule(), trigger="interval",

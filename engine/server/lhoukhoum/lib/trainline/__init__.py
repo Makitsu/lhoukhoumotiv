@@ -44,14 +44,29 @@ _DEFAULT_PASSENGER_BIRTHDATE = "01/01/1980"
 _SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
 _STATIONS_CSV = os.path.join(_SCRIPT_PATH, "index_station.csv")
 
+
 class Client(object):
     """ Do the requests with the servers """
 
     def __init__(self):
         self.session = requests.session()
+        #.get(link, headers={'User-agent': 'your bot 0.1'})
         self.headers = {
             'Accept': 'application/json',
-            'User-Agent': 'CaptainTrain/1574360965(web) (Ember 3.5.1)',
+            #'User-Agent': 'CaptainTrain/1574360965(web) (Ember 3.5.1)',
+            #'User-Agent': 'CaptainTrain/5221(d109181b0) (iPhone8,4; iOS 13.1.2; Scale/2.00)',
+            'User-Agent': 'CaptainTrain/1510236308(web) (Ember 2.12.2)',
+            'Accept-Language': 'fr',
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Host': 'www.trainline.eu',
+        }
+
+    def __init__(self,user_agent):
+        self.session = requests.session()
+        # .get(link, headers={'User-agent': 'your bot 0.1'})
+        self.headers = {
+            'Accept': 'application/json',
+            'User-Agent': user_agent,
             'Accept-Language': 'fr',
             'Content-Type': 'application/json; charset=UTF-8',
             'Host': 'www.trainline.eu',
@@ -132,6 +147,30 @@ class Trainline(object):
         }
         post_data = json.dumps(data)
         c = Client()
+        ret = c._post(url=_SEARCH_URL, post_data=post_data)
+        #print(ret)
+        return ret
+
+    def search_rand_client(self, departure_station_id, arrival_station_id, departure_date,
+               passenger_list,user_agent):
+        """ Search on Trainline """
+        data = {
+            "local_currency": "EUR",
+            "search": {
+                "passengers": passenger_list,
+                "arrival_station_id": arrival_station_id,
+                "departure_date": departure_date,
+                "departure_station_id": departure_station_id,
+                "systems": [
+                    "sncf",
+                    "idtgv",
+                    "ouigo",
+                    "timetable"
+                ]
+            }
+        }
+        post_data = json.dumps(data)
+        c = Client(user_agent)
         ret = c._post(url=_SEARCH_URL, post_data=post_data)
         #print(ret)
         return ret
@@ -605,13 +644,14 @@ def get_station_id(station_name):
 
 def search(departure_station, arrival_station,
            from_date, to_date,
+           user_agent,
            passengers=None,
            transportation_mean=None,
            bicycle_without_reservation_only=None,
            bicycle_with_reservation_only=None,
            bicycle_with_or_without_reservation=None,
            max_price=None):
-    #print("search")
+
     t = Trainline()
 
     departure_station_id = get_station_id(departure_station)
@@ -639,11 +679,12 @@ def search(departure_station, arrival_station,
         last_search_date = search_date
         departure_date = search_date.strftime(_DEFAULT_DATE_FORMAT)
 
-        ret = t.search(
+        ret = t.search_rand_client(
             departure_station_id=departure_station_id,
             arrival_station_id=arrival_station_id,
             departure_date=departure_date,
-            passenger_list=passenger_list)
+            passenger_list=passenger_list,
+            user_agent=user_agent)
         j = json.loads(ret.text)
         folders = _get_folders(search_results_obj=j)
         folder_list += folders

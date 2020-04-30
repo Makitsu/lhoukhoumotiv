@@ -11,7 +11,7 @@ from .lib.import_tool import import_trip
 #
 #frequency: every night
 def batch_price():
-    import_trip(datetime.datetime.now(),87113001)
+    import_trip(datetime.datetime.now().replace(hour=datetime.datetime.now().hour+1),87113001)
 
 #batch to retrieve price of ticket for all departure station
 #

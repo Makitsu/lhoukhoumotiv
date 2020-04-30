@@ -1,0 +1,17 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<div id="app">
+    {% block header %}
+      <h1>You crossed paths with another Divvy-er!</h1>
+    <p>On {{date}}, a {{ gender }} of {{ years }} years was on the path you regularly take at around {{ location }}. Maybe you saw them! </p>
+    <p>If you see them again, or someone you think might be them, you should say hi.</p>
+    <p>That's Divvy Dating.</p>
+    {% endblock %}
+
+    {% block content %}
+        <form method="post">
+          <input class="start_over_button" type="submit" value="Start Over">
+        </form>
+    {% endblock %}
+        <p>(your path is in red, theirs is in blue)</p>
+    {% include 'line_map.html' %}
+</div>
