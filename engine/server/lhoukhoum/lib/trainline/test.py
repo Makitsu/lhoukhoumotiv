@@ -6,7 +6,6 @@ import pandas as pd
 from datetime import datetime
 from ExpectError import ExpectTimeout
 
-
 def connections(station_uic):
     df_connection = pd.DataFrame(columns=["station_uic_dest"])
     df = pandas.read_csv('connections.csv', sep=';')
@@ -39,8 +38,9 @@ for index, row in df_connections.iterrows():
 		resultats = __init__.search(
 			departure_station=str(departure_id),
 			arrival_station=str(row['station_uic_dest']),
-			from_date="30/04/2020 08:00",
-			to_date="30/04/2020 21:00")
+			from_date="01/05/2020 08:00",
+			to_date="01/05/2020 21:00")
+
 		a = resultats.df()
 		final_df = final_df.append(a)
 		final_df = final_df.fillna(row['station_uic_dest'])
@@ -80,6 +80,6 @@ for index, row in df_connections.iterrows():
 
 
 
-final_df.to_csv('../../api-request/trainline/temp/tl_export_{}.csv'.format(datetime),header=True,index=False,sep=';')
-requests_time.to_csv('../../api-request/trainline/temp/request_time_{}.csv'.format(datetime),header=True,index=False,sep=';')
+final_df.to_csv('../temp/tl_export_{}.csv'.format(datetime),header=True,index=False,sep=';')
+requests_time.to_csv('../temp/request_time_{}.csv'.format(datetime),header=True,index=False,sep=';')
 print(time.time() - start)
