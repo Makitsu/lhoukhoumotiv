@@ -867,8 +867,9 @@ pre code {
   border-bottom: 3em solid transparent;
 }
 
-.Tealcolor{
-  background-color:#39CCCC;
+.row > [class*='col-'] {
+  display: flex;
+  flex-direction: column;
 }
 
 
@@ -9325,3 +9326,7 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
   }
 }
 /*# sourceMappingURL=bootstrap.css.map */
+
+.mediamap {
+  min-height: 400em;
+}
