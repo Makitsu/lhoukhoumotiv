@@ -86,7 +86,8 @@ class Station(object):
             res.append(station.code_fr)
         return res
 
-for code in _STOP_CODE:
-    station = Station.from_code(code)
-    print(station.name)
-    print(station._get_connection_code())
+
+station = Station.from_code('FRPST')
+print(station.name)
+print(station._get_connection_code())
+
