@@ -13,8 +13,6 @@ html, body {
   padding: .8rem; 
 }
 
-
-
 .navbar-nav li {
   padding-right: 20px;
 }
@@ -22,12 +20,6 @@ html, body {
 .nav-link {
   font-size: 1.1em !important;
 }*/
-
-.nav a{
-    color: black !important;
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.8em !important;
-}
 
 .carousel-inner img {
   width: 100%;
@@ -206,6 +198,8 @@ figure {
 [class*="col-"] {
     padding: 1rem;
 }
+
+
 
 
 
