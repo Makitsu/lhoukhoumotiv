@@ -6,7 +6,11 @@ from datetime import date
 import numpy
 import __init__
 
-time_sleep = 7
+cookie1 = "datadome=KJQOZLvAP-6j7U9YsM6zhxLvzg4CcJKYLle2E2~ycZCnS-vZFIqP5eDJO9eZ4ed52oY3KyMw.mX4mT1WA8f97msgpJGN9DnXJllsHaqV2F"
+cookie2 = "datadome=1guhvzE6Bez4nFLZdb6YT6UIY3lbPVsjaSfq841C0HDOs~gu9gDGHZ6KVp.Zjm4q9hPvPjTsLDv5o7xQzN2UEzTi1n.zDt2xcdIFa85BBm; VMO_city=LIL_PRD1"
+cookie3 = "VMO_city=LIL_PRD1; datadome=BE5NXk4Sar2MxhjNw9-vDzO5PXmGlW~.w.Gym07lQ98I1xqhPVhPdkNxJji7iIEIwhsPaOmlbTgRBzE-ydE.KxVQkZLJwMthrm4WVsZ5_B; vmosas=0"
+
+time_sleep = 6
 global_time = time.time()
 
 summary = {'departure_code':[],
@@ -33,11 +37,10 @@ for departure in departures:
                        "departureTown": {"codes": {"resarail": "{}".format(departure)}},
                        "destinationTown": {"codes": {"resarail": "{}".format(destination)}},
                        "features": ["DIRECT_TRAVEL"],
-                       "outwardDate": "2020-05-21T06:00:00.000+02:00",
+                       "outwardDate": "2020-05-06T06:00:00.000+02:00",
                        "passengers": [
                            {"age": 33, "ageRank": "ADULT", "commercialCard": {"type": "NO_CARD"}, "type": "HUMAN"}],
                        "travelClass": "SECOND"}
-
             headers = {'X-Device-Type': 'ANDROID',
                        'X-Device-Os-Version': '24',
                        'x-vsc-locale': 'fr_FR',
@@ -46,7 +49,7 @@ for departure in departures:
                        'Host': 'wshoraires.oui.sncf',
                        'Connection': 'Keep-Alive',
                        'Accept-Encoding': 'gzip',
-                       'Cookie': 'VMO_city=LIL_PRD1; datadome=.bR.7JFi7Xu_F7BEGuSguMwrHi5eq_UK55lNERYElX2hBB_Zwakr4JIoUwn8peguCLwZZhyENTJu2TTVHg0l-Wd8KH59H4NrSQ9fAmp7Jn'}
+                       'Cookie' : "{}".format(cookie1)}
             r = requests.post('https://wshoraires.oui.sncf/m730/vmd/maq/v3/proposals/train', data=json.dumps(payload),
                               headers=headers, timeout=20)
             print("Temps requête : ", request_time - time.time())
