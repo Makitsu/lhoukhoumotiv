@@ -14,6 +14,7 @@ summary = {'departure_code':[],
            'price':[],
            'category':[],
            'flexibility':[],
+           'travel_time':[],
            'departure_date':[],
            'arrival_date':[],
            'type':[],
@@ -73,6 +74,7 @@ for departure in departures:
                                 summary['price'].append(t['price']['value'])
                                 summary['category'].append(t['placements'][0]['travelClass'])
                                 summary['flexibility'].append(t['flexibility'])
+                                summary['travel_time'].append(p['durationInMillis'])
                                 summary['departure_date'].append(p['departureDate'])
                                 summary['arrival_date'].append(p['arrivalDate'])
                                 # MODIFIER CI-DESSOUS POUR AVOIR TOUS LES MOYENS DE TRANSPORT UTILISES SI CORRESPONDANCES
