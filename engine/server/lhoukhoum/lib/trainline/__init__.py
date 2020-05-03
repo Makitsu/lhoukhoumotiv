@@ -23,8 +23,8 @@ _DEFAULT_DATE_FORMAT = '%Y-%m-%dT%H:%M:%S%z'
 _BIRTHDATE_FORMAT = '%d/%m/%Y'
 _READABLE_DATE_FORMAT = "%d/%m/%Y %H:%M"
 _DEFAULT_SEARCH_TIMEZONE = 'Europe/Paris'
-_MAX_SERVER_RETRY = 2  # If a request is rejected, retry X times
-_TIME_AFTER_FAILED_REQUEST = 6 # and wait Y seconds after a rejected request
+_MAX_SERVER_RETRY = 5  # If a request is rejected, retry X times
+_TIME_AFTER_FAILED_REQUEST = 15 # and wait Y seconds after a rejected request
 
 ENFANT_PLUS = "SNCF.CarteEnfantPlus"
 JEUNE = "SNCF.Carte1225"
@@ -63,7 +63,7 @@ class Client(object):
 
     def __init__(self,user_agent):
         self.session = requests.session()
-        # .get(link, headers={'User-agent': 'your bot 0.1'})
+
         self.headers = {
             'Accept': 'application/json',
             'User-Agent': user_agent,
@@ -90,7 +90,7 @@ class Client(object):
             ret = self.session.post(url=url,
                                     headers=self.headers,
                                     data=post_data)
-            #print("post : ", ret)
+            #print("post : ", ret.request.headers)
             #print(ret.elapsed.total_seconds())
             if (ret.status_code == expected_status_code):
                 break
@@ -147,6 +147,7 @@ class Trainline(object):
         }
         post_data = json.dumps(data)
         c = Client()
+        t = Trip()
         ret = c._post(url=_SEARCH_URL, post_data=post_data)
         #print(ret)
         return ret
