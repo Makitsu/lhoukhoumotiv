@@ -16,6 +16,5 @@ def batch_price():
 #batch to retrieve price of ticket for all departure station
 #
 #frequency: every 30 days
-
 def batch_schedule():
     print('to be implemented')

@@ -1,180 +1,184 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
 
-    <title>LhouKhoumotiv</title>
+        <!-- Add icon library -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <meta name="description" content="Source code">
-    <meta name="author" content="Lhoukhoumotiv team">
+        <!-- CSS file-->
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='loading_animation.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='animation.css') }}">
 
-    <link href="../static/bootstrap.css" rel="stylesheet">
-    <link href="../static/style.css" rel="stylesheet">
-	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-	  <script src="http://www.w3schools.com/lib/w3data.js"></script>
+        <!-- JavaScript file extern -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-  </head>
+        <!-- JavaScript file intern -->
 
-  <body>
-	<style>
-		html,body{
-			height:100%;
-		}
+        <!-- Title -->
+        <title>LhoKhoMotiv</title>
+        <link rel="icon" href="{{ url_for('static', filename='img/porco_logo.png') }}" type="image/png">
+        <script>
+        </script>
+    </head>
 
-		.flex-fill {
-			flex:1;
-		}
-	</style>
-    <div class="container-fluid d-flex h-100 flex-column">
-	<div class="row">
-		<div class="col-md-12">
-			<h1 class="text-center">
-				LhouKhoumotiv
-			</h1>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12">
-			<form role="form" class="form-inline">
+    <body class="main" style="background: url(/static/img/train_station.jpg) no-repeat center center fixed; min-height: 100vh; background-position: center; background-size: cover;" onload="generateHtmlLogin()">
+        <style>
+            html,body{
+                height:100%;
+            }
+            .flex-fill {
+                flex:1;
+            }
+        </style>
 
-				<div class="form-group">
-					<label for="nearestStation">
-						Departure station
-					</label>
-					<input type="station" class="form-control" id="station">
-				</div>
+        <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light" style="background-color: white;">
+            <div class="container">
+                <a class="navbar-brand animated pulse"><h4>LhoKhoMotiv</h4></a>
+                <div class="collapse navbar-collapse bg-light" id="navbarNav" >
+                    <ul class="navbar-nav ml-auto">
+                        <style>
+                          font-size: larger !important;
+                          list-style-type: none;
+                          padding: 15;
+                          display: flex;
+                          flex-direction: row;
+                          justify-content: space-around;
+                          flex-wrap: nowrap;
+                        </style>
+                        <li class="nav-item active">
+                            <a class="nav-item nav-link" href="index.html">Accueil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-item nav-link" href="index.html">Destinations</a>
+                        </li>
+                        <li class="nav-items">
+                            <a class="nav-item nav-link" href="index.html">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
-				<div class="form-group">
-					<label for="date">
-						Date
-					</label>
-					<input type="date" class="form-control" id="date">
-				</div>
+        <div>
+            <div class="container" style="margin-left: 10em; ">
+                <div class="card shadow my-3" style="width:150%; ">
+                    <div class="card-body">
+                        <div class="d-flex flex-column bd-highlight mb-3">
+                            <div class="p-2 bd-highlight"  >
+                                 <!-- Research bar container -->
+                                <div class="row">
+                                        <div class="col-md-6 ">
+                                            <form role="form" class="form-inline">
+                                                    <div class="col-xs-3" style="padding:30px;">
+                                                        <label id="st" name="None">Departure</label>
+                                                        <input type="text" class="form-control" id="list_stations" name="stations" list="stations" >
+                                                        <datalist id="stations">
+                                                        {% for stat in stations %}
+                                                            <option value="{{ stat }}">{{ stat }}</option>
+                                                        {% endfor %}
+                                                        </datalist>
+                                                        <script src="{{ url_for('static', filename='js/populate_station.js') }}"></script>
+                                                    </div>
+                                                    <div class="col-xs-3" style="padding:30px;">
+                                                        <label>Date</label>
+                                                        <input type="date" class="form-control" name="date">
+                                                    </div>
+                                                    <div class="col-xs-3">
+                                                        <a href="#" id="porco"><img class="img-responsive" src="/static/porco_rosso.gif" style="height: 100px; width: 100px;display:inline-block"></a>
+                                                    </div>
+                                                </form>
+                                        </div>
+                                    </div>
+                                <div class="row bg-light flex-fill d-flex justify-content-start" id="test2" >
+                                     <!-- map container (generated dynamically)-->
+                                    <div class="col-md-8" id = "map_container" style="min-height: 500px;" >
+                                    </div>
+                                    <script src="{{ url_for('static', filename='js/populate_list.js') }}"></script>
+                                    <div class="col-md-4" style="background-color:rgba(255, 255, 255, 0.5);">
+                                        <div style="max-height: 500px;">
+                                            <table class="table table-striped table-hover table-bordered table-condensed">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="25%" class="text-center">Destination</th>
+                                                        <th width="25%" class="text-center">Price</th>
+                                                        <th width="25%" class="text-center">Type</th>
+                                                        <th width="25%" class="text-center">Cat.</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                        <div id="table_container" style="max-height: 500px; overflow-y: auto;">
+                                            <table  id="content_table" class="table table-striped table-hover table-bordered table-condensed">
+                                                <tbody id="trip_table">
+                                                    <!-- rows added here -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>  
+                    </div>
+                </div>     
+            </div>
+        </div>
 
-				<div class="form-group">
-					<label for="price">
-						price
-					</label>
-					<select id="price" name="price"value="{{request.form['gender']}}" >
-						<option value="less than">less than</option>
-						<option value="more than">more than</option>
-						<option value="exactly">exactly</option>
-					</select>
-					<input type="price" class="form-control" id="price">
-				</div>
+        <footer class="page-footer text-black pt-4" style="background-color:rgba(255, 255, 255, 0.5);">
+            <!-- Footer Links -->
+            <div class="container text-md-left">
+                <!-- Grid row -->
+                <div class="row text-justify">
+                    <!-- Grid column -->
+                    <div class="col-md-4 mx-auto">
+                        <h5 class="font-weight-bold text-uppercase mt-3 mb-4 text-center">Informations</h5>
+                        <hr class="light">
+                        <p>Lockdown project</p>
+                    </div>
 
-				<button type="submit" class="btn btn-primary">
-					Submit
-				</button>
-			</form>
-		</div>
-	</div>
-	<div class="row bg-light flex-fill d-flex justify-content-start">
-		<div class="col-md-8" style="min-height: 500px;">
-			{% block content %}
-				{% include 'map/87781278_Agde.html'%}
-			{% endblock %}
-		</div>
-		<div class="col-md-4">
-			<table class="table">
-				<thead>
-					<tr>
-						<th>
-							#
-						</th>
-						<th>
-							Destination
-						</th>
-						<th>
-							Duration
-						</th>
-						<th>
-							Price
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-							1
-						</td>
-						<td>
-							the moon
-						</td>
-						<td>
-								&#8734;
-						</td>
-						<td>
-								&#8734;
-						</td>
-					</tr>
-					<tr class="table-active">
-						<td>
-							2
-						</td>
-						<td>
-							Home
-						</td>
-						<td>
-							0
-						</td>
-						<td>
-							0
-						</td>
-					</tr>
-					<tr class="table-success">
-						<td>
-							3
-						</td>
-						<td>
-							TBD
-						</td>
-						<td>
-							TBD
-						</td>
-						<td>
-							TBD
-						</td>
-					</tr>
-					<tr class="table-warning">
-						<td>
-							4
-						</td>
-						<td>
-							TBD
-						</td>
-						<td>
-							TBD
-						</td>
-						<td>
-							TBD
-						</td>
-					</tr>
-					<tr class="table-danger">
-						<td>
-							5
-						</td>
-						<td>
-							TBD
-						</td>
-						<td>
-							TBD
-						</td>
-						<td>
-							TBD
-						</td>
-					</tr>
+                    <div class="col-md-2 mx-auto text-center">
+                        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Ressources</h5>
+                        <hr class="light">
+                        <ul class="list-unstyled">
+                        </ul>
+                    </div>
 
-				</tbody>
-			</table>
-		</div>
-	</div>
-</div>
+                    <div class="col-md-2 mx-auto text-center">
+                        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">A Propos</h5>
+                        <hr class="light">
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="dicoloco_faq.html">FAQ</a>
+                            </li>
+                        </ul>
+                    </div>
 
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/scripts.js"></script>
-  </body>
+                    <div class="col-md-2 mx-auto text-center">
+                        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Contact</h5>
+                        <hr class="light">
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="dicoloco_index.html#dicoTeam">Lhokhomotiv</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-copyright text-center py-3">© 2020 Copyright:
+                <a href="https://github.com/Makitsu/lhoukhoumotiv">Lhokhomotiv</a>
+            </div>
+        </footer>
+
+        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery/jquery-latest.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery/jquery-ui.js') }}"></script>
+        <script type=text/javascript src="{{url_for('static', filename='js/jquery/jquery-3.5.0.js') }}"></script>
+    </body>
 </html>

@@ -9,7 +9,7 @@ from . import routes
 from . import batch
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__,static_folder= 'static')
     app.register_blueprint(routes.bp)
     app.config.update(
         DEBUG=True,
