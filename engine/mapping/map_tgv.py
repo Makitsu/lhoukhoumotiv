@@ -16,7 +16,6 @@ def connections(station_uic):
     df = connections_df
     #df['stop_id'] = df['stop_uic']
     station_uic = [int(i) for i in station_uic]
-
     for index,row in df.iterrows():
         if row['stop_uic'] in station_uic:
             connections = row['connections'].replace('[','').\
@@ -52,9 +51,9 @@ def plot_station(origin, connection):
                                 , attr=str(
                 '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>')
                                 , width='100%')
-        porco_path_ = r"folium_add\porco.gif"
-        porco = folium.features.CustomIcon(icon_image=porco_path_, icon_size=(200,200))
-        folium.Marker(location=(46.028753,-5.975702),icon=porco).add_to(folium_map)
+        # porco_path_ = r"folium_add\porco.gif"
+        # porco = folium.features.CustomIcon(icon_image=porco_path_, icon_size=(200,200))
+        # folium.Marker(location=(46.028753,-5.975702),icon=porco).add_to(folium_map)
         current_origin = row['stop_id']
         current_name = row['stop_name']
         #fg["{}".format(current_origin)] = folium.FeatureGroup(name=current_name, show=False)
