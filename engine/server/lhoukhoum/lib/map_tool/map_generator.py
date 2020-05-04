@@ -9,6 +9,45 @@ from engine.server.lhoukhoum.lib.ouisncf.__init__ import Station
 
 start = time.time()
 
+def ptp_map(departure_station,arrival_station):
+    lat_departure = Station.from_code(departure_station).lat
+    lon_departure = Station.from_code(departure_station).lon
+    folium_map = folium.Map(location=[lat_departure, lon_departure],
+                            zoom_start=6,
+                            # tiles='https://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}.png'
+                            # , attr=str("Tiles &copy; Esri &mdash; Source: USGS, Esri, TANA, DeLorme, and NPS"),
+                            tiles='https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png'
+                            , attr=str('&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>')
+                            , width='100%')
+    icon_path_departure = r"folium_add\station.png"
+    icon_departure = folium.features.CustomIcon(icon_image=icon_path_departure, icon_size=(20, 20))
+    popup_text = "<br>{}<br>{}<br>"
+    popup_text = popup_text.format(Station.from_code(departure_station)._get_stations_name(), departure_station)
+    folium.Marker(location=(lat_departure, lon_departure),
+                  icon=icon_departure
+                  # radius=radius,
+                  # color=color,
+                  , popup=popup_text,
+                  # fill=True
+                  ).add_to(folium_map)
+    icon_path = r"folium_add\placeholder.png"
+    icon_station = folium.features.CustomIcon(icon_image=icon_path, icon_size=(20, 20))
+    popup_text = "<br>{}<br>{}<br>"
+    popup_text = popup_text.format(Station.from_code(departure_station).name, departure_station)
+    lat_arrival = Station.from_code(arrival_station).lat
+    lon_arrival = Station.from_code(arrival_station).lon
+    folium.Marker(location=(lat_arrival, lon_arrival),
+                  icon=icon_station
+                  # radius=radius,
+                  # color=color,
+                  , popup=popup_text,
+                  # fill=True
+                  ).add_to(folium_map)
+    folium.PolyLine(locations=([[lat_departure, lon_departure], [lat_arrival, lon_arrival]]),
+                    color="grey", weight=0.5, opacity=0.5).add_to(folium_map)
+    folium_map.save('porco.html')
+    print("Map saved")
+
 def export_map(departure_station,Date=date.today(),prix_min=0,prix_max=300,time_min=0,time_max=1000):
     connections = pd.read_csv('../ouisncf/temp/oui_export_{}.csv'.format(Date),sep=";")
     connections = connections[connections['departure_code'] == departure_station]
@@ -83,4 +122,5 @@ def export_map(departure_station,Date=date.today(),prix_min=0,prix_max=300,time_
     folium_map.save('porco.html')
     print("Map saved")
 
-export_map("FRPMO",prix_max=40)
+#export_map("FRPMO",prix_max=40)
+ptp_map("FRPMO","FRXTB")
