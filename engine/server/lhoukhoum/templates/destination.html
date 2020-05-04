@@ -41,7 +41,7 @@
         <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light" style="background-color: white;">
             <div class="container">
                 <a class="navbar-brand animated pulse"><h4>LhoKhoMotiv</h4></a>
-                <div class="collapse navbar-collapse bg-light" id="navbarNav" >
+                <div class="collapse navbar-collapse bg-light" >
                     <ul class="navbar-nav ml-auto">
                         <style>
                           font-size: larger !important;
@@ -52,14 +52,14 @@
                           justify-content: space-around;
                           flex-wrap: nowrap;
                         </style>
-                        <li class="nav-item active">
-                            <a class="nav-item nav-link" href="#">Accueil</a>
-                        </li>
                         <li class="nav-item">
-                            <a class="nav-item nav-link" href="{{ url_for('trip.destination') }}">Destinations</a>
+                            <a class="nav-item nav-link" href="{{ url_for('trip.trip') }}">Accueil</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-item nav-link" href="#">Destinations</a>
                         </li>
                         <li class="nav-items">
-                            <a class="nav-item nav-link" href="#">Contact</a>
+                            <a class="nav-item nav-link" href="{{ url_for('trip.trip') }}">Contact</a>
                         </li>
                     </ul>
                 </div>
@@ -68,66 +68,26 @@
 
         <div>
             <div class="container" style="margin-left: 10em; ">
-                <div class="card shadow my-3" style="width:150%; ">
+                <div class="card shadow my-3" style="width:100%; ">
                     <div class="card-body">
                         <div class="d-flex flex-column bd-highlight mb-3">
                             <div class="p-2 bd-highlight"  >
                                  <!-- Research bar container -->
                                 <div class="row">
                                         <div class="col-md-6 ">
-                                            <form role="form" class="form-inline">
-                                                    <div class="col-xs-3" style="padding:30px;">
-                                                        <label id="st" name="None">Departure</label>
-                                                        <input type="text" class="form-control" id="list_stations" name="stations" list="stations" >
-                                                        <datalist id="stations">
-                                                        {% for stat in stations %}
-                                                            <option value="{{ stat }}">{{ stat }}</option>
-                                                        {% endfor %}
-                                                        </datalist>
-                                                        <script src="{{ url_for('static', filename='js/populate_station.js') }}"></script>
-                                                    </div>
-                                                    <div class="col-xs-3" style="padding:30px;">
-                                                        <label>Date</label>
-                                                        <input type="date" class="form-control" name="date">
-                                                    </div>
-                                                    <div class="col-xs-3">
-                                                        <a href="#" id="porco"><img class="img-responsive" src="/static/img/porco_rosso.gif" style="height: 100px; width: 100px;display:inline-block"></a>
-                                                    </div>
-                                                </form>
                                         </div>
                                     </div>
                                 <div class="row bg-light flex-fill d-flex justify-content-start" id="test2" >
-                                     <!-- map container (generated dynamically)-->
                                     <div class="col-md-8" id = "map_container" style="min-height: 500px;" >
                                     </div>
-                                    <script src="{{ url_for('static', filename='js/populate_list.js') }}"></script>
                                     <div class="col-md-4" style="background-color:rgba(255, 255, 255, 0.5);">
-                                        <div style="max-height: 500px;">
-                                            <table class="table table-striped table-hover table-bordered table-condensed">
-                                                <thead>
-                                                    <tr>
-                                                        <th width="25%" class="text-center">Destination</th>
-                                                        <th width="25%" class="text-center">Price</th>
-                                                        <th width="25%" class="text-center">Type</th>
-                                                        <th width="25%" class="text-center">Cat.</th>
-                                                    </tr>
-                                                </thead>
-                                            </table>
-                                        </div>
-                                        <div id="table_container" style="max-height: 500px; overflow-y: auto;">
-                                            <table  id="content_table" class="table table-striped table-hover table-bordered table-condensed">
-                                                <tbody id="trip_table">
-                                                    <!-- rows added here -->
-                                                </tbody>
-                                            </table>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        </div>  
+                        </div>
                     </div>
-                </div>     
+                </div>
             </div>
         </div>
 

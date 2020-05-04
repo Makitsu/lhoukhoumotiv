@@ -5,7 +5,7 @@ import geocoder
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify, app
 import pandas as pd
 from shapely import geometry
-from .lib.ouisncf import *
+from .lib.import_train import Station
 from .lib.import_tool import get_map_html
 import os
 
@@ -67,7 +67,7 @@ def station_info():
 @bp.route('/trip', methods=('GET', 'POST'))
 def trip():
     if request.method == 'GET':
-        return "to be implemented"
+        return render_template('index.html', stations=Station()._get_stations_name())
     elif request.method == 'POST':
         return redirect('/')
 
@@ -79,3 +79,12 @@ def trip_map():
         return "to be implemented"
     elif request.method == 'POST':
         return redirect('/')
+
+
+@bp.route('/destination', methods=['GET', 'POST'])
+def destination():
+    if request.method == 'POST':
+        return redirect(url_for('index'))
+
+    # show the form, it wasn't submitted
+    return render_template('destination.html')
