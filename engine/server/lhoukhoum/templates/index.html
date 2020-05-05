@@ -12,20 +12,35 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
         <!-- CSS file-->
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='loading_animation.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='animation.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/loading_animation.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/animation.css') }}">
 
         <!-- JavaScript file extern -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
         <!-- JavaScript file intern -->
+        <script type="text/javascript" src="{{ url_for('static', filename='js/loadingoverlay.min.js') }}"></script>
 
         <!-- Title -->
         <title>LhoKhoMotiv</title>
         <link rel="icon" href="{{ url_for('static', filename='img/porco_logo.png') }}" type="image/png">
-        <script>
+
+ <script>
+       $(document).ajaxStart(function(){
+            jQuery.ajaxPrefilter(function( options ) {
+                    options.global = true;
+                });
+            $.LoadingOverlay("show");
+        });
+        $(document).ajaxStop(function(){
+            jQuery.ajaxPrefilter(function( options ) {
+                    options.global = true;
+                });
+            $.LoadingOverlay("hide");
+        });
         </script>
+
     </head>
 
     <body class="main" style="background: url(/static/img/train_station.jpg) no-repeat center center fixed; min-height: 100vh; background-position: center; background-size: cover;" onload="generateHtmlLogin()">
@@ -68,7 +83,8 @@
 
         <div>
             <div class="container" style="margin-left: 10em; ">
-                <div class="card shadow my-3" style="width:150%; ">
+                <div class="card shadow my-3" id="test_2" style="width:150%; ">
+
                     <div class="card-body">
                         <div class="d-flex flex-column bd-highlight mb-3">
                             <div class="p-2 bd-highlight"  >
@@ -100,8 +116,11 @@
                                      <!-- map container (generated dynamically)-->
                                     <div class="col-md-8" id = "map_container" style="min-height: 500px;" >
                                     </div>
-                                    <script src="{{ url_for('static', filename='js/populate_list.js') }}"></script>
-                                    <div class="col-md-4" style="background-color:rgba(255, 255, 255, 0.5);">
+
+                                    <script src="{{ url_for('static', filename='js/populate_list.js') }}">
+                                    </script>
+
+                                    <div class="col-md-4" style="height: 500px; background-color:rgba(255, 255, 255, 0.5);">
                                         <div style="max-height: 500px;">
                                             <table class="table table-striped table-hover table-bordered table-condensed">
                                                 <thead>
@@ -114,7 +133,7 @@
                                                 </thead>
                                             </table>
                                         </div>
-                                        <div id="table_container" style="max-height: 500px; overflow-y: auto;">
+                                        <div id="table_container" style=" height : 500px ; max-height: 500px; overflow-y: auto;">
                                             <table  id="content_table" class="table table-striped table-hover table-bordered table-condensed">
                                                 <tbody id="trip_table">
                                                     <!-- rows added here -->
@@ -131,7 +150,7 @@
             </div>
         </div>
 
-        <footer class="page-footer text-black pt-4" style="background-color:rgba(255, 255, 255, 0.5);">
+        <footer class="page-footer text-black pt-4 fixed-bottom" style="background-color:rgba(255, 255, 255, 0.5);">
             <!-- Footer Links -->
             <div class="container text-md-left">
                 <!-- Grid row -->
@@ -177,8 +196,12 @@
             </div>
         </footer>
 
+
+
         <script type="text/javascript" src="{{ url_for('static', filename='js/jquery/jquery-latest.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/jquery/jquery-ui.js') }}"></script>
         <script type=text/javascript src="{{url_for('static', filename='js/jquery/jquery-3.5.0.js') }}"></script>
+
+
     </body>
 </html>
