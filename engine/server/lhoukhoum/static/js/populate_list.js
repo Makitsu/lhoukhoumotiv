@@ -3,6 +3,7 @@ $("#porco").click(function(){
     $('#st').each(function(){
         start_stat = this.name;
     });
+
     $.ajax({
         url: "/station/map",
         type: "post",
@@ -35,5 +36,9 @@ $("#porco").click(function(){
         error: function(output){
             console.log('error');
         },
-    });
+    }).always(function(){
+    $(#test2).LoadingOverlay("hide",true);
+    });;
+
+
 });
