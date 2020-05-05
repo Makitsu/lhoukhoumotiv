@@ -1,6 +1,6 @@
 @ECHO OFF
 
 set FLASK_APP=lhoukhoum
-python -m flask run
+flask run
 
 PAUSE

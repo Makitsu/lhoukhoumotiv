@@ -5,7 +5,7 @@ import pandas as pd
 from shapely import geometry
 import time
 from datetime import date
-from engine.server.lhoukhoum.lib.ouisncf.__init__ import Station
+from engine.server.lhoukhoum.lib.import_train import Station
 
 start = time.time()
 
@@ -45,9 +45,9 @@ def ptp_map(departure_station,arrival_station):
                   ).add_to(folium_map)
     folium.PolyLine(locations=([[lat_departure, lon_departure], [lat_arrival, lon_arrival]]),
                     color="grey", weight=0.5, opacity=0.5).add_to(folium_map)
+    folium_map.fit_bounds([[lat_departure, lon_departure], [lat_arrival, lon_arrival]],max_zoom=7)
     folium_map.save('porco.html')
     print("Map saved")
-
 def export_map(departure_station,Date=date.today(),prix_min=0,prix_max=300,time_min=0,time_max=1000):
     connections = pd.read_csv('../ouisncf/temp/oui_export_{}.csv'.format(Date),sep=";")
     connections = connections[connections['departure_code'] == departure_station]
@@ -123,4 +123,4 @@ def export_map(departure_station,Date=date.today(),prix_min=0,prix_max=300,time_
     print("Map saved")
 
 #export_map("FRPMO",prix_max=40)
-ptp_map("FRPMO","FRXTB")
+ptp_map("FRPMO","FRBES")
