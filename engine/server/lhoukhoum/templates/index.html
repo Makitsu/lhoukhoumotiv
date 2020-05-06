@@ -95,9 +95,9 @@
                             <div class="p-2"  >
                                  <!-- Research bar container -->
                                 <div class="form-row">
-                                    <div class="form-group col-md-4 mb-2" >
+                                    <div class="form-group col-md" >
                                         <label id="st" name="None">Departure</label>
-                                        <input type="text" class="form-control" id="list_stations" name="stations" list="stations" placeholder="Select..." required>
+                                        <input type="text" class="form-control" id="list_stations" name="stations" list="stations" placeholder="Select...">
                                         <datalist id="stations">
                                         {% for stat in stations %}
                                             <option value="{{ stat }}">{{ stat }}</option>
@@ -105,21 +105,17 @@
                                         </datalist>
                                         <script src="{{ url_for('static', filename='js/populate_station.js') }}"></script>
                                     </div>
-                                    <div class="form-group col-md-4 mb-2" >
+                                    <div class="form-group col-md" >
                                         <label id="arrival" name="None">Arrival</label>
-                                        <select multiple class="form-control  input-sm" id="list_arrival" name="arrivals" required>
+                                        <select multiple class="form-control  input-sm" id="list_arrival" name="arrivals">
                                         </select>
                                         <script src="{{ url_for('static', filename='js/populate_arrivals.js') }}"></script>
                                     </div>
-                                    <div class="form-group col-md-4 mb-2" >
+                                    <div class="form-group col-md" >
                                         <label>Date</label>
-                                        <input type="date" id="trip_date" class="form-control" name="date" required>
+                                        <input type="date" class="form-control" name="date">
                                     </div>
-                                    <div class="form-check col-md-4 mb-2">
-                                        <input type="checkbox" class="form-check-input" id="check_api">
-                                        <label class="form-check-label" for="check_api">api</label>
                                     </div>
-                                </div>
                                 <div class="row flex-fill d-flex justify-content-start" id="test2" >
 
                                     <div class="col-md-8" id = "map_container" style="min-height: 500px;" >

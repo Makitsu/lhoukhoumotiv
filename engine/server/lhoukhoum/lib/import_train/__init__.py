@@ -103,14 +103,6 @@ class Station(object):
             res.append(station.code_tl)
         return res
 
-    def _get_connection_name(self):
-        idx = _STOP_NAME.index(self.name)
-        res = []
-        for uic in _STOP_CONNECTIONS_LIST[idx]:
-            station = Station.from_uic(uic)
-            res.append(station.name)
-        return res
-
     def _get_stations_name(self):
         return _STOP_NAME
 
