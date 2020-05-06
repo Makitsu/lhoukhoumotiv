@@ -7,21 +7,7 @@ html, body {
   color: #222;
 }
 
-/*1 rem = 16 px*/
-/* Modification de la navbar
-.navbar {
-  padding: .8rem; 
-}
-
-
-
-.navbar-nav li {
-  padding-right: 20px;
-}
-
-.nav-link {
-  font-size: 1.1em !important;
-}*/
+.tnav .navbar .container { height: 100px; background-color:rgba(255, 255, 255, 0.7) !important;  }
 
 .nav a{
     color: black !important;
@@ -29,54 +15,6 @@ html, body {
     font-size: 1.8em !important;
 }
 
-.carousel-inner img {
-  width: 100%;
-  height: 100%;
-}
-
-.carousel-caption.other {
-  position: absolute;
-  top: 50%;
-}
-
-.carousel-caption.main {
-  position: absolute;
-  top: 40%;
-}
-
-/* TODO rendre le text-responsive
-@media screen (min-width: 768px) {
-  h2 {
-      font-size: 1.2rem;
-  }
-}
-
-@media screen (min-width: 991px) {
-  h2 {
-      font-size: 1.4rem;
-  }
-}
-
-h2 {
-  font-size: 1.1rem;
-}*/
-
-.carousel-caption h1 {
-  font-size: 500%; 
-  text-transform: uppercase;
-  text-shadow: 1px 1px 10px #000;
-}
-
-.carousel-caption h3 {
-  font-size: 250%; 
-  text-transform: uppercase;
-  text-shadow: 1px 1px 10px #000;
-}
-
-.carousel-caption p {
-  font-size: 150%; 
-  text-shadow: 1px 1px 10px #000;
-}
 
 .btn-primary {
   border: 1px solid #888888;
@@ -98,44 +36,11 @@ h2 {
   padding-top: 2rem;
 }
 
-.dico_valeur:first-letter {
-  font-size: 50px;
-}
-
 hr {
   border-top: 2px solid #b4b4b4;
   width: 95%;
   margin-top: .3rem;
   margin-bottom: 1rem;
-}
-
-.social a {
-  font-size: 3em; 
-  padding: 3rem;
-}
-
-.fa-facebook {
-  color: #3b5998;
-}
-
-.fa-twitter {
-  color: #00aced;
-}
-
-.fa-linkedin {
-  color: #00aced;
-}
-
-.fa-skype {
-  color: #517fa4;
-}
-
-.fa-youtube {
-  color: #bb0000;
-}
-
-.fa-facebook:hover, .fa-twitter:hover, .fa-instagram:hower, .fa-youtube:hover {
-  color: #d5d5d5;
 }
 
 hr.light {
@@ -154,26 +59,7 @@ img.video {
   width: 100%;
   height: auto;
 }
-/*---Media Queries --*/
-@media (max-width: 992px) {
 
-  }
-@media (max-width: 768px) {
-  
-}
-@media (max-width: 576px) {
-  
-}
-
-
-/*---Firefox Bug Fix --*/
-.carousel-item {
-  transition: -webkit-transform 0.5s ease;
-  transition: transform 0.5s ease;
-  transition: transform 0.5s ease, -webkit-transform 0.5s ease;
-  -webkit-backface-visibility: visible;
-  backface-visibility: visible;
-}
 /*--- Fixed Background Image --*/
 figure {
   position: relative;
@@ -189,43 +75,35 @@ figure {
   width: 100%;
   height: 100%;
 }
-#fixed {
-  background-image: url('img/mac.png');
-  position: fixed;
-  display: block;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center center;
-  -webkit-transform: translateZ(0);
-          transform: translateZ(0);
-  will-change: transform;
-}
+
 /*--- Bootstrap Padding Fix --*/
 [class*="col-"] {
     padding: 1rem;
 }
 
-
-
 /*
-Extra small (xs) devices (portrait phones, less than 576px)
-No media query since this is the default in Bootstrap
+ *  scrollbar
+ */
 
-Small (sm) devices (landscape phones, 576px and up)
-@media (min-width: 576px) { ... }
+#style-4::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
 
-Medium (md) devices (tablets, 768px and up)
-@media (min-width: 768px) { ... }
+#style-4::-webkit-scrollbar
+{
+	width: 10px;
+	background-color: #F5F5F5;
+}
 
-Large (lg) devices (desktops, 992px and up)
-@media (min-width: 992px) { ... }
+#style-4::-webkit-scrollbar-thumb
+{
+	background-color: #000000;
+	border: 2px solid #555555;
+}
 
-Extra (xl) large devices (large desktops, 1200px and up)
-@media (min-width: 1200px) { ... }
-*/
+
 
 #s
 {
@@ -240,13 +118,17 @@ width: 100%;
 display: inline-table;
 }
 
-table{
- height:400px;
-}
+select.form-control {
+  &:not([size]):not([multiple]) {
+    //simulate line-height: 1.25  for selects
+    box-sizing: content-box;
+    height: 1.25rem;
+  }
+
 
 tbody{
-  overflow:scroll;
-  height: 200px;
+  overflow-y:scroll;
+  max-height: 500px;
   width: 100%;
   position: absolute;
 }
