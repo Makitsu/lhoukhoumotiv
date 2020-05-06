@@ -7,6 +7,7 @@ import pandas as pd
 from shapely import geometry
 from .lib.import_train import Station
 from .lib.import_tool import get_map_html
+from .lib.map_tool.map_generator import ptp_map_serveur
 import os
 
 document_path = os.getcwd()+'\\lhoukhoum\\static\\connections.csv'
@@ -31,6 +32,15 @@ def station():
     elif request.method == 'POST':
         return redirect('/')
 
+@bp.route('/station/connection', methods=('GET', 'POST'))
+def station_connection():
+    if request.method == 'GET':
+        return redirect('/')
+    elif request.method == 'POST':
+        start_station = request.form.get('start_station')
+        current_station = Station().from_name(start_station)
+        return jsonify(current_station._get_connection_name())
+
 @bp.route('/station/map', methods=('GET', 'POST'))
 def station_map():
     if request.method == 'GET':
@@ -40,12 +50,26 @@ def station_map():
         current_uic = Station().from_name(start_station).code_uic
         return get_map_html(current_uic)._repr_html_()
 
+@bp.route('/station/map/absolute', methods=('GET', 'POST'))
+def station_map_absolute():
+    if request.method == 'GET':
+        return redirect('/')
+    elif request.method == 'POST':
+        start_station = request.form.get('start_station')
+        stop_station = request.form.get('stop_station')
+        print(start_station)
+        print(stop_station)
+        current_uic = Station().from_name(start_station).code_uic
+        arrival_uic = Station().from_name(stop_station).code_uic
+
+        return ptp_map_serveur(current_uic,arrival_uic)._repr_html_()
+
 @bp.route('/station/info', methods=('GET', 'POST'))
 def station_info():
     if request.method == 'GET':
         return "not used as get request"
     elif request.method == 'POST':
-        document_path = os.getcwd() + '\\lhoukhoum\\static\\db\\db_{}.csv'.format(date.today())
+        document_path = os.getcwd() + '\\lhoukhoum\\static\\db\\db_2020-05-05.csv'
         print(document_path)
         #retrieve daily db
         db_df = pd.read_csv(document_path, sep=';')
@@ -55,12 +79,13 @@ def station_info():
         answer_df = db_df[db_df['departure_code'] == current_code]
         print(answer_df)
         answer = {
-            'arrival_code': answer_df['arrival_code'].tolist(),
+            'arrival_code': [],
             'price': answer_df['price'].tolist(),
             'type': answer_df['type'].to_list(),
             'category': answer_df['category'].tolist()
         }
-        print(answer)
+        for elem in answer_df['arrival_code'].tolist():
+            answer['arrival_code'].append(Station().from_code(elem).name)
         return jsonify(answer)
 
 
