@@ -5,7 +5,7 @@ import pandas as pd
 from shapely import geometry
 import time
 from datetime import date
-from engine.server.lhoukhoum.lib.import_train import Station
+from ..import_train import Station
 
 start = time.time()
 
@@ -48,6 +48,49 @@ def ptp_map(departure_station,arrival_station):
     folium_map.fit_bounds([[lat_departure, lon_departure], [lat_arrival, lon_arrival]],max_zoom=7)
     folium_map.save('porco.html')
     print("Map saved")
+
+def ptp_map_serveur(departure_station_uic, arrival_station_uic):
+    lat_departure = Station.from_uic(departure_station_uic).lat
+    lon_departure = Station.from_uic(departure_station_uic).lon
+    folium_map = folium.Map(location=[lat_departure, lon_departure],
+                            zoom_start=6,
+                            # tiles='https://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}.png'
+                            # , attr=str("Tiles &copy; Esri &mdash; Source: USGS, Esri, TANA, DeLorme, and NPS"),
+                            tiles='https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png'
+                            , attr=str(
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>')
+                            , width='100%')
+    document_path = os.getcwd() + '\\lhoukhoum\\static\\img\\station.png'
+    icon_path_departure = document_path
+    icon_departure = folium.features.CustomIcon(icon_image=icon_path_departure, icon_size=(20, 20))
+    popup_text = "<br>{}<br>{}<br>"
+    popup_text = popup_text.format(Station.from_uic(departure_station_uic).name, departure_station_uic)
+    folium.Marker(location=(lat_departure, lon_departure),
+                  icon=icon_departure
+                  # radius=radius,
+                  # color=color,
+                  , popup=popup_text,
+                  # fill=True
+                  ).add_to(folium_map)
+    document_path = os.getcwd() + '\\lhoukhoum\\static\\img\\placeholder.png'
+    icon_path = document_path
+    icon_station = folium.features.CustomIcon(icon_image=icon_path, icon_size=(20, 20))
+    popup_text = "<br>{}<br>{}<br>"
+    popup_text = popup_text.format(Station.from_uic(departure_station_uic).name, departure_station_uic)
+    lat_arrival = Station.from_uic(arrival_station_uic).lat
+    lon_arrival = Station.from_uic(arrival_station_uic).lon
+    folium.Marker(location=(lat_arrival, lon_arrival),
+                  icon=icon_station
+                  # radius=radius,
+                  # color=color,
+                  , popup=popup_text,
+                  # fill=True
+                  ).add_to(folium_map)
+    folium.PolyLine(locations=([[lat_departure, lon_departure], [lat_arrival, lon_arrival]]),
+                    color="grey", weight=0.5, opacity=0.5).add_to(folium_map)
+    folium_map.fit_bounds([[lat_departure, lon_departure], [lat_arrival, lon_arrival]], max_zoom=7)
+
+    return folium_map
 
 def map_from_list(departure_station):
     connections_list = Station.from_uic(departure_station)._get_connection_uic()
@@ -93,7 +136,6 @@ def map_from_list(departure_station):
     folium_map.fit_bounds(points, max_zoom=7)
     folium_map.save('porco.html')
     print("Map saved")
-
 
 def export_map(departure_station,Date=date.today(),prix_min=0,prix_max=300,time_min=0,time_max=1000):
     connections = pd.read_csv('../ouisncf/temp/oui_export_{}.csv'.format(Date),sep=";")
@@ -168,9 +210,6 @@ def export_map(departure_station,Date=date.today(),prix_min=0,prix_max=300,time_
         # folium.LayerControl().add_to(folium_map)
     folium_map.save('porco.html')
     print("Map saved")
-
-#export_map("FRPMO",prix_max=40)
-
-#ptp_map("FRPMO","FRBES")
-departure = 87171926
-map_from_list(departure)
+#
+# #export_map("FRPMO",prix_max=40)
+# ptp_map("FRPMO","FRBES")
