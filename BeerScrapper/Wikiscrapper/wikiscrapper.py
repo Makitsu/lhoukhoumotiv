@@ -55,63 +55,72 @@ for index, row in df.iterrows():
     altitude_found = 0
     superficie_found = 0
     #image_found = 0
-    for tr in mytable.findAll('tr'):
-        #trText = tr.text
-        try:
-            a = tr.find('th').find('a')
-            if 'title' in a.attrs:
-                if a['title'] == "Région française":
-                    region_found =+ 1
-                    b = tr.find('td').find('a')
-                    result['region'].append(b.string)
-                if a['title'] == "Département français":
-                    departement_found =+ 1
-                    b = tr.find('td').find('a')
-                    result['departement'].append(b.string)
-                if a['title'] == "Chiffres de population de la France":
-                    population_found =+ 1
-                    b = tr.find('td')
-                    b = b.contents[0].replace(u'\xa0', u'')
-                    result['population'].append(b)
-                if a['title'] == "Aire urbaine (France)":
-                    pop_aire_found =+ 1
-                    b = tr.find('td')
-                    b = b.contents[0].replace(u'\xa0', u'')
-                    result['population_aire'].append(b)
-                if a['title'] == "Densité de population":
-                    densite_found =+ 1
-                    b = tr.find('td')
-                    b = b.contents[0].replace(u'\xa0', u'')
-                    result['densite'].append(b)
-                if a['title'] == "Gentilé":
-                    gentile_found =+ 1
-                    b = tr.find('td')
-                    b = b.text.replace('\n', '')
-                    result['gentile'].append(b)
-                if a['title'] == "Altitude":
-                    altitude_found =+ 1
-                    b = tr.find('td')
-                    b = b.text.replace('\xa0', '').replace('\n','')
-                    result['altitude'].append(b)
-                if a['title'] == "Aire (géométrie)":
-                    superficie_found =+ 1
-                    b = tr.find('td')
-                    b = b.text.replace('\xa0', '').replace("\n","")
-                    result['superficie'].append(b)
-        except AttributeError:
-            continue
-        except KeyError:
-            continue
-        # try :
-        #     img = tr.find('td').find('a')
-        #     image_tags = tr.findAll('img')
-        #     # print out image urls
-        #     for image_tag in image_tags:
-        #         print(image_tag.get('src'))
-        # except AttributeError:
-        #     continue
-        # except KeyError:
-        #     continue
+    try:
+        for tr in mytable.findAll('tr'):
+            #trText = tr.text
+            try:
+                a = tr.find('th').find('a')
+                if 'title' in a.attrs:
+                    if a['title'] == "Région française":
+                        region_found =+ 1
+                        b = tr.find('td').find('a')
+                        result['region'].append(b.string)
+                    if a['title'] == "Département français":
+                        departement_found =+ 1
+                        b = tr.find('td').find('a')
+                        result['departement'].append(b.string)
+                    if a['title'] == "Chiffres de population de la France":
+                        population_found =+ 1
+                        b = tr.find('td')
+                        b = b.contents[0].replace(u'\xa0', u'')
+                        result['population'].append(b)
+                    if a['title'] == "Aire urbaine (France)":
+                        pop_aire_found =+ 1
+                        b = tr.find('td')
+                        b = b.contents[0].replace(u'\xa0', u'')
+                        result['population_aire'].append(b)
+                    if a['title'] == "Densité de population":
+                        densite_found =+ 1
+                        b = tr.find('td')
+                        b = b.contents[0].replace(u'\xa0', u'')
+                        result['densite'].append(b)
+                    if a['title'] == "Gentilé":
+                        gentile_found =+ 1
+                        b = tr.find('td')
+                        b = b.text.replace('\n', '')
+                        result['gentile'].append(b)
+                    if a['title'] == "Altitude":
+                        altitude_found =+ 1
+                        b = tr.find('td')
+                        b = b.text.replace('\xa0', '').replace('\n','')
+                        result['altitude'].append(b)
+                    if a['title'] == "Aire (géométrie)":
+                        superficie_found =+ 1
+                        b = tr.find('td')
+                        b = b.text.replace('\xa0', '').replace("\n","")
+                        result['superficie'].append(b)
+            except AttributeError:
+                continue
+            except KeyError:
+                continue
+    except AttributeError:
+        if departement_found == 0:
+            result['departement'].append("N/A")
+        if region_found == 0:
+            result['region'].append("N/A")
+        if population_found == 0:
+            result['population'].append("N/A")
+        if pop_aire_found == 0:
+            result['population_aire'].append("N/A")
+        if densite_found == 0:
+            result['densite'].append("N/A")
+        if gentile_found == 0:
+            result['gentile'].append("N/A")
+        if altitude_found == 0:
+            result['altitude'].append("N/A")
+        if superficie_found == 0:
+            result['superficie'].append("N/A")
+        continue
     if departement_found == 0:
         result['departement'].append("N/A")
     if region_found == 0:
