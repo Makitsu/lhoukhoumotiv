@@ -2,7 +2,7 @@ var departure;
 var arrival;
 $(document).on('change','#list_stations',function() {
     departure = $(this).val()
-    $("#arrivals").empty()
+    $("#list_arrival").empty()
     //provide map
     $.ajax({
         url: "/station/map",
@@ -29,38 +29,43 @@ $(document).on('change','#list_stations',function() {
         },
 
     });
+});
 
-    //calculate destination price
+
+$(document).on('change','#list_stations',function() {
+    departure = $(this).val()
+    $("#list_arrival").empty()
+    //provide map
     $.ajax({
-        url: "/station/info",
-        type: "POST",
+        url: "/station/map",
+        type: "post",
         data: {
             'start_station': departure
         },
         success: function(response) {
-
-            data = response;
-            $("#trip_table").empty()
-
-            for(var i = 0, size = data['arrival_code'].length; i < size ; i++){
-                    var tr = $("<tr id=\"r"+i.toString()+"\" >");
-                    tr.append($("<td width=\"25%\">").text(data['arrival_code'][i]));
-                    tr.append($("<td width=\"25%\">").text(data['price'][i]));
-                    tr.append($("<td width=\"25%\">").text(data['type'][i]));
-                    tr.append($("<td width=\"25%\">").text(data['category'][i]));
-                    $("#trip_table").append(tr);
-            }
-        },
-        error: function(output){
-            console.log('error');
+        $("#map_container").html(response);
         },
     });
+    //create destination list
+    $.ajax({
+        url: "/station/connection",
+        type: "POST",
+        data: {
+            "start_station": departure
+        },
+        success: function (response) {
+            var tr = $("#list_arrival");
+            for (var i in response){
+                tr.append($("<option value=\""+response[i]+"\">"+response[i]+"</option>"));
+            }
+        },
 
+    });
 });
 
-
 $(document).on('change','#list_arrival',function() {
-    arrival = $(this).val()
+    arrival = $('#list_arrival').children("option:selected").val();
+    alert(departure)
     alert(arrival)
     //generate map
     $.ajax({
@@ -74,22 +79,41 @@ $(document).on('change','#list_arrival',function() {
         $("#map_container").html(response);
         },
     });
+});
 
-    var table = document.getElementById("trip_table").rows;
-    console.log(arrival)
+$(document).on('change','#trip_date',function() {
+    date = $(this).val()
+    $("#list_arrival").empty()
+    //calculate destination price
+    if($(this).prop("checked") == true){
+        $.ajax({
+            url: "/station/info/price",
+            type: "POST",
+            data: {
+                'start_station': arrival,
+                'stop_station': departure,
+                'trip_date': date
+            },
+            success: function(response) {
 
-    for (var i = table.length-1; i >=0; i--) {
+                data = response;
+                $("#trip_table").empty()
 
-        var equals = table[i].cells[0].innerHTML.localeCompare(arrival)
-        console.log(equals)
-        if(equals != 0){
-           var nb = table[i].rowIndex;
-           console.log("#r"+i.toString());
-           $("#r"+i.toString()).remove();
-        }
-
+                for(var i = 0, size = data['arrival_code'].length; i < size ; i++){
+                        var tr = $("<tr id=\"r"+i.toString()+"\" >");
+                        tr.append($("<td width=\"25%\">").text(data['arrival_code'][i]));
+                        tr.append($("<td width=\"25%\">").text(data['price'][i]));
+                        tr.append($("<td width=\"25%\">").text(data['type'][i]));
+                        tr.append($("<td width=\"25%\">").text(data['category'][i]));
+                        $("#trip_table").append(tr);
+                }
+            },
+            error: function(output){
+                console.log('error');
+            },
+        });
     }
-    console.log(document.getElementById("trip_table"))
-;
-
+    else if($(this).prop("checked") == false){
+        alert("pricing api not activated");
+    }
 });

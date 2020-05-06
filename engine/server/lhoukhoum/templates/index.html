@@ -95,9 +95,9 @@
                             <div class="p-2"  >
                                  <!-- Research bar container -->
                                 <div class="form-row">
-                                    <div class="form-group col-md" >
+                                    <div class="form-group col-md-4 mb-2" >
                                         <label id="st" name="None">Departure</label>
-                                        <input type="text" class="form-control" id="list_stations" name="stations" list="stations" placeholder="Select...">
+                                        <input type="text" class="form-control" id="list_stations" name="stations" list="stations" placeholder="Select..." required>
                                         <datalist id="stations">
                                         {% for stat in stations %}
                                             <option value="{{ stat }}">{{ stat }}</option>
@@ -105,17 +105,21 @@
                                         </datalist>
                                         <script src="{{ url_for('static', filename='js/populate_station.js') }}"></script>
                                     </div>
-                                    <div class="form-group col-md" >
+                                    <div class="form-group col-md-4 mb-2" >
                                         <label id="arrival" name="None">Arrival</label>
-                                        <select multiple class="form-control  input-sm" id="list_arrival" name="arrivals">
+                                        <select multiple class="form-control  input-sm" id="list_arrival" name="arrivals" required>
                                         </select>
                                         <script src="{{ url_for('static', filename='js/populate_arrivals.js') }}"></script>
                                     </div>
-                                    <div class="form-group col-md" >
+                                    <div class="form-group col-md-4 mb-2" >
                                         <label>Date</label>
-                                        <input type="date" class="form-control" name="date">
+                                        <input type="date" id="trip_date" class="form-control" name="date" required>
                                     </div>
+                                    <div class="form-check col-md-4 mb-2">
+                                        <input type="checkbox" class="form-check-input" id="check_api">
+                                        <label class="form-check-label" for="check_api">api</label>
                                     </div>
+                                </div>
                                 <div class="row flex-fill d-flex justify-content-start" id="test2" >
 
                                     <div class="col-md-8" id = "map_container" style="min-height: 500px;" >
@@ -135,11 +139,6 @@
                                                 </thead>
                                             </table>
                                         </div>
-                                        <script>
-                                            $(document).ready(function () {
-                                              $('.table').slimScroll({});
-                                            });
-                                        </script>
                                         <div id="table_container" style="max-height: 400px; overflow-y: auto;">
                                             <table  id="content_table" class="table table-striped table-hover table-condensed" style="background-color:rgba(255, 255, 255, 0.5) !important;">
                                                 <tbody id="trip_table">

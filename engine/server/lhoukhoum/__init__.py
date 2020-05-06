@@ -11,6 +11,7 @@ from . import batch
 def create_app():
     app = Flask(__name__,static_folder= 'static')
     app.register_blueprint(routes.bp)
+    app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
     app.config.update(
         DEBUG=True,
         TEMPLATES_AUTO_RELOAD=True
