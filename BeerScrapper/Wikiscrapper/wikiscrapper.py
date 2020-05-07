@@ -57,7 +57,7 @@ for index, row in df.iterrows():
 
         #check existence of image directory
         dirname = os.path.dirname(__file__)
-        imagedirname = dirname + "/images"
+        imagedirname = dirname + "/images/wiki"
         test = os.path.exists(imagedirname)
         if not test:
             print("new image directory is created")
@@ -66,7 +66,7 @@ for index, row in df.iterrows():
         # retrieve image URL and format URL into urllib exigence ('http:')
         try:
             image_URL = "http:" + mytable.find('img', )["srcset"].split(" ")[0]
-            image_name = 'images/' + row['title'] + '.jpg'  # build the image file name
+            image_name = 'images/wiki/' + row['title'] + '.jpg'  # build the image file name
             request.urlretrieve(image_URL, image_name)  # save the image in local file
         except AttributeError:
             print(row['title'], "is so worthless it doesn't deserve an image on wiki")
