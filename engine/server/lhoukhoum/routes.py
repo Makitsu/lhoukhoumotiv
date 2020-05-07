@@ -70,7 +70,7 @@ def station_map_absolute():
         return map_from_list(current_uic,stops_uic)._repr_html_()
 
 @bp.route('/station/price', methods=('GET', 'POST'))
-def station_info():
+def station_price():
     if request.method == 'GET':
         return "not used as get request"
     elif request.method == 'POST':
