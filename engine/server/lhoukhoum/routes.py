@@ -118,3 +118,25 @@ def destination():
 
     # show the form, it wasn't submitted
     return render_template('destination.html')
+
+@bp.route('/station/info',methods=['GET', 'POST'])
+def station_info():
+    document_path = os.getcwd() + '\\lhoukhoum\\static\\db\\results_wikiscrapping.csv'
+    summary_info = pd.read_csv(document_path, sep=';', index_col=1)
+    info = summary_info.to_dict('index')
+    if request.method == 'POST':
+        station = request.form.get('city_name')
+        answer = {'city_name' : station,
+                  'region' : info[station]['region'],
+                  'departement' : info[station]['departement'],
+                  'population' : info[station]['population'],
+                  'densite' : info[station]['densite'],
+                  'gentile' : info[station]['gentile'],
+                  'altitude' : info[station]['altitude'],
+                  'superficie' : info[station]['superficie'],
+                  'city_img' : "url(/static/img/{}.jpg)".format(station)
+        }
+        print('city')
+        print(answer)
+        return answer
+

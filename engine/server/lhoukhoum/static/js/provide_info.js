@@ -2,19 +2,29 @@
 
 $(document).ready(function() {
     var city_name = 'Strasbourg';
-        $.ajax({
-            url: "/station/info",
-            type: "POST",
-            data: {
-                'city_name': city_name
+    alert(city_name)
+    $.ajax({
+        url: "/station/info",
+        type: "POST",
+        data: {
+            'city_name': city_name
+        },
+        success: function(response) {
+            data = response
+            alert('fonctionne')
+            $( "#city_welcome" ).append(data['city_name']);
+            $( "#city_region" ).append(data['region']);
+            $( "#city_departement" ).append(data['departement']);
+            $( "#city_population" ).append(data['population']);
+            $( "#city_densite" ).append(data['densite']);
+            $( "#city_gentile" ).append(data['gentile']);
+            $( "#city_altitude" ).append(data['altitude']);
+            $( "#city_superficie" ).append(data['superficie']);
+            $('#background').css({'background-image': data['city_img']});
             },
-            success: function(response) {
-                $( "#city_info" ).html(response);
-                $( "#city_name" ).append( "<p>Test</p>" );
-            },
-            error: function(output){
-                console.log('error');
-            },
-        });
+        error: function(output){
+            console.log('error');
+        },
     });
-})
+});
+
