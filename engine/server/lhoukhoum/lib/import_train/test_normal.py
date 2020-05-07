@@ -5,7 +5,7 @@ import requests
 from datetime import datetime as dt
 import queue    # For Python 2.x use 'import Queue as queue'
 import threading, time, random
-from engine.server.lhoukhoum.lib.import_train import Station
+from . import Station
 
 passengers = [{'id': '3c29a998-270e-416b-83f0-936b606638da', 'age': 39,
                'cards': [], 'label': '3c29a998-270e-416b-83f0-936b606638da'}]
@@ -112,7 +112,7 @@ def format_trainline_response(rep_json, segment_details=False, only_sellable=Tru
              'cents', 'train_name', 'train_number', 'travel_class_seg']].sort_values(by=['departure_date'])
 
 # function to get all trainline fares and trips
-def search_for_all_fares(date, origin_id, destination_id, passengers, segment_details,result_queue):
+def thread_fares(date, origin_id, destination_id, passengers, segment_details,result_queue):
     try:
         print("Thread", date)
         # Define headers (according to github/trainline)
@@ -160,6 +160,52 @@ def search_for_all_fares(date, origin_id, destination_id, passengers, segment_de
         print('no result')
         pass
 
+# function to get all trainline fares and trips
+def search_fares(date, origin_id, destination_id, passengers, segment_details):
+    try:
+        print("Search ", date)
+        # Define headers (according to github/trainline)
+
+        headers = {
+                    'Accept': 'application/json',
+                    'User-Agent': 'CaptainTrain/1574360965(web) (Ember 3.5.1)',
+                    'Accept-Language': 'fr',
+                    'Content-Type': 'application/json; charset=UTF-8',
+                    'Host': 'www.trainline.eu',
+                }
+
+        session = requests.session()
+        systems = ['sncf']
+
+
+        data = {'local_currency': 'EUR'
+                , 'search': {'passengers': passengers
+                             , 'arrival_station_id': destination_id,
+                             'departure_date': date,
+                             'departure_station_id': origin_id,
+                             'systems': systems
+                            }
+               }
+        post_data = json.dumps(data)
+
+        tmp = dt.now()
+        ret = session.post(url= "https://www.trainline.eu/api/v5_1/search",
+                                            headers=headers,
+                                            data=post_data)
+
+
+
+        print(f'API call duration {dt.now() - tmp}')
+
+        result_df = format_trainline_response(ret.json(), segment_details=segment_details)
+        #print(ret.json())
+        return result_df
+    except KeyError:
+        print('no result')
+        return pd.DataFrame.empty
+    except ValueError:
+        print('no result')
+        return pd.DataFrame.empty
 
 
 #short_response = search_for_all_fares('2020-05-15T09:00:00+0200', 4920, 828, passengers)
@@ -173,7 +219,7 @@ def main():
     segment_details = True
     start = dt.now()
     q = queue.Queue()
-    threads = [ threading.Thread(target=search_for_all_fares, args=(date,departure_station.code_tl,connection,passengers,segment_details,q)) for connection in departure_connections ]
+    threads = [ threading.Thread(target=thread_fares, args=(date,departure_station.code_tl,connection,passengers,segment_details,q)) for connection in departure_connections ]
     for th in threads:
         th.start()
         time.sleep(3)

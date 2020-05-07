@@ -240,13 +240,11 @@ width: 100%;
 display: inline-table;
 }
 
-table{
- height:400px;
-}
+
 
 tbody{
-  overflow:scroll;
-  height: 200px;
+  overflow-y: auto;
+  max-height: 500px;
   width: 100%;
   position: absolute;
 }

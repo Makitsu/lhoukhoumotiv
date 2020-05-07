@@ -87,6 +87,14 @@ class Station(object):
         idx = _STOP_NAME.index(self.name)
         return _STOP_CONNECTIONS_LIST[idx]
 
+    def _get_connection_name(self):
+        idx = _STOP_NAME.index(self.name)
+        res = []
+        for uic in _STOP_CONNECTIONS_LIST[idx]:
+            station = Station.from_uic(uic)
+            res.append(station.name)
+        return res
+
     def _get_connection_code(self):
         idx = _STOP_NAME.index(self.name)
         res = []

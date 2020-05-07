@@ -35,6 +35,7 @@ $(document).on('change','#list_stations',function() {
 $(document).on('change','#list_stations',function() {
     departure = $(this).val()
     $("#list_arrival").empty()
+    $('#map_container').fadeOut(200);
     //provide map
     $.ajax({
         url: "/station/map",
@@ -58,41 +59,54 @@ $(document).on('change','#list_stations',function() {
             for (var i in response){
                 tr.append($("<option value=\""+response[i]+"\">"+response[i]+"</option>"));
             }
+            $("#list_arrival").prop("disabled",false);
         },
 
     });
+    $("#map_container").fadeIn(200);
 });
 
 $(document).on('change','#list_arrival',function() {
-    arrival = $('#list_arrival').children("option:selected").val();
-    alert(departure)
-    alert(arrival)
+    arrival = $('#list_arrival').val();
+    arrival = arrival.join(',')
+    //
+    $('#map_container').fadeOut(200);
+
     //generate map
     $.ajax({
-        url: "/station/map/absolute",
+        url: "/station/map/selection",
         type: "post",
         data: {
             'start_station': departure,
-            'stop_station': arrival
+            'stop_station' : arrival
         },
         success: function(response) {
+        $("#trip_date").prop("disabled",false);
         $("#map_container").html(response);
         },
     });
+
+    $("#map_container").fadeIn(200);
 });
 
 $(document).on('change','#trip_date',function() {
-    date = $(this).val()
-    $("#list_arrival").empty()
+    var date = new Date($('#trip_date').val());
+    day = date.getDate();
+    month = ("0" + day).slice(-2);
+    month = date.getMonth() + 1;
+    day = ("0" + day).slice(-2);
+    year = date.getFullYear();
+    alert([year, month, day].join('-'));
+    let selected_date = [year, month, day].join('-')+'T05:00:00+0200'
     //calculate destination price
-    if($(this).prop("checked") == true){
+    if($('#check_api').prop("checked") == true){
         $.ajax({
-            url: "/station/info/price",
+            url: "/station/price",
             type: "POST",
             data: {
-                'start_station': arrival,
-                'stop_station': departure,
-                'trip_date': date
+                'start_station': departure,
+                'stop_station': arrival,
+                'trip_date': selected_date
             },
             success: function(response) {
 
@@ -113,7 +127,9 @@ $(document).on('change','#trip_date',function() {
             },
         });
     }
-    else if($(this).prop("checked") == false){
-        alert("pricing api not activated");
+    else if($('#check_api').prop("checked") == false){
+        alert("pricing api not activated,display map only...");
     }
 });
+
+
