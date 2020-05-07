@@ -7,17 +7,19 @@ import pandas as pd
 from shapely import geometry
 from .lib.import_train import Station
 from .lib.import_tool import get_map_html
-from .lib.map_tool.map_generator import map_from_list,map_from_departure
+from .lib.map_tool.map_generator import map_from_list, map_from_departure
 from .lib.import_train.test_normal import search_fares
 import os
 
-document_path = os.getcwd()+'\\lhoukhoum\\static\\connections.csv'
+document_path = os.getcwd() + '\\lhoukhoum\\static\\connections.csv'
 print(document_path)
 
 connections_df = pd.read_csv(document_path, sep=";")
 
+city = 'Not defined'
 
 bp = Blueprint('trip', __name__)
+
 
 @bp.route('/', methods=('GET', 'POST'))
 def homepage():
@@ -26,12 +28,23 @@ def homepage():
     elif request.method == 'POST':
         return redirect('/')
 
+
 @bp.route('/station', methods=('GET', 'POST'))
 def station():
     if request.method == 'GET':
         return "to be implemented"
     elif request.method == 'POST':
         return redirect('/')
+
+
+@bp.route('/station/destination/<city>', methods=('GET', 'POST'))
+def station_destination(city):
+    if request.method == 'GET':
+        return render_template('destination.html', city=city)
+    elif request.method == 'POST':
+        return redirect('/')
+
+
 
 @bp.route('/station/connection', methods=('GET', 'POST'))
 def station_connection():
@@ -42,6 +55,7 @@ def station_connection():
         current_station = Station().from_name(start_station)
         return jsonify(current_station._get_connection_name())
 
+
 @bp.route('/station/map', methods=('GET', 'POST'))
 def station_map():
     if request.method == 'GET':
@@ -50,6 +64,7 @@ def station_map():
         start_station = request.form.get('start_station')
         current_uic = Station().from_name(start_station).code_uic
         return map_from_departure(current_uic)._repr_html_()
+
 
 @bp.route('/station/map/selection', methods=('GET', 'POST'))
 def station_map_absolute():
@@ -67,7 +82,8 @@ def station_map_absolute():
         for station in stop_station:
             stops_uic.append(Station().from_name(station).code_uic)
 
-        return map_from_list(current_uic,stops_uic)._repr_html_()
+        return map_from_list(current_uic, stops_uic)._repr_html_()
+
 
 @bp.route('/station/price', methods=('GET', 'POST'))
 def station_price():
@@ -82,8 +98,8 @@ def station_price():
         stop_tl = Station().from_name(stop_station).code_tl
         passengers = [{'id': '3c29a998-270e-416b-83f0-936b606638da', 'age': 39,
                        'cards': [], 'label': '3c29a998-270e-416b-83f0-936b606638da'}]
-        print('current code is ',start_tl)
-        price_df = search_fares(select_date,start_tl,stop_tl,passengers,True)
+        print('current code is ', start_tl)
+        price_df = search_fares(select_date, start_tl, stop_tl, passengers, True)
         print(price_df)
         answer = {
             'arrival_code': price_df['name_arrival'].tolist(),
@@ -100,6 +116,7 @@ def trip():
         return render_template('index.html', stations=Station()._get_stations_name())
     elif request.method == 'POST':
         return redirect('/')
+
 
 @bp.route('/trip/map', methods=('GET', 'POST'))
 def trip_map():

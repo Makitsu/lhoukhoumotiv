@@ -240,6 +240,11 @@ width: 100%;
 display: inline-table;
 }
 
+tr:hover{
+background-color:gray;
+cursor:pointer;
+}
+
 
 
 tbody{
