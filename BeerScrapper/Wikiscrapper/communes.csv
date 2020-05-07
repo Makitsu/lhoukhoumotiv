@@ -1,0 +1,273 @@
+;Commune;DEpartement
+2;13055;Marseille
+3;69123;Lyon
+4;31555;Toulouse
+5;06088;Nice
+6;44109;Nantes
+7;34172;Montpellier
+8;67482;Strasbourg
+9;33063;Bordeaux
+10;59350;Lille
+11;35238;Rennes
+12;51454;Reims
+13;42218;Saint Etienne
+14;83137;Toulon
+15;76351;Le Havre
+16;38185;Grenoble
+17;21231;Dijon
+18;49007;Angers
+19;30189;Nimes
+20;97411;Saint Denis
+21;69266;Villeurbanne
+22;63113;Clermont Ferrand
+23;72181;Le Mans
+24;13001;Aix en Provence
+25;29019;Brest
+26;37261;Tours
+27;80021;Amiens
+28;87085;Limoges
+29;74010;Annecy
+30;66136;Perpignan
+31;92012;Boulogne Billancourt
+32;45234;OrlEans
+33;57463;Metz
+34;25056;Besancon
+35;93066;Saint Denis
+36;95018;Argenteuil
+37;76540;Rouen
+38;93048;Montreuil
+39;68224;Mulhouse
+40;14118;Caen
+41;97415;Saint Paul
+42;54395;Nancy
+43;59599;Tourcoing
+44;59512;Roubaix
+45;92050;Nanterre
+46;94081;Vitry sur Seine
+47;84007;Avignon
+48;94028;CrEteil
+49;86194;Poitiers
+50;59183;Dunkerque
+51;93001;Aubervilliers
+52;78646;Versailles
+53;93005;Aulnay sous Bois
+54;92004;Asnieres sur Seine
+55;92025;Colombes
+56;97416;Saint Pierre
+57;92026;Courbevoie
+58;97209;FORT DE FRANCE (MARTINIQUE)
+59;50129;Cherbourg en Cotentin
+60;97422;Le Tampon
+61;92063;Rueil Malmaison
+62;94017;Champigny sur Marne
+63;34032;BEziers
+64;64445;Pau
+65;17300;La Rochelle
+66;94068;Saint Maur des FossEs
+67;62193;Calais
+68;6029;Cannes
+69;6004;Antibes
+70;97611;Mamoudzou
+71;93029;Drancy
+72;2A004;Ajaccio
+73;33281;MErignac
+74;44184;Saint Nazaire
+75;68066;Colmar
+76;92040;Issy les Moulineaux
+77;93051;Noisy le Grand
+78;91228;Evry Courcouronnes
+79;69259;VEnissieux
+80;95127;Cergy
+81;18033;Bourges
+82;92044;Levallois Perret
+83;83126;La Seyne sur Mer
+84;33318;Pessac
+85;26362;Valence
+86;59009;Villeneuve d Ascq
+87;29232;Quimper
+88;92002;Antony
+89;94041;Ivry sur Seine
+90;10387;Troyes
+91;97302;Cayenne
+92;92024;Clichy
+93;82121;Montauban
+94;92051;Neuilly sur Seine
+95;73065;ChambEry
+96;79191;Niort
+97;95585;Sarcelles
+98;93055;Pantin
+99;56121;Lorient
+100;93007;Le Blanc Mesnil
+101;97409;Saint AndrE
+102;60057;Beauvais
+103;94046;Maisons Alfort
+104;83069;Hyeres
+105;93031;Epinay sur Seine
+106;77284;Meaux
+107;77108;Chelles
+108;94076;Villejuif
+109;11262;Narbonne
+110;85191;La Roche sur Yon
+111;49099;Cholet
+112;2691;Saint Quentin
+113;93008;Bobigny
+114;97101;Les Abymes
+115;97414;Saint Louis
+116;93010;Bondy
+117;56260;Vannes
+118;92023;Clamart
+119;94033;Fontenay sous Bois
+120;83061;FrEjus
+121;13004;Arles
+122;78586;Sartrouville
+123;91174;Corbeil Essonnes
+124;64102;Bayonne
+125;93070;Saint Ouen sur Seine
+126;93071;Sevran
+127;6027;Cagnes sur Mer
+128;91377;Massy
+129;6069;Grasse
+130;92049;Montrouge
+131;94080;Vincennes
+132;53130;Laval
+133;69256;Vaulx en Velin
+134;81004;Albi
+135;92073;Suresnes
+136;13056;Martigues
+137;27229;Evreux
+138;90010;Belfort
+139;19031;Brive la Gaillarde
+140;92036;Gennevilliers
+141;8105;Charleville MEzieres
+142;44162;Saint Herblain
+143;13005;Aubagne
+144;69290;Saint Priest
+145;93064;Rosny sous Bois
+146;35288;Saint Malo
+147;41018;Blois
+148;11069;Carcassonne
+149;2B033;Bastia
+150;13103;Salon de Provence
+151;92048;Meudon
+152;94022;Choisy le Roi
+153;71076;Chalon sur Saône
+154;51108;Chalons en Champagne
+155;78551;Saint Germain en Laye
+156;92062;Puteaux
+157;93046;Livry Gargan
+158;22278;Saint Brieuc
+159;78361;Mantes la Jolie
+160;93053;Noisy le Sec
+161;85194;Les Sables d Olonne
+162;94002;Alfortville
+163;36044;Chateauroux
+164;59606;Valenciennes
+165;34301;Sete
+166;69034;Caluire et Cuire
+167;13047;Istres
+168;93027;La Courneuve
+169;95268;Garges les Gonesse
+170;97311;Saint Laurent du Maroni
+171;33522;Talence
+172;16015;Angoulême
+173;81065;Castres
+174;69029;Bron
+175;1053;Bourg en Bresse
+176;65440;Tarbes
+177;6030;Le Cannet
+178;44143;RezE
+179;62041;Arras
+180;59650;Wattrelos
+181;92007;Bagneux
+182;5061;Gap
+183;62160;Boulogne sur Mer
+184;57672;Thionville
+185;30007;Ales
+186;60159;Compiegne
+187;77288;Melun
+188;97213;Le Lamentin
+189;59178;Douai
+190;93032;Gagny
+191;83050;Draguignan
+192;26198;MontElimar
+193;31149;Colomiers
+194;64024;Anglet
+195;93072;Stains
+196;59378;Marcq en Barœul
+197;28085;Chartres
+198;38421;Saint Martin d Heres
+199;37122;JouE les Tours
+200;97410;Saint Benoit
+201;77373;Pontault Combault
+202;97412;Saint Joseph
+203;78498;Poissy
+204;92020;Chatillon
+205;69264;Villefranche sur Saône
+206;38151;Echirolles
+207;93078;Villepinte
+208;95252;Franconville
+209;91589;Savigny sur Orge
+210;91549;Sainte Genevieve des Bois
+211;93073;Tremblay en France
+212;78172;Conflans Sainte Honorine
+213;74012;Annemasse
+214;93006;Bagnolet
+215;60175;Creil
+216;3185;Montlucon
+217;91477;Palaiseau
+218;97801;Saint Martin
+219;13028;La Ciotat
+220;83118;Saint Raphaël
+221;93050;Neuilly sur Marne
+222;42207;Saint Chamond
+223;74281;Thonon les Bains
+224;89024;Auxerre
+225;67180;Haguenau
+226;42187;Roanne
+227;91027;Athis Mons
+228;97407;Le Port
+229;33550;Villenave d Ornon
+230;94058;Le Perreux sur Marne
+231;97418;Sainte Marie
+232;71270;Macon
+233;47001;Agen
+234;97413;Saint Leu
+235;94078;Villeneuve Saint Georges
+236;69282;Meyzieu
+237;13117;Vitrolles
+238;92019;Chatenay Malabry
+239;26281;Romans sur Isere
+240;97408;La Possession
+241;58194;Nevers
+242;78423;Montigny le Bretonneux
+243;13054;Marignane
+244;94052;Nogent sur Marne
+245;83129;Six Fours les Plages
+246;78440;Les Mureaux
+247;78621;Trappes
+248;59122;Cambrai
+249;97610;Koungou
+250;78311;Houilles
+251;97307;Matoury
+252;67447;Schiltigheim
+253;86066;Chatellerault
+254;88160;Epinal
+255;91657;Vigneux sur Seine
+256;78490;Plaisir
+257;62498;Lens
+258;94038;L Hay les Roses
+259;78158;Le Chesnay Rocquencour
+260;33449;Saint MEdard en Jalles
+261;91687;Viry Chatillon
+262;94016;Cachan
+263;28134;Dreux
+264;97103;Baie Mahault
+265;62510;LiEvin
+266;95500;Pontoise
+267;92046;Malakoff
+268;95280;Goussainville
+269;94018;Charenton le Pont
+270;93059;Pierrefitte sur Seine
+271;78146;Chatou
+272;69286;Rillieux la Pape
+273;54547;Vandoeuvre les Nancy
