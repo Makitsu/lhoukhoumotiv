@@ -12,15 +12,12 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
         <!-- CSS file-->
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/loading_animation.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/animation.css') }}">
 
         <!-- JavaScript file extern -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
         <!-- JavaScript file intern -->
-        <script type="text/javascript" src="{{ url_for('static', filename='js/loadingoverlay.min.js') }}"></script>
 
 <!--        &lt;!&ndash; Bootstrap multiselect: &ndash;&gt;-->
 <!--        <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap-multiselect.js') }}"></script>-->
@@ -54,7 +51,7 @@
             }
         </style>
 
-        <nav class="navbar sticky-top navbar-expand-lg navbar-light navbar-fixed-top" style="background-color:rgba(255, 255, 255, 0.7)">
+        <nav class="navbar sticky-top navbar-expand-lg navbar-light navbar-fixed-top" style="background-color:rgba(255, 255, 255, 1.0)">
             <div class="container">
                 <a class="navbar-brand" href="#">
                     <img class="d-inline-block align-top" src="{{ url_for('static', filename='img/porco_transparent.gif') }}" width="75" height="75" alt="">
@@ -96,14 +93,6 @@
                                 <!-- Research bar container -->
                                 <form class="needs-validation" novalidate>
                                     <div class="form-inline">
-                                        <!-- api select button -->
-                                        <div class="custom-control custom-switch mb-2 mr-sm-2">
-                                            <label class="custom-control-label mr-sm-2" for="check_api">API</label>
-                                            <input type="checkbox" class="custom-control-input" id="check_api">
-                                            <div class="invalid-feedback">
-                                                You must activate API.
-                                            </div>
-                                        </div>
                                         <!-- departure selection -->
                                         <label for="list_stations" id="st" class="mr-sm-2">Departure </label>
                                         <input type="text" class="form-control mb-2 mr-sm-2" id="list_stations" name="stations" list="stations" placeholder="Departure" required>
@@ -125,7 +114,10 @@
                                         <!-- date selection -->
                                         <label for="trip_date" class="mr-sm-2">Date </label>
                                         <input type="date" id="trip_date" class="form-control mb-2 mr-sm-2" name="date" required disabled>
-                                        <button type="submit" class="btn btn-primary mb-2 mr-sm-2">Submit</button>
+                                        <a href="#">
+                                            <img class="d-inline-block align-top" src="{{ url_for('static', filename='img/miya_launch.png') }}" width="125" height="125" alt="">
+                                        </a>
+
                                     </div>
                                 </form>
 
@@ -210,8 +202,6 @@
                 <a href="https://github.com/Makitsu/lhoukhoumotiv">Lhokhomotiv</a>
             </div>
         </footer>
-
-
 
         <script type="text/javascript" src="{{ url_for('static', filename='js/jquery/jquery-latest.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/jquery/jquery-ui.js') }}"></script>
