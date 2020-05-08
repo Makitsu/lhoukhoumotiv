@@ -40,7 +40,7 @@
             }
         </style>
 
-        <nav class="navbar sticky-top navbar-expand-lg navbar-light navbar-fixed-top" style="background-color:rgba(255, 255, 255, 0.7)">
+        <nav class="navbar sticky-top navbar-expand-lg navbar-light navbar-fixed-top" style="background-color:rgba(255, 255, 255, 0.7); min-height:10vh">
             <div class="container">
                 <a class="navbar-brand" href="#">
                     <img class="d-inline-block align-top" src="{{ url_for('static', filename='img/porco_transparent.gif') }}" width="75" height="75" alt="">
@@ -71,22 +71,36 @@
                 </div>
             </div>
         </nav>
-        <div class="background" id="background" style="no-repeat center center fixed; min-height: 100vh; background-position: center; background-size: cover">
-                    <div class="container h-100" style="height: 100vh">
+        <div class="background">
+                    <div class="container-flex" id="background" style="no-repeat center center fixed; min-height: 90vh; background-position: center; background-size: cover">
                         <div class="row">
-                            <div class=".col-12 .col-md-8">
+                            <div class="col-5">
                                 <h1 class="text-center text-uppercase text-white font-weight-bold" id="city_welcome">Bienvenue à </h1></div>
-                            <div class="col-6 col-md-4 ml-auto">
+                            <div class="col-6 col-md-4">
                                 <h2 class="text-center text-white font-weight-normal"></h2></div>
                         </div>
                         <div class="row">
-                            <div class="col-8"></div>
-                            <div class="alert alert-info  col-4 ml-auto text-black">
+                            <div class="mx-auto col-sm-3 text-center col-sm-offset-1">
+                                <p></p>
+                                <p></p>
+                                <a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">Que boire ?</a>
+                                <p></p>
+                                <p></p>
+                                <a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">Que faire ?</a>
+                                <p></p>
+                                <p></p>
+                                <a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">Que voir ?</a>
+                                <p></p>
+                                <p></p>
+                            </div>
+                            <div class="mx-auto col-sm-4 text-center>
+                            <div class="card" style="background-color: rgba(255, 255, 255, 0.6)">
                                 <p><strong>Population : </strong><label id="city_population"></label> habitants</p>
                                 <p><strong>Département : </strong><label id="city_departement"></label></p>
                                 <p><strong>Gentillé : </strong><label id="city_gentile"></label></p>
                                 <p><strong>Superficie : </strong><label id="city_superficie"></label></p>
                                 <p><strong>Altitude : </strong><label id="city_altitude"></label></p>
+                            </div>
                             </div>
                         </div>
                         <div class="row">
@@ -95,11 +109,13 @@
                             <a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">En savoir plus</a>
                         </div>
                     </div>
+
                     </header>
-                    <section class="container" id="about">
+                    <section class="container-flex"  style="background: url(/static/img/bar.jpg) no-repeat center center fixed; min-height : 100vh; background-position: center; background-size: cover;">
                         <div class="container">
-                            <div class="row justify-content-center">
-                                <div class="col-lg-8 text-center">
+                            <div class="row"><div class="col-12"></div></div>
+                            <div class="row justify-content-center" >
+                                <div class="col-lg-8 text-center" id="about">
                                     <h2 class="text-white mt-0">We've got what you need!</h2>
                                     <hr class="divider light my-4" />
                                     <p class="text-white-50 mb-4">Start Bootstrap has everything you need to get your new website up and running in no time! Choose one of our open source, free to download, and easy to use themes! No strings attached!</p>
