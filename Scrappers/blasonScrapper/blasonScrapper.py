@@ -30,7 +30,7 @@ indexURL = "https://armorialdefrance.fr/liste_alpha.php?initiale="
 Errors = []
 
 #Load most populated France communes
-file = pd.read_csv('communes.csv', sep =";",encoding='windows-1252')
+file = pd.read_csv('communes.csv', sep =";", encoding='windows-1252')
 
 #Loop on list of communes
 for i, j in file.iterrows():
