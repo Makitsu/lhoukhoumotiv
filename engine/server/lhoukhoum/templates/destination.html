@@ -24,7 +24,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet" />
         <!-- Title -->
-        <title>LhoKhoMotiv</title>
+        <title>LhoKho</title>
         <link rel="icon" href="{{ url_for('static', filename='img/porco_logo.png') }}" type="image/png">
         <script>
         </script>
@@ -59,10 +59,7 @@
                           flex-wrap: nowrap;
                         </style>
                         <li class="nav-item active">
-                            <a class="nav-item nav-link" href="#">Accueil</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-item nav-link" href="{{ url_for('trip.destination') }}">Destinations</a>
+                            <a class="nav-item nav-link" href="{{ url_for('trip') }}">Accueil</a>
                         </li>
                         <li class="nav-items">
                             <a class="nav-item nav-link" href="#">Contact</a>

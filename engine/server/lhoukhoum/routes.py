@@ -100,13 +100,20 @@ def station_price():
                        'cards': [], 'label': '3c29a998-270e-416b-83f0-936b606638da'}]
         print('current code is ', start_tl)
         price_df = search_fares(select_date, start_tl, stop_tl, passengers, True)
-        print(price_df)
+        price_df['cents'] = price_df['cents'] / 100
+        price_df.sort_values(by=['cents'], inplace=True, ascending=True)
+        cities = []
+        for station in price_df['name_arrival'].tolist():
+            cities.append(Station().from_name(stop_station).city)
+
         answer = {
-            'arrival_code': price_df['name_arrival'].tolist(),
+            'city': cities,
+            'time': price_df['departure_date'].tolist(),
             'price': price_df['cents'].tolist(),
             'type': price_df['train_name'].to_list(),
             'category': price_df['travel_class_seg'].tolist()
         }
+
         return jsonify(answer)
 
 

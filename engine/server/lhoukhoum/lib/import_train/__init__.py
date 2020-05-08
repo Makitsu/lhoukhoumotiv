@@ -48,7 +48,7 @@ class Trip(Leg):
             self.type = type
 
 class Station(object):
-    def __init__(self,name=None,code_uic=None,code_fr=None,code_tl=None):
+    def __init__(self,name=None,code_uic=None,code_fr=None,code_tl=None,city=None):
         idx = 0
         if name is not None:
             self.name = name
@@ -62,6 +62,9 @@ class Station(object):
         if code_tl is not None:
             self.code_tl = code_tl
             idx = _STOP_TL.index(code_tl)
+        if city is not None:
+            self.city = city
+            idx = _STOP_CITY.index(city)
         #retrieve position
         pos = _STOP_POS[idx]
         self.lon = pos[0]
@@ -70,22 +73,22 @@ class Station(object):
     @classmethod
     def from_uic(cls, code_uic):
         idx = _STOP_UIC.index(code_uic)
-        return cls(_STOP_NAME[idx],code_uic,_STOP_CODE[idx],_STOP_TL[idx])
+        return cls(_STOP_NAME[idx],code_uic,_STOP_CODE[idx],_STOP_TL[idx],_STOP_CITY[idx])
 
     @classmethod
     def from_code(cls,code_fr):
         idx = _STOP_CODE.index(code_fr)
-        return cls(_STOP_NAME[idx],_STOP_UIC[idx],code_fr,_STOP_TL[idx])
+        return cls(_STOP_NAME[idx],_STOP_UIC[idx],code_fr,_STOP_TL[idx],_STOP_CITY[idx])
 
     @classmethod
     def from_tl(cls,code_tl):
         idx = _STOP_TL.index(code_tl)
-        return cls(_STOP_NAME[idx],_STOP_UIC[idx],_STOP_CODE[idx],code_tl)
+        return cls(_STOP_NAME[idx],_STOP_UIC[idx],_STOP_CODE[idx],code_tl,_STOP_CITY[idx])
 
     @classmethod
     def from_name(cls,name):
         idx = _STOP_NAME.index(name)
-        return cls(name,_STOP_UIC[idx],_STOP_CODE[idx],_STOP_TL[idx])
+        return cls(name,_STOP_UIC[idx],_STOP_CODE[idx],_STOP_TL[idx],_STOP_CITY[idx])
 
     def _get_connection_uic(self):
         idx = _STOP_NAME.index(self.name)
@@ -118,7 +121,7 @@ class Station(object):
     def _get_stations_name(self):
         return _STOP_NAME
 
-    def _get_city(self):
+    def _populate_city(self):
         idx = _STOP_NAME.index(self.name)
         pos = _STOP_POS[idx]
         pos = str(pos[1]) + ", " + str(pos[0])
@@ -141,7 +144,7 @@ class Station(object):
 # for i in _STOP_UIC:
 #     station = Station.from_uic(i)
 #     try:
-#         _STOP_CITY.append(station._get_city())
+#         _STOP_CITY.append(station._populate_city())
 #         error_list.append('')
 #     except:
 #         _STOP_CITY.append("")
