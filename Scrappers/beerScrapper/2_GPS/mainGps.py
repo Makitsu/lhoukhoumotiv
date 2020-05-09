@@ -1,6 +1,6 @@
 """
     Takes bars address and converts them into GPS coordinates
-    Saves 2 files : latitude_data and longitude_data
+    Saves 3 files : latitude_data and longitude_data
 """
 
 from geopy import Nominatim

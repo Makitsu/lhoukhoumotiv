@@ -7,10 +7,9 @@
 """
 import pandas as pd
 
-dataProc = True #True if need to extract and reaarang beer data (is is saved at the end)
+dataProc = False #True if need to extract and reaarang beer data (is is saved at the end)
 
-if dataProc is False:
-
+if dataProc is True:
     #Initiate new data structure
     i = 0
     beer_list = []
@@ -74,12 +73,18 @@ result = pd.concat([df4, df5, df6, df7], axis=1, sort=False)  #Build new data wi
 column_names = list(result.columns)
 
 
-#Rearranging dataframe and save
+#Rearranging dataframe
 final_order = column_names[:2] + [column_names[-3], column_names[-1]] + column_names[2:-4]
 result=result[final_order]
-result.to_csv('result.csv')
-result.to_excel('result.xlsx')
 
+#Take out TBD data
+result_no_TBD = result[result['latitude'] != 'TBD']
+
+
+#Saving
+result.to_csv('result.csv')
+#result.to_excel('result.xlsx')
+result_no_TBD.to_csv('result_no_TBD.csv')
 
 
 
