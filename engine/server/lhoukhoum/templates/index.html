@@ -17,41 +17,22 @@
         <!-- JavaScript file extern -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-        <!-- JavaScript file intern -->
-
-<!--        &lt;!&ndash; Bootstrap multiselect: &ndash;&gt;-->
-<!--        <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap-multiselect.js') }}"></script>-->
-<!--        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-multiselect.css') }}" type="text/css"/>-->
+         <!-- JavaScript file intern -->
 
         <!-- Title -->
         <title>Lhokho</title>
         <link rel="icon" href="{{ url_for('static', filename='img/porco_logo.png') }}" type="image/png">
 
-<!--    <script>-->
-<!--       $(document).ajaxStart(function(){-->
-<!--            jQuery.ajaxPrefilter(function( options ) {-->
-<!--                    options.global = true;-->
-<!--                });-->
-<!--            $.LoadingOverlay("show");-->
-<!--        });-->
-<!--        $(document).ajaxStop(function(){-->
-<!--            jQuery.ajaxPrefilter(function( options ) {-->
-<!--                    options.global = true;-->
-<!--                });-->
-<!--            $.LoadingOverlay("hide");-->
-<!--        });-->
-<!--        </script>-->
-
     </head>
 
-    <body class="main" style="background: url(/static/img/train_station.jpg) no-repeat center center fixed; min-height: 100vh; background-position: center; background-size: cover;" onload="generateHtmlLogin()">
+    <body class="main" style="background: url(/static/img/train_station.jpg) no-repeat center center fixed; min-height: 100vh; background-position: center; background-size: cover;">
         <style>
             .flex-fill {
                 flex:1;
             }
         </style>
 
-        <nav class="navbar sticky-top navbar-expand-lg navbar-light navbar-fixed-top" style="background-color:rgba(255, 255, 255, 1.0)">
+        <nav class="navbar sticky-top navbar-expand-lg navbar-light navbar-fixed-top" style="background-color:rgba(255, 255, 255, 0.7)">
             <div class="container">
                 <a class="navbar-brand" href="#">
                     <img class="d-inline-block align-top" src="{{ url_for('static', filename='img/porco_transparent.gif') }}" width="75" height="75" alt="">
@@ -69,15 +50,39 @@
                           justify-content: space-around;
                           flex-wrap: nowrap;
                         </style>
-                        <li class="nav-item active">
-                            <a class="nav-item nav-link" href="#">Accueil</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-item nav-link" href="{{ url_for('trip.destination') }}">Destinations</a>
-                        </li>
-                        <li class="nav-items">
-                            <a class="nav-item nav-link" href="#">Contact</a>
-                        </li>
+                        <div class="login-container">
+                            <div class="form-inline">
+                                <label id="infos" class="mr-sm-2"></label>
+
+                                <input type="text" class="form-control mb-2 mr-sm-2" placeholder="Username" name="username" id="user">
+                                <input type="text" class="form-control mb-2 mr-sm-2" placeholder="Password" name="password" id="password">
+                                <button id="signin" class="btn btn-primary mb-2 mr-sm-2">Sign in</button>
+                                <button id="signup" class="btn btn-primary mb-2 mr-sm-2">Sign up</button>
+                                <button id="logout"class="btn btn-primary mb-2 mr-sm-2">log out</button>
+                            </div>
+                            <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+                        </div>
+
+                        <!-- Modal -->
+                        <div class="modal" id="myModal" role="dialog" data-backdrop="false">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Vos informations...</h4>
+                                    </div>
+                                    <div class="modal-body" id="user_msg">
+                                        
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" id="close" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                    <script>$(document).on('click','#close',function(){$('.modal').hide();});</script>
+                                </div>
+
+                            </div>
+                        </div>
                     </ul>
                 </div>
             </div>
@@ -107,17 +112,18 @@
                                         </div>
                                         <!-- arrival selection -->
                                         <label for="list_arrival" class="mr-sm-2">Arrival </label>
-                                        <select multiple class="form-control mb-2 mr-sm-2 " id="list_arrival" name="arrivals" size="3" required disabled>
+                                        <select multiple class="form-control mb-2 mr-sm-2 " id="list_arrival" name="arrivals" size="3" required>
                                             <option value="select">Arrival </option>
                                         </select>
                                         <script src="{{ url_for('static', filename='js/populate_arrivals.js') }}"></script>
                                         <!-- date selection -->
                                         <label for="trip_date" class="mr-sm-2">Date </label>
-                                        <input type="date" id="trip_date" class="form-control mb-2 mr-sm-2" name="date" required disabled>
-                                        <a href="#">
-                                            <img class="d-inline-block align-top" src="{{ url_for('static', filename='img/miya_launch.png') }}" width="125" height="125" alt="">
-                                        </a>
-
+                                        <input type="date" id="trip_date" class="form-control mb-2 mr-sm-2" name="date" required>
+                                        <!-- api button -->
+                                        <button class ="btn" style="background-color:transparent" id="api_call" >
+                                                <img src="{{ url_for('static', filename='img/miya_launch.png') }}" width="150" height="150" alt=""/>
+                                        </button>
+                                        <script src="{{ url_for('static', filename='js/api_call.js') }}"></script>
                                     </div>
                                 </form>
 
@@ -191,7 +197,7 @@
                         <hr class="light">
                         <ul class="list-unstyled">
                             <li>
-                                <a href="dicoloco_index.html#dicoTeam">Lhokhomotiv</a>
+                                <a href="dicoloco_index.html#dicoTeam">Lhokho</a>
                             </li>
                         </ul>
                     </div>
@@ -203,6 +209,9 @@
             </div>
         </footer>
 
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/jquery/jquery-latest.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/jquery/jquery-ui.js') }}"></script>
         <script type=text/javascript src="{{url_for('static', filename='js/jquery/jquery-3.5.0.js') }}"></script>

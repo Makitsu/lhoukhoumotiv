@@ -245,8 +245,6 @@ background-color:gray;
 cursor:pointer;
 }
 
-
-
 tbody{
   overflow-y: auto;
   max-height: 500px;
