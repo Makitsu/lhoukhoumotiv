@@ -2,7 +2,7 @@ from datetime import date
 
 import folium
 import geocoder
-from flask import Blueprint, render_template, request, redirect, url_for, jsonify, app
+from flask import Blueprint, render_template, request, redirect, url_for, jsonify, session
 import pandas as pd
 from shapely import geometry
 from .lib.import_train import Station
@@ -29,6 +29,60 @@ def homepage():
         return redirect('/')
 
 
+@bp.route("/login", methods=["POST", "GET"])
+def login():
+    if request.method == "POST":
+        session.permanent = True
+        user = request.form.get('user')
+        password = request.form.get('password')
+        print('attempt connection user: ',user)
+        if user in session["user"]:
+            if password in session["password"]:
+                idx = session['password'].index(password)
+                return jsonify(session['details'])
+            else:
+                return 'wrong password'
+        else:
+            return 'user not registered'
+
+    else:
+        return redirect('/')
+
+
+@bp.route('/session')
+def updating_session():
+    session['user'] = ['maxime']
+    session['password'] = ['maxtoo']
+    session['details']=[]
+    user_details = {'nom': 'maxime',
+                    'prenom': 'lhoumeau',
+                    'age': '25',
+                    'user-id': '311900723',
+                    'cards': ['TGV MAX'],
+                    'cards-id': ['13653993'],
+                    'token': 'MA6GdheENfAnQjoHGyC3'
+                    }
+    session['details'].append(user_details)
+    res = str(session.items())
+    return res
+
+
+@bp.route("/signup", methods=["POST", "GET"])
+def signup():
+    if request.method == "POST":
+        user = request.form.get('user')
+        password = request.form.get('password')
+        print('attempt register user: ', user)
+        if user not in session["user"]:
+            session['user'].append(user)
+            session['password'].append(password)
+        else:
+            return 'user already registered'
+
+    else:
+        return redirect('/')
+
+
 @bp.route('/station', methods=('GET', 'POST'))
 def station():
     if request.method == 'GET':
@@ -43,7 +97,6 @@ def station_destination(city):
         return render_template('destination.html', city=city)
     elif request.method == 'POST':
         return redirect('/')
-
 
 
 @bp.route('/station/connection', methods=('GET', 'POST'))
@@ -143,24 +196,24 @@ def destination():
     # show the form, it wasn't submitted
     return render_template('destination.html')
 
-@bp.route('/station/info',methods=['GET', 'POST'])
+
+@bp.route('/station/info', methods=['GET', 'POST'])
 def station_info():
     document_path = os.getcwd() + '\\lhoukhoum\\static\\db\\results_wikiscrapping.csv'
     summary_info = pd.read_csv(document_path, sep=';', index_col=1)
     info = summary_info.to_dict('index')
     if request.method == 'POST':
         station = request.form.get('city_name')
-        answer = {'city_name' : station,
-                  'region' : info[station]['region'],
-                  'departement' : info[station]['departement'],
-                  'population' : info[station]['population'],
-                  'densite' : info[station]['densite'],
-                  'gentile' : info[station]['gentile'],
-                  'altitude' : info[station]['altitude'],
-                  'superficie' : info[station]['superficie'],
-                  'city_img' : "url(/static/img/{}.jpg)".format(station)
-        }
+        answer = {'city_name': station,
+                  'region': info[station]['region'],
+                  'departement': info[station]['departement'],
+                  'population': info[station]['population'],
+                  'densite': info[station]['densite'],
+                  'gentile': info[station]['gentile'],
+                  'altitude': info[station]['altitude'],
+                  'superficie': info[station]['superficie'],
+                  'city_img': "url(/static/img/{}.jpg)".format(station)
+                  }
         print('city')
         print(answer)
         return answer
-
