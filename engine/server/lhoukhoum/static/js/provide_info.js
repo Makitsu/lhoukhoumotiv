@@ -2,7 +2,7 @@
 
 $(document).ready(function() {
     var city_name = 'Strasbourg';
-    alert(city_name)
+    //alert(city_name)
     $.ajax({
         url: "/station/info",
         type: "POST",
@@ -11,7 +11,7 @@ $(document).ready(function() {
         },
         success: function(response) {
             data = response
-            alert('fonctionne')
+            //alert('fonctionne')
             $( "#city_welcome" ).append(data['city_name']);
             $( "#city_region" ).append(data['region']);
             $( "#city_departement" ).append(data['departement']);
