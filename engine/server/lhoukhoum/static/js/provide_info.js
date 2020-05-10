@@ -1,8 +1,9 @@
 //<script src="{{ url_for('static', filename='js/provide_info.js') }}"></script>
 
 $(document).ready(function() {
-    var city_name = 'Strasbourg';
-    //alert(city_name)
+    var city_name = window.location.search.substr(1).split("=")[1];
+    console.log(city_name);
+
     $.ajax({
         url: "/station/info",
         type: "POST",

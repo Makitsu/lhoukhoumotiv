@@ -102,7 +102,12 @@ $(document).on('change','#list_arrival',function() {
 
 $(document).on('click','#trip_table tr', function() {
     var city = $("td").first().text();
+    arrival = $('#list_arrival').val();
+    alert(arrival)
+    window.open(
+      'destination/'+arrival,
+      '_blank' // <- This is what makes it open in a new window.
+    );
 
-    window.location.href='station/destination/'+city.toLowerCase();
 });
 

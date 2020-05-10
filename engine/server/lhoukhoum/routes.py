@@ -91,12 +91,15 @@ def station():
         return redirect('/')
 
 
-@bp.route('/station/destination/<city>', methods=('GET', 'POST'))
+@bp.route('/destination/<city>', methods=('GET', 'POST'))
 def station_destination(city):
     if request.method == 'GET':
-        return render_template('destination.html', city=city)
+        destination = Station().from_name(city.capitalize()).city
+        print(destination)
+        return redirect(url_for('trip.destination', city=destination))
     elif request.method == 'POST':
         return redirect('/')
+
 
 
 @bp.route('/station/connection', methods=('GET', 'POST'))
@@ -200,19 +203,21 @@ def destination():
 @bp.route('/station/info', methods=['GET', 'POST'])
 def station_info():
     document_path = os.getcwd() + '\\lhoukhoum\\static\\db\\results_wikiscrapping.csv'
-    summary_info = pd.read_csv(document_path, sep=';', index_col=1)
-    info = summary_info.to_dict('index')
+    document_path2 = os.getcwd() + '\\lhoukhoum\\static\\db\\results_wikiscrapping2.csv'
+    summary_info = pd.read_csv(document_path, sep=';',index_col=0)
+    print(summary_info.head())
+    dest = request.form.get('city_name')
+    info = summary_info[summary_info['ville'] == dest].iloc[0] #first row of filtered df
     if request.method == 'POST':
-        station = request.form.get('city_name')
-        answer = {'city_name': station,
-                  'region': info[station]['region'],
-                  'departement': info[station]['departement'],
-                  'population': info[station]['population'],
-                  'densite': info[station]['densite'],
-                  'gentile': info[station]['gentile'],
-                  'altitude': info[station]['altitude'],
-                  'superficie': info[station]['superficie'],
-                  'city_img': "url(/static/img/{}.jpg)".format(station)
+        answer = {'city_name': dest,
+                  'region': info['region'],
+                  'departement': info['departement'],
+                  'population': info['population'],
+                  'densite': info['densite'],
+                  'gentile': info['gentile'],
+                  'altitude': info['altitude'],
+                  'superficie': info['superficie'],
+                  'city_img': "url(/static/img/{}.jpg)".format(dest)
                   }
         print('city')
         print(answer)
