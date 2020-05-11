@@ -118,47 +118,47 @@
 116;Paris;Île-de-France;Paris;2187526;20755;Parisiens;78m Min. 28m Max. 131m;105,40km2
 117;Agen;Nouvelle-Aquitaine;Lot-et-Garonne;33576;2922;Agenais;Min 37m Max 162m;11.49 km2
 118;Montauban;Occitanie;Tarn-et-Garonne;60810;450;Montalbanais;Min. 72m Max. 207m;135,17km2
-0;Guingamp;Bretagne;Côtes-d'Armor;6895;2022;Guingampais;Min. 62m Max. 126m;3,41km2
-1;Morlaix;Bretagne;Finistère;14559;587;Morlaisiens;61m Min. 0m Max. 104m;24,82km2
-2;Brest;Bretagne;Finistère;140064;2829;Brestois;Min. 0m Max. 103m;49,51km2
-3;Lamballe-Armor;Bretagne;Côtes-d'Armor;16578;127;Lamballais, Lamballaise;Min. 0m Max. 131m;130,65km2
-4;Plouaret;Bretagne;Côtes-d'Armor;2139;71;Plouarétais, Plouarétaise;Min. 84m Max. 190m;29,98km2
-5;Landerneau;Bretagne;Finistère;15781;1196;Landernéens;21m Min. 1m Max. 175m;13,19km2
-0;Vannes;Bretagne;Morbihan;53352;1652;Vannetais;Min. 0m Max. 56m;32,30km2
-1;Auray;Bretagne;Morbihan;13 627;1972;Alréen, Alréenne;Min 0m Max 43m;6.91 km2
-2;Lorient;Bretagne;Morbihan;57149;3269;Lorientais;Min. 0m Max. 46m;17,48km2
-3;Vitré;Bretagne;Ille-et-Vilaine;18037;485;Vitréen;Min 67m Max 127m;37.19 km2
-4;Quimper;Bretagne;Finistère;62985;746;Quimpérois;Min. −2m Max. 151m;84,45km2
-5;Quimperlé;Bretagne;Finistère;12057;380;Quimperlois;Min. 2m Max. 83m;31,73km2
-6;Rosporden;Bretagne;Finistère;7671;134;Rospordinois;Min. 25m Max. 171m;57,37km2
-7;Saint-Malo;Bretagne;Ille-et-Vilaine;46097;1260;Malouin;Min. 0m Max. 51m;36,58km2
-8;Dol-de-Bretagne;Bretagne;Ille-et-Vilaine;5693;367;Dolois;Min. 1m Max. 58m;15,53km2
-9;La Roche-sur-Yon;Pays de la Loire;Vendée;54372;619;Yonnais;68m Min. 32m Max. 94m;87,79km2
-10;Saint-Nazaire;Pays de la Loire;Loire-Atlantique;69993;1496;Nazairien/ne;Min. 0m Max. 47m;46,79km2
-11;La Baule-Escoublac;Pays de la Loire;Loire-Atlantique;16132;727;Baulois;Min. 0m Max. 55m;22,19km2
-12;Le Croisic;Pays de la Loire;Loire-Atlantique;4093;910;Croisicais, croisicaises;Min. 0m Max. 20m;4,5km2
-13;Pornichet;Pays de la Loire;Loire-Atlantique;10669;842;Pornichétins;Min. 0m Max. 44m;12,67km2
-14;Le Pouliguen;Pays de la Loire;Loire-Atlantique;4275;974;Pouliguennais;Min. 0m Max. 23m;4,39km2
-15;Sablé-sur-Sarthe;Pays de la Loire;Sarthe;12220;331;Sabolien;Min. 22m Max. 70m;36,92km2
-16;Les Sables-d'Olonne;Pays de la Loire;Vendée;44017;511;Sablais, Sablaises;Min. 0m Max. 59m;86,07km2
-17;Biganos;Nouvelle-Aquitaine;Gironde;10706;203;Boïens;Min. 0m Max. 45m;52,70km2
-18;Arcachon;Nouvelle-Aquitaine;Gironde;11284;1493;Arcachonnais;Min. 0m Max. 45m;7,56km2
-19;La Teste-de-Buch;Nouvelle-Aquitaine;Gironde;26078;145;Testerins/Cazalins/Pylatais;Min. 0m Max. 101m;180,20km2
-20;Libourne;Nouvelle-Aquitaine;Gironde;24845;1204;Libournais;Min. 2m Max. 28m;20,63km2
-21;Vendôme;Centre-Val de Loire;Loir-et-Cher;16569;694;Vendômois;109m Min. 76m Max. 141m;23,89km2
-22;Châtellerault;Nouvelle-Aquitaine;Vienne;31840;613;Châtelleraudais;Min. 42m Max. 134m;51,93km2
-23;Dax;Nouvelle-Aquitaine;Landes;20681;1050;Dacquois, Dacquoises;Min. 2m Max. 46m;19,70km2
-24;Bayonne;Nouvelle-Aquitaine;Pyrénées-Atlantiques;51228;2363;Bayonnais;Min. 0m Max. 55m;21,68km2
-25;Biarritz;Nouvelle-Aquitaine;Pyrénées-Atlantiques;25404;2179;Biarrots;Min. 0m Max. 85m;11,66km2
-26;Saint-Jean-de-Luz;Nouvelle-Aquitaine;Pyrénées-Atlantiques;14093;740;Luzien, Donibandar[1];Min. 0m Max. 84m;19,05km2
-27;Hendaye;Nouvelle-Aquitaine;Pyrénées-Atlantiques;16484;2073;Hendayais, HendayaiseHendaiar[1];Min. 0m Max. 108m;7,95km2
-28;Niort;Nouvelle-Aquitaine;Deux-Sèvres;58707;861;Niortais;Min. 2m Max. 77m;68,20km2
-29;Surgères;Nouvelle-Aquitaine;Charente-Maritime;6807;237;Surgériens;Min. 15m Max. 58m;28,71km2
-30;La Rochelle;Nouvelle-Aquitaine;Charente-Maritime;75735;2664;Rochelaises et Rochelais;Min. 0m Max. 28m;28,43km2
-31;Saint-Maixent-l'École;Nouvelle-Aquitaine;Deux-Sèvres;6982;1338;Saint-Maixentais, Saint-Maixentaises;Min. 52m Max. 115m;5,22km2
-32;Chasseneuil-du-Poitou;Nouvelle-Aquitaine;Vienne;4704;267;Chasseneuillais;Min. 63m Max. 124m;17,61km2
-33;Tours;Centre-Val de Loire;Indre-et-Loire;135787;3917;Tourangeaux, Tourangelles;Min. 44m Max. 109m;34,67km2
-34;Orthez;Nouvelle-Aquitaine;Pyrénées-Atlantiques;10449;228;Orthézien;Min. 38m Max. 185m;45,86km2
-35;Pau;Nouvelle-Aquitaine;Pyrénées-Atlantiques;77130;2448;Palois;Min. 165m Max. 245m;31,51km2
-36;Lourdes;Occitanie;Hautes-Pyrénées;13389;362;Lourdais, Lourdaises;Min. 343m Max. 960m;36,94km2
-37;Tarbes;Occitanie;Hautes-Pyrénées;41518;2708;Tarbais, Tarbaises;304m Min. 284m Max. 326m;15,33km2
+119;Guingamp;Bretagne;Côtes-d'Armor;6895;2022;Guingampais;Min. 62m Max. 126m;3,41km2
+120;Morlaix;Bretagne;Finistère;14559;587;Morlaisiens;61m Min. 0m Max. 104m;24,82km2
+121;Brest;Bretagne;Finistère;140064;2829;Brestois;Min. 0m Max. 103m;49,51km2
+122;Lamballe-Armor;Bretagne;Côtes-d'Armor;16578;127;Lamballais, Lamballaise;Min. 0m Max. 131m;130,65km2
+123;Plouaret;Bretagne;Côtes-d'Armor;2139;71;Plouarétais, Plouarétaise;Min. 84m Max. 190m;29,98km2
+124;Landerneau;Bretagne;Finistère;15781;1196;Landernéens;21m Min. 1m Max. 175m;13,19km2
+125;Vannes;Bretagne;Morbihan;53352;1652;Vannetais;Min. 0m Max. 56m;32,30km2
+126;Auray;Bretagne;Morbihan;13 627;1972;Alréen, Alréenne;Min 0m Max 43m;6.91 km2
+127;Lorient;Bretagne;Morbihan;57149;3269;Lorientais;Min. 0m Max. 46m;17,48km2
+128;Vitré;Bretagne;Ille-et-Vilaine;18037;485;Vitréen;Min 67m Max 127m;37.19 km2
+129;Quimper;Bretagne;Finistère;62985;746;Quimpérois;Min. −2m Max. 151m;84,45km2
+130;Quimperlé;Bretagne;Finistère;12057;380;Quimperlois;Min. 2m Max. 83m;31,73km2
+131;Rosporden;Bretagne;Finistère;7671;134;Rospordinois;Min. 25m Max. 171m;57,37km2
+132;Saint-Malo;Bretagne;Ille-et-Vilaine;46097;1260;Malouin;Min. 0m Max. 51m;36,58km2
+133;Dol-de-Bretagne;Bretagne;Ille-et-Vilaine;5693;367;Dolois;Min. 1m Max. 58m;15,53km2
+134;La Roche-sur-Yon;Pays de la Loire;Vendée;54372;619;Yonnais;68m Min. 32m Max. 94m;87,79km2
+135;Saint-Nazaire;Pays de la Loire;Loire-Atlantique;69993;1496;Nazairien/ne;Min. 0m Max. 47m;46,79km2
+136;La Baule-Escoublac;Pays de la Loire;Loire-Atlantique;16132;727;Baulois;Min. 0m Max. 55m;22,19km2
+137;Le Croisic;Pays de la Loire;Loire-Atlantique;4093;910;Croisicais, croisicaises;Min. 0m Max. 20m;4,5km2
+138;Pornichet;Pays de la Loire;Loire-Atlantique;10669;842;Pornichétins;Min. 0m Max. 44m;12,67km2
+139;Le Pouliguen;Pays de la Loire;Loire-Atlantique;4275;974;Pouliguennais;Min. 0m Max. 23m;4,39km2
+140;Sablé-sur-Sarthe;Pays de la Loire;Sarthe;12220;331;Sabolien;Min. 22m Max. 70m;36,92km2
+141;Les Sables-d'Olonne;Pays de la Loire;Vendée;44017;511;Sablais, Sablaises;Min. 0m Max. 59m;86,07km2
+142;Biganos;Nouvelle-Aquitaine;Gironde;10706;203;Boïens;Min. 0m Max. 45m;52,70km2
+143;Arcachon;Nouvelle-Aquitaine;Gironde;11284;1493;Arcachonnais;Min. 0m Max. 45m;7,56km2
+144;La Teste-de-Buch;Nouvelle-Aquitaine;Gironde;26078;145;Testerins/Cazalins/Pylatais;Min. 0m Max. 101m;180,20km2
+145;Libourne;Nouvelle-Aquitaine;Gironde;24845;1204;Libournais;Min. 2m Max. 28m;20,63km2
+146;Vendôme;Centre-Val de Loire;Loir-et-Cher;16569;694;Vendômois;109m Min. 76m Max. 141m;23,89km2
+147;Châtellerault;Nouvelle-Aquitaine;Vienne;31840;613;Châtelleraudais;Min. 42m Max. 134m;51,93km2
+148;Dax;Nouvelle-Aquitaine;Landes;20681;1050;Dacquois, Dacquoises;Min. 2m Max. 46m;19,70km2
+149;Bayonne;Nouvelle-Aquitaine;Pyrénées-Atlantiques;51228;2363;Bayonnais;Min. 0m Max. 55m;21,68km2
+150;Biarritz;Nouvelle-Aquitaine;Pyrénées-Atlantiques;25404;2179;Biarrots;Min. 0m Max. 85m;11,66km2
+151;Saint-Jean-de-Luz;Nouvelle-Aquitaine;Pyrénées-Atlantiques;14093;740;Luzien, Donibandar[1];Min. 0m Max. 84m;19,05km2
+152;Hendaye;Nouvelle-Aquitaine;Pyrénées-Atlantiques;16484;2073;Hendayais, HendayaiseHendaiar[1];Min. 0m Max. 108m;7,95km2
+153;Niort;Nouvelle-Aquitaine;Deux-Sèvres;58707;861;Niortais;Min. 2m Max. 77m;68,20km2
+154;Surgères;Nouvelle-Aquitaine;Charente-Maritime;6807;237;Surgériens;Min. 15m Max. 58m;28,71km2
+155;La Rochelle;Nouvelle-Aquitaine;Charente-Maritime;75735;2664;Rochelaises et Rochelais;Min. 0m Max. 28m;28,43km2
+156;Saint-Maixent-l'École;Nouvelle-Aquitaine;Deux-Sèvres;6982;1338;Saint-Maixentais, Saint-Maixentaises;Min. 52m Max. 115m;5,22km2
+157;Chasseneuil-du-Poitou;Nouvelle-Aquitaine;Vienne;4704;267;Chasseneuillais;Min. 63m Max. 124m;17,61km2
+158;Tours;Centre-Val de Loire;Indre-et-Loire;135787;3917;Tourangeaux, Tourangelles;Min. 44m Max. 109m;34,67km2
+159;Orthez;Nouvelle-Aquitaine;Pyrénées-Atlantiques;10449;228;Orthézien;Min. 38m Max. 185m;45,86km2
+160;Pau;Nouvelle-Aquitaine;Pyrénées-Atlantiques;77130;2448;Palois;Min. 165m Max. 245m;31,51km2
+161;Lourdes;Occitanie;Hautes-Pyrénées;13389;362;Lourdais, Lourdaises;Min. 343m Max. 960m;36,94km2
+162;Tarbes;Occitanie;Hautes-Pyrénées;41518;2708;Tarbais, Tarbaises;304m Min. 284m Max. 326m;15,33km2

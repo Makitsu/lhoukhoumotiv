@@ -1,73 +1,6 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-
-        <!-- Add icon library -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-        <!-- JavaScript file extern -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-        <!-- CSS -->
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/loading_animation.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/animation.css') }}">
-
-        <!-- JavaScript file intern -->
-        <script type="text/javascript" src="{{ url_for('static', filename='js/loadingoverlay.min.js') }}"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet" />
-        <!-- Title -->
-        <title>LhoKho</title>
-        <link rel="icon" href="{{ url_for('static', filename='img/porco_logo.png') }}" type="image/png">
-        <script>
-        </script>
-    </head>
-
-    <body id="page-top" class="main" onload="generateHtmlLogin()">
-        <style>
-            html,body{
-                height:100%;
-            }
-            .flex-fill {
-                flex:1;
-            }
-        </style>
-
-        <nav class="navbar sticky-top navbar-expand-lg navbar-light navbar-fixed-top" style="background-color:rgba(255, 255, 255, 0.7); min-height:10vh">
-            <div class="container">
-                <a class="navbar-brand" href="#">
-                    <img class="d-inline-block align-top" src="{{ url_for('static', filename='img/porco_transparent.gif') }}" width="75" height="75" alt="">
-                </a>
-                <p class="navbar-text" style="font-size: xx-large !important;">LhoKho</p>
-
-                <div class="collapse navbar-collapse" id="navbarNav" >
-                    <ul class="navbar-nav ml-auto">
-                        <style>
-                          font-size: larger !important;
-                          list-style-type: none;
-                          padding: 15;
-                          display: flex;
-                          flex-direction: row;
-                          justify-content: space-around;
-                          flex-wrap: nowrap;
-                        </style>
-                        <li class="nav-item active">
-                            <a class="nav-item nav-link" href="{{ url_for('trip') }}">Accueil</a>
-                        </li>
-                        <li class="nav-items">
-                            <a class="nav-item nav-link" href="#">Contact</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+{% extends "base.html" %}
+{% block title %}Destination{% endblock %}
+{% block content %}
         <div class="background">
                     <div class="container-flex h-100" id="background" style="no-repeat center center fixed; min-height: 90vh; background-position: center; background-size: cover">
                         <div class="row h-100">
@@ -90,7 +23,7 @@
                                 <p></p>
                                 <p></p>
                             </div>
-                            <div class="mx-auto col-sm-4 text-center>
+                            <div class="mx-auto col-sm-4 text-center">
                             <div class="card" style="background-color: rgba(255, 255, 255, 0.6)">
                                 <p><strong>Département : </strong><label id="city_departement"></label></p>
                                 <p><strong>Région : </strong><label id="city_region"></label></p>
@@ -184,63 +117,4 @@
             </div>
         </section>
         </div>
-
-        <footer class="page-footer text-black pt-4 " style="background-color:rgba(255, 255, 255, 0.7);">
-            <!-- Footer Links -->
-            <div class="container text-md-left">
-                <!-- Grid row -->
-                <div class="row text-justify">
-                    <!-- Grid column -->
-                    <div class="col-md-4 mx-auto">
-                        <h5 class="font-weight-bold text-uppercase mt-3 mb-4 text-center">Informations</h5>
-                        <hr class="light">
-                        <p>Lockdown project</p>
-                    </div>
-
-                    <div class="col-md-2 mx-auto text-center">
-                        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Ressources</h5>
-                        <hr class="light">
-                        <ul class="list-unstyled">
-                        </ul>
-                    </div>
-
-                    <div class="col-md-2 mx-auto text-center">
-                        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">A Propos</h5>
-                        <hr class="light">
-                        <ul class="list-unstyled">
-                            <li>
-                                <a href="dicoloco_faq.html">FAQ</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="col-md-2 mx-auto text-center">
-                        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Contact</h5>
-                        <hr class="light">
-                        <ul class="list-unstyled">
-                            <li>
-                                <a href="dicoloco_index.html#dicoTeam">Lhokhomotiv</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="footer-copyright text-center py-3">© 2020 Copyright:
-                <a href="https://github.com/Makitsu/lhoukhoumotiv">Lhokhomotiv</a>
-            </div>
-        </footer>
-
-        <script type="text/javascript" src="{{ url_for('static', filename='js/provide_info.js') }}"></script>
-
-        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery/jquery-latest.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery/jquery-ui.js') }}"></script>
-        <script type=text/javascript src="{{url_for('static', filename='js/jquery/jquery-3.5.0.js') }}"></script>
-
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
-        <!-- Smooth slider-->
-        <script src="{{url_for('static', filename='js/jquery/jquery.easing.min.js') }}"></script>
-        <script src="{{url_for('static', filename='js/bootstrap/scripts.js') }}"></script>
-    </body>
-</html>
+{% endblock %}

@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<html>
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
+        <!-- Add icon library -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <!-- CSS file-->
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+
+        <!-- JavaScript file extern -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+         <!-- JavaScript file intern -->
+
+        <!-- Title -->
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="icon" href="{{ url_for('static', filename='img/porco_logo.png') }}" type="image/png">
+
+    </head>
+	<body style="background: url(/static/img/train_station.jpg) no-repeat center center fixed; min-height: 100vh; background-position: center; background-size: cover;">
+        <style>
+            .flex-fill {
+                flex:1;
+            }
+        </style>
+        <nav class="navbar sticky-top navbar-expand-lg navbar-light navbar-fixed-top" style="background-color:rgba(255, 255, 255, 0.7)">
+            <div class="container">
+                <a class="navbar-brand" href="#">
+                    <img class="d-inline-block align-top" src="{{ url_for('static', filename='img/porco_transparent.gif') }}" width="75" height="75" alt="">
+                </a>
+                <p class="navbar-text" style="font-size: xx-large !important;">LhoKho</p>
+
+                <div class="collapse navbar-collapse" id="navbarNav" >
+                    <ul class="navbar-nav ml-auto">
+                        <style>
+                          font-size: larger !important;
+                          list-style-type: none;
+                          padding: 15;
+                          display: flex;
+                          flex-direction: row;
+                          justify-content: space-around;
+                          flex-wrap: nowrap;
+                        </style>
+                        <div class="login-container">
+                            <div class="form-inline">
+                                <label id="infos" class="mr-sm-2"></label>
+
+                                <input type="text" class="form-control mb-2 mr-sm-2" placeholder="Username" name="username" id="user">
+                                <input type="text" class="form-control mb-2 mr-sm-2" placeholder="Password" name="password" id="password">
+                                <button id="signin" class="btn btn-primary mb-2 mr-sm-2">Sign in</button>
+                                <button id="signup" class="btn btn-primary mb-2 mr-sm-2">Sign up</button>
+                                <button id="logout"class="btn btn-primary mb-2 mr-sm-2">log out</button>
+                            </div>
+                            <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+                        </div>
+
+                        <!-- Modal -->
+                        <div class="modal" id="myModal" role="dialog" data-backdrop="false">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Vos informations...</h4>
+                                    </div>
+                                    <div class="modal-body" id="user_msg">
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" id="close" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                    <script>$(document).on('click','#close',function(){$('.modal').hide();});</script>
+                                </div>
+
+                            </div>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+		{% block content %}
+
+		{% endblock %}
+        <footer class="page-footer text-black pt-4 " style="background-color:rgba(255, 255, 255, 0.7);">
+            <!-- Footer Links -->
+            <div class="container text-md-left">
+                <!-- Grid row -->
+                <div class="row text-justify">
+                    <!-- Grid column -->
+                    <div class="col-md-4 mx-auto">
+                        <h5 class="font-weight-bold text-uppercase mt-3 mb-4 text-center">Informations</h5>
+                        <hr class="light">
+                        <p>Lockdown project</p>
+                    </div>
+
+                    <div class="col-md-2 mx-auto text-center">
+                        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Ressources</h5>
+                        <hr class="light">
+                        <ul class="list-unstyled">
+                        </ul>
+                    </div>
+
+                    <div class="col-md-2 mx-auto text-center">
+                        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">A Propos</h5>
+                        <hr class="light">
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="dicoloco_faq.html">FAQ</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-2 mx-auto text-center">
+                        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Contact</h5>
+                        <hr class="light">
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="dicoloco_index.html#dicoTeam">Lhokho</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-copyright text-center py-3">© 2020 Copyright:
+                <a href="https://github.com/Makitsu/lhoukhoumotiv">Lhokhomotiv</a>
+            </div>
+        </footer>
+
+        <!-- JS Scripts -->
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery/jquery-latest.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery/jquery-ui.js') }}"></script>
+        <script type=text/javascript src="{{url_for('static', filename='js/jquery/jquery-3.5.0.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/provide_info.js') }}"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+        <!-- Smooth slider-->
+        <script src="{{url_for('static', filename='js/jquery/jquery.easing.min.js') }}"></script>
+        <script src="{{url_for('static', filename='js/bootstrap/scripts.js') }}"></script>
+    </body>
+</html>
