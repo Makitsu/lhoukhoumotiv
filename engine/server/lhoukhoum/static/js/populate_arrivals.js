@@ -101,11 +101,11 @@ $(document).on('change','#list_arrival',function() {
 });
 
 $(document).on('click','#trip_table tr', function() {
-    var city = $("td").first().text();
-    arrival = $('#list_arrival').val();
-    alert(arrival)
+    var city;
+    city = $("td").first().text().toLowerCase();
+    alert(city)
     window.open(
-      'destination/'+arrival,
+      'destination?city='+city,
       '_blank' // <- This is what makes it open in a new window.
     );
 

@@ -83,20 +83,16 @@ def signup():
         return redirect('/')
 
 
-@bp.route('/station', methods=('GET', 'POST'))
-def station():
-    if request.method == 'GET':
-        return "to be implemented"
-    elif request.method == 'POST':
-        return redirect('/')
 
 
-@bp.route('/destination/<city>', methods=('GET', 'POST'))
-def station_destination(city):
+
+@bp.route('/destination', methods=('GET', 'POST'))
+def destination():
     if request.method == 'GET':
-        destination = Station().from_name(city.capitalize()).city
+        city = request.args.get('city')
+        destination = city.capitalize()
         print(destination)
-        return redirect(url_for('trip.destination', city=destination))
+        return render_template('destination.html', city=destination)
     elif request.method == 'POST':
         return redirect('/')
 
@@ -191,22 +187,14 @@ def trip_map():
         return redirect('/')
 
 
-@bp.route('/destination', methods=['GET', 'POST'])
-def destination():
-    if request.method == 'POST':
-        return redirect(url_for('index'))
-
-    # show the form, it wasn't submitted
-    return render_template('destination.html')
-
-
 @bp.route('/station/info', methods=['GET', 'POST'])
 def station_info():
     document_path = os.getcwd() + '\\lhoukhoum\\static\\db\\results_wikiscrapping.csv'
     document_path2 = os.getcwd() + '\\lhoukhoum\\static\\db\\results_wikiscrapping2.csv'
     summary_info = pd.read_csv(document_path, sep=';',index_col=0)
     print(summary_info.head())
-    dest = request.form.get('city_name')
+    dest = request.form.get('city_name').capitalize()
+    print(dest)
     info = summary_info[summary_info['ville'] == dest].iloc[0] #first row of filtered df
     if request.method == 'POST':
         answer = {'city_name': dest,
