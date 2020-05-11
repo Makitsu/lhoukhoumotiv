@@ -201,19 +201,45 @@ def destination():
 def station_info():
     document_path = os.getcwd() + '\\lhoukhoum\\static\\db\\results_wikiscrapping.csv'
     summary_info = pd.read_csv(document_path, sep=';', index_col=1)
+    document_path = os.getcwd() + '\\lhoukhoum\\static\\db\\list_city_items.csv'
+    items_info = pd.read_csv(document_path, sep=';')
     info = summary_info.to_dict('index')
     if request.method == 'POST':
         station = request.form.get('city_name')
-        answer = {'city_name': station,
-                  'region': info[station]['region'],
-                  'departement': info[station]['departement'],
-                  'population': info[station]['population'],
-                  'densite': info[station]['densite'],
-                  'gentile': info[station]['gentile'],
-                  'altitude': info[station]['altitude'],
-                  'superficie': info[station]['superficie'],
-                  'city_img': "url(/static/img/{}.jpg)".format(station)
-                  }
+        ## Get general info ##
+        info_results = {'city_name': station,
+                'region': info[station]['region'],
+                'departement': info[station]['departement'],
+                'population': info[station]['population'],
+                'densite': info[station]['densite'],
+                'gentile': info[station]['gentile'],
+                'altitude': info[station]['altitude'],
+                'superficie': info[station]['superficie'],
+                'city_img': "url(/static/img/{}.jpg)".format(station)
+                }
+        ## Get items if available ##
+        found_count = items_info[items_info['ville'].str.contains(station)].count()
+        print(found_count)
+        if found_count > 0
+            items_available = 1
+            items_info = items_info[items_info['ville'] == station]
+            building_list = items_info[items_info['type'] == 'monument'].sample(3)
+            building_list = building_list.to_dict()
+            place_list = items_info[items_info['type'] == 'lieu'].sample(3)
+            place_list = place_list.to_dict()
+            museum_list = items_info[items_info['type'] == 'museum'].sample(3)
+            museum_list = museum_list.to_dict()
+            food_list = items_info[items_info['type'] == 'food'].sample(3)
+            food_list = food_list.to_dict()
+            item_results = {}
+            item_results.update(building_list)
+            item_results.update(place_list)
+            item_results.update(museum_list)
+            item_results.update(food_list)
+        else :
+            item_results = 0
+
         print('city')
-        print(answer)
-        return answer
+        print(info_results)
+        print(item_results)
+        return info_results
