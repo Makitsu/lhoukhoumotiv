@@ -6,8 +6,12 @@
 
 """
 import pandas as pd
+from geopy import Nominatim
+
 
 dataProc = False #True if need to extract and reaarang beer data (is is saved at the end)
+dataFormating = False
+normaliseAddress = False
 
 if dataProc is True:
     #Initiate new data structure
@@ -62,29 +66,72 @@ if dataProc is True:
     df2.to_csv('out.csv',index=False)
 
 #Global datadrame reformatting
-df4= pd.read_csv("../1_mainScrapper/data.csv", delimiter =";", index_col=False)    #Loading original data
-df4 = df4.drop(["beers"],axis=1)    #Getting rid of last 'beers' column
-df5 = pd.read_csv("out.csv")    #Load new beer dataframe
-df6 = pd.read_csv("../2_GPS/latitude_data.csv", names=['latitude'])  #Load latitude data
-df6 = df6.drop(df6.index[0]).reset_index()  #Drop first line irrelevant data
-df7 = pd.read_csv("../2_GPS/longitude_data.csv", names=['longitude'])     #Load longitude data
-df7 = df7.drop(df7.index[0]).reset_index()  #Drop irrelevant first line irrelevant data
-result = pd.concat([df4, df5, df6, df7], axis=1, sort=False)  #Build new data with wanted dataframe
-column_names = list(result.columns)
+if dataFormating is True:
+    df4= pd.read_csv("../1_mainScrapper/data.csv", delimiter =";", index_col=False)    #Loading original data
+    df4 = df4.drop(["beers"],axis=1)    #Getting rid of last 'beers' column
+    df5 = pd.read_csv("out.csv")    #Load new beer dataframe
+    df6 = pd.read_csv("../2_GPS/SAVE(old)/latitude_data.csv", names=['latitude'])  #Load latitude data
+    df6 = df6.drop(df6.index[0]).reset_index()  #Drop first line irrelevant data
+    df7 = pd.read_csv("../2_GPS/SAVE(old)/longitude_data.csv", names=['longitude'])     #Load longitude data
+    df7 = df7.drop(df7.index[0]).reset_index()  #Drop irrelevant first line irrelevant data
+    result = pd.concat([df4, df5, df6, df7], axis=1, sort=False)  #Build new data with wanted dataframe
+    column_names = list(result.columns)
 
+    #Rearranging dataframe
+    final_order = column_names[:2] + [column_names[-3], column_names[-1]] + column_names[2:-4]
+    result=result[final_order]
 
-#Rearranging dataframe
-final_order = column_names[:2] + [column_names[-3], column_names[-1]] + column_names[2:-4]
-result=result[final_order]
+    #Take out TBD data
+    result_no_TBD = result[result['latitude'] != 'TBD']
 
-#Take out TBD data
-result_no_TBD = result[result['latitude'] != 'TBD']
+if normaliseAddress is True:
+    result_no_TBD = pd.read_csv("result_no_TBD.csv", delimiter=",")
+    #Normalise address data with Geopy
+    Initialisation = True
+    counter = 0
 
+    if Initialisation is False:
+        with open('progress', mode='rb') as file:
+            progress = int(file.read())
+    else:
+        progress = 0
 
+    while progress > counter:
+            counter +=1
+
+    for index, row in result_no_TBD.iterrows():
+        try:
+            if counter%100 == 0: # print progress every 200 adresses processed
+                print(counter, 'adresses ont été traitées')
+
+            #call of Nomatim to generates normalised address from GPS coordinates
+            GPS = (row['latitude'], row['longitude'])
+            geolocator = Nominatim(user_agent="my-application", timeout=10)
+            location = geolocator.reverse(GPS)
+            location_keys = location.raw['address'].keys()
+            result_no_TBD.loc[index, 'display_name'] = location.raw['display_name']
+            for key in location_keys:
+                result_no_TBD.loc[index, key] = location.raw['address'][key]
+
+            # Save counter to be able to re-run the code where it has stopped
+            counter += 1
+            with open('progress', mode='w') as file:
+                    file.write(str(counter))
+            print(counter)
+
+        except StopIteration:
+            print('Itération interrompue.', counter, ' lignes ont été traitées')
+            break
+
+    print(counter)
 #Saving
-result.to_csv('result.csv')
+#result.to_csv('result.csv')
 #result.to_excel('result.xlsx')
-result_no_TBD.to_csv('result_no_TBD.csv')
+#result_no_TBD.to_csv('result_no_TBD.csv')
+
+data = pd.read_csv("result_no_TBD.csv", index_col = 0)
+data = data.drop(["Unnamed: 0.1"], axis = 1)
+data.to_csv('result_no_TBD.csv')
 
 
 
