@@ -1,16 +1,12 @@
 """
     Defines a class containing beer data with corresponding methods for easy read-out
-        - bars_near (bar_name, distance [m])
-            OUTPUT : [list of bars]
-        - bar_city(bar_name)
-            OUTPUT : 'city_name'
         - bar_cheapest_beer (bar_name)
             OUTPUT : 'beer_name'
         - bar_list_beers (bar_name)
             OUTPUT : [list of beers]
         - beer_prices (bar_name,beer_name)
             OUTPUT : {HH_price: xx, nHH_price: xx}
-        - city_cheapest_beer (city_name, opt: beer_name(s))
+        - city_cheapest_beer (city_name,  opt: beer_name(s))
             OUTPUT : {beer_name:xx, HH_price: xx, nHH_price: xx}
 """
 
@@ -18,8 +14,9 @@ import pandas as pd
 from math import *
 from time import time
 import numpy as np
+import re
 
-all_bars = pd.read_csv('result_no_TBD.csv', delimiter=',')
+all_bars = pd.read_csv('result_no_TBD.csv', delimiter=',', index_col=0)
 earth_circum = 40075e3  # earth circumference at equator (meters)
 circularity_error = 1.01  # earth is not circular but here calculation suppose so -> 0.5% error
 
@@ -37,7 +34,7 @@ def is_in_square(coords1, coords2, radius):
 
 def haversine(lat1, lon1, lat2, lon2):
     """
-        simple formula to compute distances between 2 GPS coordinates taking into account earth oblateness (0.05% of approximation
+        simple formula to compute distances between 2 GPS coordinates taking into account earth oblateness (0.05% of approximation)
     """
     metres = 6371392.896
     lat1, lon1, lat2, lon2 = map(np.deg2rad, [lat1, lon1, lat2, lon2])
@@ -70,8 +67,9 @@ class Bars():
     @classmethod
     def from_coord(cls, coordinates, radius=1000):
         """
-            finds all bars within a radius (1000m per default) from the coordinages (longitude, latitude)
-                Output : Bars dataframe with filtered bars data, type set as "from_coord", location set as "gps coordinates", and radius set with the specified radius
+        finds all bars within a radius (1000m per default) from the coordinages (longitude, latitude)
+        Output : Bars dataframe with filtered bars data (within the radiys), type set as "from_coord", location set as "gps coordinates", and radius set with the specified
+        radius
         """
         df = Bars()
         df.data = all_bars
@@ -80,7 +78,48 @@ class Bars():
         df.data = df.data[df.data['distance']<=radius]
         return cls(df.data, "from_coord", coordinates, radius)
 
+    @classmethod
+    def from_postcode(cls,postcode):
+        """
+        finds all bars filtered via postcode from the specified postcode
+        :param postcode (int)
+        :return: Bars class object with data of the bars in the specified postcode
+        """
+        df = Bars()
+        df.data = all_bars
+        df.data = df.data[df.data['postcode'] == str(postcode)]
+        return cls(df.data, "from_postcode", postcode)
 
-test = Bars.from_coord((2.35915061, 48.87656977), radius=200)
-print(test.data.head(20))
+    @classmethod
+    def from_location_name(cls, name):
+        """
+        finds all bar filtered via location name from the specified name (case insensitive)
+        :param name (str) city_district, city, municipality, suburb, town, village
+        :return: Bars class object with data of the bars in the specified location name
+        """
+        df = Bars()
+        df.data = all_bars
+        name = name.lower()
+        df.data = df.data[(df.data["city_district"].str.lower() == name) | (df.data["city"].str.lower() == name) | (df.data["municipality"].str.lower() == name) | (df.data["suburb"].str.lower() == name) | (df.data["town"].str.lower() == name) | (df.data["village"].str.lower() == name)]
+        return cls(df.data, "from_location_name", name)
+
+    def _get_cheapest_bar(self):
+        cheapest_HH  = self.data.loc[:, self.data.columns.map(lambda x: x.startswith(('name','beer','HHprice')))].min()
+        cheapest_HH = self.data[self.data["name"] == cheapest_HH.loc["name"]]
+        cheapest_nHH = self.data.loc[:, self.data.columns.map(lambda x: x.startswith(('name', 'beer', 'nHHprice')))].min()
+        cheapest_nHH = self.data[self.data["name"] == cheapest_nHH.loc["name"]]
+        return cheapest_HH, cheapest_nHH
+
+    def _get_cheapest_beer(self):
+        cheapest_HH, cheapest_nHH = self._get_cheapest_bar()
+        cheapest_HH_infos = cheapest_HH.loc[:, cheapest_HH.columns.map(lambda x: x.startswith(('name','beer', 'HHprice')))].min()
+        return cheapest_HH_infos
+
+tic = time()
+test = Bars.from_location_name("PARIS")
+output = test._get_cheapest_beer()
+toc = time()
+toc = time()
 print('number of bars listed : ', len(test.data.index))
+print(output)
+print('temps nécessaire', toc-tic)
