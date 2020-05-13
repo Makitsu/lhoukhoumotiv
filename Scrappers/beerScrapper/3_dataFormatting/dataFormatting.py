@@ -12,6 +12,7 @@ from geopy import Nominatim
 dataProc = False #True if need to extract and reaarang beer data (is is saved at the end)
 dataFormating = False
 normaliseAddress = False
+no_TDB_price = True
 
 if dataProc is True:
     #Initiate new data structure
@@ -85,7 +86,7 @@ if dataFormating is True:
     result_no_TBD = result[result['latitude'] != 'TBD']
 
 if normaliseAddress is True:
-    result_no_TBD = pd.read_csv("result_no_TBD.csv", delimiter=",")
+    result_no_TBD = pd.read_csv("SAVE (old)/result_no_TBD.csv", delimiter=",")
     #Normalise address data with Geopy
     Initialisation = True
     counter = 0
@@ -129,10 +130,25 @@ if normaliseAddress is True:
 #result.to_excel('result.xlsx')
 #result_no_TBD.to_csv('result_no_TBD.csv')
 
-data = pd.read_csv("result_no_TBD.csv", index_col = 0)
-data = data.drop(["Unnamed: 0.1"], axis = 1)
-data.to_csv('result_no_TBD.csv')
+if no_TDB_price is True:
+    result_no_TBD = pd.read_csv("SAVE (old)/result_no_TBD.csv", delimiter=",")
+    result_no_TBD.loc[:,['HHprice_8','nHHprice_8']] = result_no_TBD.loc[:,['HHprice_8','nHHprice_8']].replace("TBD","")
 
 
+#data = pd.read_csv("SAVE (old)/result_no_TBD.csv", index_col = 0)
+#result_no_TBD = result_no_TBD.drop(["Unnamed: 0.1"], axis = 1)
+result_no_TBD.to_csv('result_no_TBD.csv')
 
 
+# Datatype forcing for smooth analysis
+all_bars = pd.read_csv('result_no_TBD.csv', delimiter=',', index_col=0)
+beers_price_columns = []
+beers_volume_columns = []
+for i in range(7):
+    beers_price_columns += [8+i*4,9+i*4]
+    beers_volume_columns += [10+i*4]
+for i in beers_price_columns:
+    all_bars.iloc[:, i] = pd.to_numeric(all_bars.iloc[:, i], errors='coerce')
+
+all_bars = all_bars.drop(["Unnamed: 0.1"], axis = 1)
+all_bars.to_csv('result_no_TBD.csv')

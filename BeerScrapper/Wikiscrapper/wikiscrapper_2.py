@@ -30,7 +30,7 @@ for index, row in df.iterrows():
     #ratio_found = 0
     try:
         result['initial_search'].append(row['name'])
-        result['ville'].append(row['city'])
+        result['ville'].append(row['city'].capitalize())
         result['type'].append(row['type'])
         # 1. Grab  the list from wikipedia.
         w.set_lang('fr')
