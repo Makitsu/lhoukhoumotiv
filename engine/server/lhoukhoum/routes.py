@@ -11,11 +11,6 @@ from .lib.map_tool.map_generator import map_from_list, map_from_departure
 from .lib.import_train.test_normal import search_fares
 import os
 
-document_path = os.getcwd() + '\\lhoukhoum\\static\\connections.csv'
-print(document_path)
-
-connections_df = pd.read_csv(document_path, sep=";")
-
 city = 'Not defined'
 
 bp = Blueprint('trip', __name__)
@@ -24,10 +19,20 @@ bp = Blueprint('trip', __name__)
 @bp.route('/', methods=('GET', 'POST'))
 def homepage():
     if request.method == 'GET':
-        return render_template('index.html', stations=Station()._get_stations_name())
+        if session['live'] == True:
+            return render_template('index.html', stations=Station()._get_stations_name())
+        else:
+            return render_template('homepage.html')
     elif request.method == 'POST':
         return redirect('/')
 
+@bp.route("/alive", methods=["POST", "GET"])
+def alive():
+    if request.method == "GET":
+        session.permanent = True
+        return session['live']
+    else:
+        return redirect('/')
 
 @bp.route("/login", methods=["POST", "GET"])
 def login():
@@ -37,13 +42,42 @@ def login():
         password = request.form.get('password')
         print('attempt connection user: ',user)
         if user in session["user"]:
+            idx = session["user"].index(user)
             if password in session["password"]:
-                idx = session['password'].index(password)
-                return jsonify(session['details'])
+                session['live'] = True
+                redirect('/')
+                return jsonify([session['details'][idx]])
             else:
                 return 'wrong password'
         else:
             return 'user not registered'
+    else:
+        return redirect('/')
+
+@bp.route("/logout", methods=["POST", "GET"])
+def logout():
+    if request.method == "POST":
+        session.permanent = True
+        session['live'] = False
+        return redirect('/')
+    else:
+        return redirect('/')
+
+@bp.route("/signup", methods=["POST", "GET"])
+def signup():
+    if request.method == "POST":
+        session.permanent = True
+        user = request.form.get('user')
+        password = request.form.get('password')
+        print('attempt register user: ', user)
+        print(session['user'])
+        if user in session["user"]:
+            return 'user already registered'
+        else:
+            session['user'].append(user)
+            session['password'].append(password)
+            session['details'].append([])
+            return 'user created'
 
     else:
         return redirect('/')
@@ -51,6 +85,8 @@ def login():
 
 @bp.route('/session')
 def updating_session():
+    print('refresh session')
+    session['live'] = False
     session['user'] = ['maxime']
     session['password'] = ['maxtoo']
     session['details']=[]
@@ -65,22 +101,6 @@ def updating_session():
     session['details'].append(user_details)
     res = str(session.items())
     return res
-
-
-@bp.route("/signup", methods=["POST", "GET"])
-def signup():
-    if request.method == "POST":
-        user = request.form.get('user')
-        password = request.form.get('password')
-        print('attempt register user: ', user)
-        if user not in session["user"]:
-            session['user'].append(user)
-            session['password'].append(password)
-        else:
-            return 'user already registered'
-
-    else:
-        return redirect('/')
 
 
 
@@ -192,8 +212,7 @@ def station_info():
     document_path = os.getcwd() + '\\lhoukhoum\\static\\db\\results_wikiscrapping.csv'
     document_path2 = os.getcwd() + '\\lhoukhoum\\static\\db\\results_wikiscrapping2.csv'
     summary_info = pd.read_csv(document_path, sep=';',index_col=0)
-    print(summary_info.head())
-    dest = request.form.get('city_name').capitalize()
+    dest = request.form.get('city_name')
     print(dest)
     info = summary_info[summary_info['ville'] == dest].iloc[0] #first row of filtered df
     if request.method == 'POST':

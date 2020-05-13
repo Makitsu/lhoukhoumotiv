@@ -54,10 +54,9 @@
                                 <label id="infos" class="mr-sm-2"></label>
 
                                 <input type="text" class="form-control mb-2 mr-sm-2" placeholder="Username" name="username" id="user">
-                                <input type="text" class="form-control mb-2 mr-sm-2" placeholder="Password" name="password" id="password">
+                                <input type="password" class="form-control mb-2 mr-sm-2" placeholder="Password" name="password" id="password">
                                 <button id="signin" class="btn btn-primary mb-2 mr-sm-2">Sign in</button>
                                 <button id="signup" class="btn btn-primary mb-2 mr-sm-2">Sign up</button>
-                                <button id="logout"class="btn btn-primary mb-2 mr-sm-2">log out</button>
                             </div>
                             <script src="{{ url_for('static', filename='js/login.js') }}"></script>
                         </div>
@@ -131,7 +130,7 @@
             </div>
 
             <div class="footer-copyright text-center py-3">© 2020 Copyright:
-                <a href="https://github.com/Makitsu/lhoukhoumotiv">Lhokhomotiv</a>
+                <a href="https://github.com/Makitsu/lhoukhoumotiv">Lhokho</a>
             </div>
         </footer>
 
@@ -143,11 +142,9 @@
         <script type="text/javascript" src="{{ url_for('static', filename='js/jquery/jquery-latest.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/jquery/jquery-ui.js') }}"></script>
         <script type=text/javascript src="{{url_for('static', filename='js/jquery/jquery-3.5.0.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/provide_info.js') }}"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
         <!-- Smooth slider-->
         <script src="{{url_for('static', filename='js/jquery/jquery.easing.min.js') }}"></script>
-        <script src="{{url_for('static', filename='js/bootstrap/scripts.js') }}"></script>
     </body>
 </html>
