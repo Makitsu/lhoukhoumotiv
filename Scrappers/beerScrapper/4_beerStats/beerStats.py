@@ -21,8 +21,8 @@ all_bars = pd.read_csv('result_no_TBD.csv', delimiter=',', index_col=0)
 beers_price_columns = []
 beers_volume_columns = []
 for i in range(7):
-    beers_price_columns += [8+i*4,9+i*4]
-    beers_volume_columns += [10+i*4]
+    beers_price_columns += [9+i*4,10+i*4]
+    beers_volume_columns += [11+i*4]
 for i in beers_price_columns:
     all_bars.iloc[:, i] = pd.to_numeric(all_bars.iloc[:, i], errors='coerce')
 
@@ -117,13 +117,16 @@ class Bars():
         Finds the bar with the cheapest
         :return:
         """
-        cheapest_HH  = self.data.loc[:, self.data.columns.map(lambda x: x.startswith(('name','beer','HHprice_')))]
-        colonnes = cheapest_HH.dtypes
-        test1 = cheapest_HH.min(axis = 0, skipna = True)
-        #cheapest_HH = self.data[self.data["name"] == cheapest_HH.loc["name"]]
-        cheapest_nHH = self.data.loc[:, self.data.columns.map(lambda x: x.startswith(('name', 'beer', 'nHHprice')))]
-        test2 = cheapest_nHH.min(axis = 0)
-        cheapest_nHH = self.data[self.data["name"] == cheapest_nHH.loc["name"]]
+        HH_prices  = self.data.loc[:, self.data.columns.map(lambda x: x.startswith(('HHprice_')))].values
+        min_HH_prices = np.nanmin(HH_prices,axis=1)
+        cheapest_index = np.where(min_HH_prices == np.nanmin(min_HH_prices))
+        cheapest_HH = self.data.iloc[cheapest_index]
+
+        nHH_prices  = self.data.loc[:, self.data.columns.map(lambda x: x.startswith(('nHHprice_')))].values
+        min_nHH_prices = np.nanmin(nHH_prices,axis=1)
+        cheapest_index = np.where(min_nHH_prices == np.nanmin(min_nHH_prices))
+        cheapest_nHH = self.data.iloc[cheapest_index]
+
         return cheapest_HH, cheapest_nHH
 
     def _get_cheapest_beer(self):
@@ -136,7 +139,7 @@ class Bars():
 
 tic = time()
 test = Bars.from_location_name("paris")
-output = test._get_cheapest_bar()[1]
+output = test._get_cheapest_bar()
 toc = time()
 toc = time()
 print('number of bars listed : ', len(test.data.index))
