@@ -16,7 +16,16 @@ from time import time
 import numpy as np
 import re
 
+# data import and dataype forcing for smooth analysis
 all_bars = pd.read_csv('result_no_TBD.csv', delimiter=',', index_col=0)
+beers_price_columns = []
+beers_volume_columns = []
+for i in range(7):
+    beers_price_columns += [8+i*4,9+i*4]
+    beers_volume_columns += [10+i*4]
+for i in beers_price_columns:
+    all_bars.iloc[:, i] = pd.to_numeric(all_bars.iloc[:, i], errors='coerce')
+
 earth_circum = 40075e3  # earth circumference at equator (meters)
 circularity_error = 1.01  # earth is not circular but here calculation suppose so -> 0.5% error
 
@@ -104,9 +113,16 @@ class Bars():
         return cls(df.data, "from_location_name", name)
 
     def _get_cheapest_bar(self):
-        cheapest_HH  = self.data.loc[:, self.data.columns.map(lambda x: x.startswith(('name','beer','HHprice')))].min()
-        cheapest_HH = self.data[self.data["name"] == cheapest_HH.loc["name"]]
-        cheapest_nHH = self.data.loc[:, self.data.columns.map(lambda x: x.startswith(('name', 'beer', 'nHHprice')))].min()
+        """
+        Finds the bar with the cheapest
+        :return:
+        """
+        cheapest_HH  = self.data.loc[:, self.data.columns.map(lambda x: x.startswith(('name','beer','HHprice_')))]
+        colonnes = cheapest_HH.dtypes
+        test1 = cheapest_HH.min(axis = 0, skipna = True)
+        #cheapest_HH = self.data[self.data["name"] == cheapest_HH.loc["name"]]
+        cheapest_nHH = self.data.loc[:, self.data.columns.map(lambda x: x.startswith(('name', 'beer', 'nHHprice')))]
+        test2 = cheapest_nHH.min(axis = 0)
         cheapest_nHH = self.data[self.data["name"] == cheapest_nHH.loc["name"]]
         return cheapest_HH, cheapest_nHH
 
@@ -115,9 +131,12 @@ class Bars():
         cheapest_HH_infos = cheapest_HH.loc[:, cheapest_HH.columns.map(lambda x: x.startswith(('name','beer', 'HHprice')))].min()
         return cheapest_HH_infos
 
+    #def _how_many(self):
+
+
 tic = time()
-test = Bars.from_location_name("PARIS")
-output = test._get_cheapest_beer()
+test = Bars.from_location_name("paris")
+output = test._get_cheapest_bar()[1]
 toc = time()
 toc = time()
 print('number of bars listed : ', len(test.data.index))
