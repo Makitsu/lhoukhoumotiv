@@ -19,18 +19,23 @@ bp = Blueprint('trip', __name__)
 @bp.route('/', methods=('GET', 'POST'))
 def homepage():
     if request.method == 'GET':
-        if session['live'] == True:
-            return render_template('index.html', stations=Station()._get_stations_name())
-        else:
+        print(session['current_user'])
+        if session['current_user'] is None:
             return render_template('homepage.html')
+
+        else:
+            return render_template('index.html', stations=Station()._get_stations_name())
     elif request.method == 'POST':
         return redirect('/')
 
 @bp.route("/alive", methods=["POST", "GET"])
 def alive():
-    if request.method == "GET":
+    if request.method == "POST":
         session.permanent = True
-        return session['live']
+        if session['live'] is None:
+            return 'no user'
+        else:
+            return session['current_user']
     else:
         return redirect('/')
 
@@ -44,7 +49,7 @@ def login():
         if user in session["user"]:
             idx = session["user"].index(user)
             if password in session["password"]:
-                session['live'] = True
+                session['current_user'] = user
                 redirect('/')
                 return jsonify([session['details'][idx]])
             else:
@@ -57,8 +62,7 @@ def login():
 @bp.route("/logout", methods=["POST", "GET"])
 def logout():
     if request.method == "POST":
-        session.permanent = True
-        session['live'] = False
+        session['current_user'] = None
         return redirect('/')
     else:
         return redirect('/')
@@ -84,9 +88,9 @@ def signup():
 
 
 @bp.route('/session')
-def updating_session():
+def reset_session():
     print('refresh session')
-    session['live'] = False
+    session['current_user'] = None
     session['user'] = ['maxime']
     session['password'] = ['maxtoo']
     session['details']=[]
@@ -102,7 +106,11 @@ def updating_session():
     res = str(session.items())
     return res
 
-
+@bp.route('/session2')
+def see_session():
+    print('refresh session')
+    res = str(session.items())
+    return res
 
 
 

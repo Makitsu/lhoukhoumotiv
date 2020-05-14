@@ -23,34 +23,7 @@
                     $('#user_msg').html("<p> Wrong password </p>");
                     $('#myModal').show()
                 }else{
-//                    window.onbeforeunload = function() {
-//                        localStorage.setItem("name", $('#inputName').val());
-//                        localStorage.setItem("email", $('#inputEmail').val());
-//                        localStorage.setItem("phone", $('#inputPhone').val());
-//                        localStorage.setItem("subject", $('#inputSubject').val());
-//                        localStorage.setItem("detail", $('#inputDetail').val());
-//                        // ...
-//                    }
 
-                    data = response[0];
-                    console.log(data)
-                    nom = data['nom'];
-                    prenom = data['prenom'];
-                    age = data['age'];
-                    user_id = data['user-id'];
-                    card = data['cards'];
-                    card_id = data['cards-id'];
-                    token = data['token']
-                    $('#infos').text("Bon retour, "+$("#user").val()+" ,prêt à voyager ?");
-                    $('#user_msg').html("<p>"+nom+" "+prenom+" ,prêt à voyager ? \n   id: "+user_id+"\n    card: "+card+"\n   token: "+token+"</p>");
-                    $('#myModal').show()
-                    $("#infos").show();
-                    $("#user").show();
-                    $("#password").show();
-                    $("#user").hide();
-                    $("#password").hide();
-                    $("#signup").hide();
-                    $("#signin").text('Log out');
                     window.location.reload();
 
                 }
@@ -64,16 +37,16 @@
             },
             success: function(response) {
                 alert('log out')
+                location.reload();
+                $("#user").val("");
+                $("#password").val("");
+                $('#infos').text("")
+                $("#user").show();
+                $("#password").show();
+                $("#signin").text('Sign in');
+                $("#signup").show();
             },
         });
-        location.reload();
-        $("#user").val("");
-        $("#password").val("");
-        $('#infos').text("")
-        $("#user").show();
-        $("#password").show();
-        $("#signin").text('Sign in');
-        $("#signup").show();
     }
 
 });
@@ -103,3 +76,27 @@ $(document).on('click','#signup',function() {
         },
     });
 });
+
+$(document).ready(function() {
+    $.ajax({
+        url:"/alive",
+        type:"post",
+        success: function(response){
+            if(response == 'no user'){
+                console.log('no user')
+            }else{
+                user = response;
+                $('#infos').text("Bon retour, "+user+" ,prêt à voyager ?");
+
+                $("#infos").show();
+                $("#user").show();
+                $("#password").show();
+                $("#user").hide();
+                $("#password").hide();
+                $("#signup").hide();
+                $("#signin").text('Log out');
+            }
+        }
+       });
+});
+
