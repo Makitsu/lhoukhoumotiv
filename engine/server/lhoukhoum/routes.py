@@ -189,6 +189,7 @@ def trip_map():
 
 @bp.route('/station/info', methods=['GET', 'POST'])
 def station_info():
+    print("function called")
     document_path = os.getcwd() + '\\lhoukhoum\\static\\db\\results_wikiscrapping.csv'
     summary_info = pd.read_csv(document_path, sep=';', index_col=0)
     document_path = os.getcwd() + '\\lhoukhoum\\static\\db\\list_city_items.csv'
@@ -202,13 +203,13 @@ def station_info():
         ## Get items if available ##
         ## cities in lowercase => the items list csv ##
         dest = dest.lower()
-        found_count = item_results['ville'].str.contains(dest).count()
+        found_count = item_results.ville.str.count(dest).sum()
         print(found_count)
         if found_count > 0:
             items_availability = 1
             print('items available')
             item_results = item_results[item_results['ville'] == dest]
-            items_info = item_results.drop(columns=['summary','initial_search'])
+            items_info = item_results.drop(columns=['initial_search','summary'])
             item_results = items_info[items_info['type'] == 'monument'].sample(3)
             item_results = item_results.append(items_info[items_info['type'] == 'lieu'].sample(3),ignore_index=True)
             item_results = item_results.append(items_info[items_info['type'] == 'museum'].sample(3),ignore_index=True)
@@ -217,11 +218,13 @@ def station_info():
             print(item_results)
             item_name = item_results['name'].tolist()
             item_img = item_results['image_src'].tolist()
+            #item_summary = item_results['summary'].tolist()
             item_link = item_results['wiki_link'].tolist()
         else :
             items_availability = 0
             item_name = 0
             item_img = 0
+            #item_summary = 0
             item_link = 0
             print('items unavailable')
 
@@ -236,8 +239,9 @@ def station_info():
                         'city_img': "url(/static/img/{}.jpg)".format(dest),
                         'items' : {'availability' : items_availability,
                                    'name': item_name,
+                                   #'summary': item_summary,
                                    'img':item_img,
                                    'link': item_link}
                         }
-
+        print(info_results)
         return jsonify(info_results)

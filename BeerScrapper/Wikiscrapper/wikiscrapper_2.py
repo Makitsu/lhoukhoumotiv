@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from urllib import request
+from io import BytesIO
 from urllib.request import urlretrieve
 import wikipedia as w
 from bs4 import BeautifulSoup as bs
@@ -30,7 +31,7 @@ for index, row in df.iterrows():
     #ratio_found = 0
     try:
         result['initial_search'].append(row['name'])
-        result['ville'].append(row['city'].capitalize())
+        result['ville'].append(row['city'].lower())
         result['type'].append(row['type'])
         # 1. Grab  the list from wikipedia.
         w.set_lang('fr')
@@ -40,7 +41,7 @@ for index, row in df.iterrows():
         s = w.page(search[0])
         print(search[0])
         ratio = difflib.SequenceMatcher(None, row['name'], search[0]).ratio()
-        if ratio < 0.5:
+        if ratio < 0.55:
             print("Warning ratio : ", ratio, "Vérifier url")
             print(s.url)
             print("[INTERGER !] Please change in the list below (order number) or enter 'p' to dismiss")
@@ -62,38 +63,63 @@ for index, row in df.iterrows():
         print(s.url)
         html = request.urlopen(s.url).read()
         soup = bs(html, 'html.parser',from_encoding="utf-8")
-        images = soup.findAll('img')
+        images = soup.findAll("a", {"class": "image"})
         allow = (".jpg", '.JPG')
         for image in images:
+            img = image.find('img')
             try:
-                source = image['src']
+                print('href : ', image['href'])
+                href = str(image['href']).replace(' ','').replace('Fichier','File')
+                source = 'https://commons.wikimedia.org' + href
+                width = img['data-file-width']
+                print('source : ', source)
+                print(width)
+                if source.endswith(allow) and width is not None and int(width) > 900:
+                    image_html = request.urlopen(source).read()
+                    image_page = bs(image_html, 'html.parser')
+                    link = image_page.find("div", { "id" : 'file'})
+                    link = link.find('a')['href']
+                    result['image_src'].append(link)
+                    image_found = 1
+                    break
+            except request.HTTPError:
+                source = img['src']
                 print("http:" + source)
                 if source.endswith(allow):
                     result['image_src'].append("http:" + source)
-                    print('cest la bonne michou : ',"http:",source)
-                    image_found =+ 1
+                    print('cest la bonne michou : ', "http:", source)
+                    image_found = + 1
                     break
             except AttributeError:
                 print("attribute error with image - break")
                 break
         if image_found == 0:
             result['image_src'].append("n/a")
-        print(result)
+        print(result['image_src'])
         df = pd.DataFrame.from_dict(result)
         print(df)
-        df.to_csv('list_city_items_3.csv', sep=";")
-    except (w.exceptions.WikipediaException,w.exceptions.DisambiguationError,w.exceptions.PageError, IndexError, ValueError):
+        df.to_csv('list_city_items.csv', sep=";")
+    except (w.exceptions.WikipediaException,w.exceptions.DisambiguationError,w.exceptions.PageError, IndexError, ValueError, KeyboardInterrupt):
+        print('Houston on a un problème! Va falloir faire à la mano ====>')
         if title_found == 0:
-            result['name'].append('n/a')
+            print("Entrer le nom exact : ")
+            x = input()
+            result['name'].append(x)
         if image_found == 0:
-            result['image_src'].append("n/a")
+            print("Entrer le lien de l'image : ")
+            x = input()
+            result['image_src'].append(x)
         if link_found == 0:
-            result['wiki_link'].append("n/a")
+            print("Entrer le lien de l'article wiki : ")
+            x = input()
+            result['wiki_link'].append(x)
         if summary_found == 0:
-            result['summary'].append("n/a")
+            print('Entrer la première ligne (résumé) : ')
+            x = input()
+            result['summary'].append(x)
         print(result)
         df = pd.DataFrame.from_dict(result)
         print(df)
-        df.to_csv('list_city_items_3.csv', sep=";")
+        df.to_csv('list_city_items.csv', sep=";")
 df.drop_duplicates(subset=['name', 'ville'], keep='first')
-df.to_csv('list_city_items_3.csv', sep=";")
+df.to_csv('list_city_items.csv', sep=";")
