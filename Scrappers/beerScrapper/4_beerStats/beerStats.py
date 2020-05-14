@@ -16,7 +16,16 @@ from time import time
 import numpy as np
 import re
 
+# data import and dataype forcing for smooth analysis
 all_bars = pd.read_csv('result_no_TBD.csv', delimiter=',', index_col=0)
+beers_price_columns = []
+beers_volume_columns = []
+for i in range(7):
+    beers_price_columns += [9+i*4,10+i*4]
+    beers_volume_columns += [11+i*4]
+for i in beers_price_columns:
+    all_bars.iloc[:, i] = pd.to_numeric(all_bars.iloc[:, i], errors='coerce')
+
 earth_circum = 40075e3  # earth circumference at equator (meters)
 circularity_error = 1.01  # earth is not circular but here calculation suppose so -> 0.5% error
 
@@ -104,10 +113,20 @@ class Bars():
         return cls(df.data, "from_location_name", name)
 
     def _get_cheapest_bar(self):
-        cheapest_HH  = self.data.loc[:, self.data.columns.map(lambda x: x.startswith(('name','beer','HHprice')))].min()
-        cheapest_HH = self.data[self.data["name"] == cheapest_HH.loc["name"]]
-        cheapest_nHH = self.data.loc[:, self.data.columns.map(lambda x: x.startswith(('name', 'beer', 'nHHprice')))].min()
-        cheapest_nHH = self.data[self.data["name"] == cheapest_nHH.loc["name"]]
+        """
+        Finds the bar with the cheapest
+        :return:
+        """
+        HH_prices  = self.data.loc[:, self.data.columns.map(lambda x: x.startswith(('HHprice_')))].values
+        min_HH_prices = np.nanmin(HH_prices,axis=1)
+        cheapest_index = np.where(min_HH_prices == np.nanmin(min_HH_prices))
+        cheapest_HH = self.data.iloc[cheapest_index]
+
+        nHH_prices  = self.data.loc[:, self.data.columns.map(lambda x: x.startswith(('nHHprice_')))].values
+        min_nHH_prices = np.nanmin(nHH_prices,axis=1)
+        cheapest_index = np.where(min_nHH_prices == np.nanmin(min_nHH_prices))
+        cheapest_nHH = self.data.iloc[cheapest_index]
+
         return cheapest_HH, cheapest_nHH
 
     def _get_cheapest_beer(self):
@@ -115,9 +134,12 @@ class Bars():
         cheapest_HH_infos = cheapest_HH.loc[:, cheapest_HH.columns.map(lambda x: x.startswith(('name','beer', 'HHprice')))].min()
         return cheapest_HH_infos
 
+    #def _how_many(self):
+
+
 tic = time()
-test = Bars.from_location_name("PARIS")
-output = test._get_cheapest_beer()
+test = Bars.from_location_name("paris")
+output = test._get_cheapest_bar()
 toc = time()
 toc = time()
 print('number of bars listed : ', len(test.data.index))

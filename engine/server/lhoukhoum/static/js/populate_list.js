@@ -4,7 +4,16 @@
 //        start_stat = this.name;
 //    });
 //
-//
+//    $.ajax({
+//        url: "/station/map",
+//        type: "post",
+//        data: {
+//            'start_station': start_stat
+//        },
+//        success: function(response) {
+//        $("#map_container").html(response);
+//        },
+//    });
 //    $.ajax({
 //        url: "/station/info",
 //        type: "post",
@@ -27,7 +36,9 @@
 //        error: function(output){
 //            console.log('error');
 //        },
-//    })
+//    }).always(function(){
+//    $(#test2).LoadingOverlay("hide",true);
+//    });;
 //
 //
 //});
