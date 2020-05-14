@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Homepage{% endblock %}
 {% block content %}
-<div class="container" style="display: block;margin: 0 auto;" >
-<iframe width="1020" height="630" src="https://www.youtube.com/embed/-T_d9XrLrm0?start=2149&amp;end=2182&amp;rel=0&amp;autoplay=1&amp;mute=1&amp;loop=1&amp;autopause=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
+    <div class="folium-map" id="map" ></div>
+    <meta id="stations_name" data-playlist="{{ stations_name }}">
+    <meta id="stations_pos" data-playlist="{{ stations_pos }}">
+    <script src="{{ url_for('static', filename='js/homepage.js') }}"></script>
+
 {% endblock %}

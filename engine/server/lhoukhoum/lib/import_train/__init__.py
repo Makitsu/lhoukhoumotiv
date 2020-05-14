@@ -121,6 +121,12 @@ class Station(object):
     def _get_stations_name(self):
         return _STOP_NAME
 
+    def _get_stations_city(self):
+        return _STOP_CITY
+
+    def _get_stations_position(self):
+        return _STOP_POS
+
     def _populate_city(self):
         idx = _STOP_NAME.index(self.name)
         pos = _STOP_POS[idx]

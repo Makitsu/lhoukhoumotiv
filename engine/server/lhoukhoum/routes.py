@@ -21,8 +21,7 @@ def homepage():
     if request.method == 'GET':
         print(session['current_user'])
         if session['current_user'] is None:
-            return render_template('homepage.html')
-
+            return render_template('homepage.html',stations_name = Station()._get_stations_city(),stations_pos= Station()._get_stations_position())
         else:
             return render_template('index.html', stations=Station()._get_stations_name())
     elif request.method == 'POST':
@@ -32,7 +31,7 @@ def homepage():
 def alive():
     if request.method == "POST":
         session.permanent = True
-        if session['live'] is None:
+        if session['current_user'] is None:
             return 'no user'
         else:
             return session['current_user']
