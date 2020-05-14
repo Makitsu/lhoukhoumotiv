@@ -145,8 +145,8 @@ all_bars = pd.read_csv('result_no_TBD.csv', delimiter=',', index_col=0)
 beers_price_columns = []
 beers_volume_columns = []
 for i in range(7):
-    beers_price_columns += [8+i*4,9+i*4]
-    beers_volume_columns += [10+i*4]
+    beers_price_columns += [9+i*4,10+i*4]
+    beers_volume_columns += [11+i*4]
 for i in beers_price_columns:
     all_bars.iloc[:, i] = pd.to_numeric(all_bars.iloc[:, i], errors='coerce')
 

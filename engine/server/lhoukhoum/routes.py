@@ -216,23 +216,59 @@ def trip_map():
 
 @bp.route('/station/info', methods=['GET', 'POST'])
 def station_info():
+    print("function called")
     document_path = os.getcwd() + '\\lhoukhoum\\static\\db\\results_wikiscrapping.csv'
-    document_path2 = os.getcwd() + '\\lhoukhoum\\static\\db\\results_wikiscrapping2.csv'
-    summary_info = pd.read_csv(document_path, sep=';',index_col=0)
-    dest = request.form.get('city_name')
+    summary_info = pd.read_csv(document_path, sep=';', index_col=0)
+    document_path = os.getcwd() + '\\lhoukhoum\\static\\db\\list_city_items.csv'
+    item_results = pd.read_csv(document_path, sep=';',engine='python',encoding='utf-8')
+    dest = request.form.get('city_name').capitalize()
     print(dest)
-    info = summary_info[summary_info['ville'] == dest].iloc[0] #first row of filtered df
+    info = summary_info[summary_info['ville'] == dest].iloc[0]  # first row of filtered df
+    print(info)
     if request.method == 'POST':
-        answer = {'city_name': dest,
-                  'region': info['region'],
-                  'departement': info['departement'],
-                  'population': info['population'],
-                  'densite': info['densite'],
-                  'gentile': info['gentile'],
-                  'altitude': info['altitude'],
-                  'superficie': info['superficie'],
-                  'city_img': "url(/static/img/{}.jpg)".format(dest)
-                  }
-        print('city')
-        print(answer)
-        return answer
+        ## Get general info ##
+        ## Get items if available ##
+        ## cities in lowercase => the items list csv ##
+        dest = dest.lower()
+        found_count = item_results.ville.str.count(dest).sum()
+        print(found_count)
+        if found_count > 0:
+            items_availability = 1
+            print('items available')
+            item_results = item_results[item_results['ville'] == dest]
+            items_info = item_results.drop(columns=['initial_search','summary'])
+            item_results = items_info[items_info['type'] == 'monument'].sample(3)
+            item_results = item_results.append(items_info[items_info['type'] == 'lieu'].sample(3),ignore_index=True)
+            item_results = item_results.append(items_info[items_info['type'] == 'museum'].sample(3),ignore_index=True)
+            item_results = item_results.append(items_info[items_info['type'] == 'food'].sample(3),ignore_index=True)
+            item_results = item_results.drop(columns=['ville','type'])
+            print(item_results)
+            item_name = item_results['name'].tolist()
+            item_img = item_results['image_src'].tolist()
+            #item_summary = item_results['summary'].tolist()
+            item_link = item_results['wiki_link'].tolist()
+        else :
+            items_availability = 0
+            item_name = 0
+            item_img = 0
+            #item_summary = 0
+            item_link = 0
+            print('items unavailable')
+
+        info_results = {'city_name': dest,
+                        'region': info['region'],
+                        'departement': info['departement'],
+                        'population': info['population'],
+                        'densite': info['densite'],
+                        'gentile': info['gentile'],
+                        'altitude': info['altitude'],
+                        'superficie': info['superficie'],
+                        'city_img': "url(/static/img/{}.jpg)".format(dest),
+                        'items' : {'availability' : items_availability,
+                                   'name': item_name,
+                                   #'summary': item_summary,
+                                   'img':item_img,
+                                   'link': item_link}
+                        }
+        print(info_results)
+        return jsonify(info_results)

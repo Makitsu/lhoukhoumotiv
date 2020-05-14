@@ -57,100 +57,84 @@
                         </div>
                     </section>
 
-            <section>
-            <div class="container-fluid" id="items_container">
-                <div class="row justify-content-md-center">
-                    <div class="card md-auto" id="img_href_1">
-                        <img class="card-img-top" id="img_src_1" alt="Card image cap">
-                            <div class="card-body">
-                                <p class="card-text" id="item_name_1"></p>
-                            </div>
-                        </img>
-                    </div>
-                    <div class="card md-auto" id="img_href_2">
-                        <img class="card-img-top" id="img_src_2" alt="Card image cap">
-                            <div class="card-body">
-                                <p class="card-text" id="item_name_2"></p>
-                            </div>
-                        </img>
-                    </div>
-                    <div class="card md-auto" id="img_href_3">
-                        <img class="card-img-top" id="img_src_3">
-                            <div class="card-body">
-                                <p class="card-text" id="item_name_3"></p>
-                            </div>
-                        </img>
-                    </div>
-                </div>
-                <div class="row justify-content-md-center">
-                    <div class="card md-auto" id="img_href_4">
-                        <img class="card-img-top" id="img_src_4" alt="Card image cap">
-                            <div class="card-body">
-                                <p class="card-text" id="item_name_4"></p>
-                            </div>
-                        </img>
-                    </div>
-                    <div class="card md-auto" id="img_href_5">
-                        <img class="card-img-top" id="img_src_5" alt="Card image cap">
-                            <div class="card-body">
-                                <p class="card-text" id="item_name_5"></p>
-                            </div>
-                        </img>
-                    </div>
-                    <div class="card md-auto" id="img_href_6">
-                        <img class="card-img-top" id="img_src_6" alt="Card image cap">
-                            <div class="card-body">
-                                <p class="card-text" id="item_name_6"></p>
-                            </div>
-                        </img>
+            <section id="items_container">
+            <script>$(function() {
+                     var selectedClass = "";
+                        $(".filter").click(function(){
+                        selectedClass = $(this).attr("data-rel");
+                        $("#gallery").fadeTo(100, 0.1);
+                        $("#gallery div").not("."+selectedClass).fadeOut().removeClass('animation');
+                    setTimeout(function() {
+                    $("."+selectedClass).fadeIn().addClass('animation');
+                    $("#gallery").fadeTo(300, 1);
+                    }, 300);
+                    });
+                    });
+            </script>
+            <div class="row"></div>
+            <div class="container mx-auto" id="items_container" style="width: 150vh; background-color: rgba(255, 255, 255, 0.6)">
+                <div class="row">
+                    <div class="col-md-12 d-flex justify-content-center mb-5">
+                        <button type="button" class="btn btn-outline-black waves-effect filter" data-rel="all">All</button>
+                        <button type="button" class="btn btn-outline-black waves-effect filter" data-rel="1">Monuments</button>
+                        <button type="button" class="btn btn-outline-black waves-effect filter" data-rel="2">Lieux</button>
+                        <button type="button" class="btn btn-outline-black waves-effect filter" data-rel="3">Musées</button>
+                        <button type="button" class="btn btn-outline-black waves-effect filter" data-rel="4">Gastronomie</button>
                     </div>
                 </div>
-                <div  class="row justify-content-md-center">
-                    <div class="card md-auto" id="img_href_7">
-                        <img class="card-img-top" id="img_src_7" alt="Card image cap">
-                            <div class="card-body">
-                                <p class="card-text" id="item_name_7"></p>
-                            </div>
+                <div class="gallery" id="gallery">
+                    <div class="mb-3 pics animation all 1" style="position: relative">
+                        <img class='img-fluid' id="img_src_1" alt="Card image cap">
+                        <p class="text-center text-white font-weight-light" id="img_title_1" style=" position: absolute; bottom: 20px; right: 20px; background-color: rgba(255, 255, 255, 0.6); color: white; padding-left: 20px; padding-right: 20px"></p>
+                    </div>
+                    <div class="mb-3 pics animation all 1">
+                        <img class='img-fluid' id="img_src_2" alt="Card image cap">
+                        <p class="text-center text-white font-weight-normal" id="img_title_2" style=" position: absolute; bottom: 20px; right: 20px; background-color: rgba(255, 255, 255, 0.6); color: white; padding-left: 20px; padding-right: 20px"></p>
                         </img>
                     </div>
-                    <div class="card md-auto" id="img_href_8">
-                        <img class="card-img-top" id="img_src_8" alt="Card image cap">
-                            <div class="card-body">
-                                <p class="card-text" id="item_name_8"></p>
-                            </div>
+                    <div class="mb-3 pics animation all 1">
+                        <img class='img-fluid' id="img_src_3" alt="Card image cap">
+                        <p class="text-center text-white font-weight-normal" id="img_title_3" style=" position: absolute; bottom: 20px; right: 20px; background-color: rgba(255, 255, 255, 0.6); color: white; padding-left: 20px; padding-right: 20px"></p>
                         </img>
                     </div>
-                    <div class="card md-auto" id="img_href_9">
-                        <img class="card-img-top" id="img_src_9" alt="Card image cap">
-                            <div class="card-body">
-                                <p class="card-text" id="item_name_9"></p>
-                            </div>
+                    <div class="mb-3 pics animation all 2">
+                        <img class='img-fluid' id="img_src_4" alt="Card image cap">
+                        <p class="text-center text-white font-weight-normal" id="img_title_4" style=" position: absolute; bottom: 20px; right: 20px; background-color: rgba(255, 255, 255, 0.6); color: white; padding-left: 20px; padding-right: 20px"></p>
                         </img>
                     </div>
-                </div>
-                <div  class="row justify-content-md-center">
-                    <div class="card md-auto" id="img_href_10">
-                        <img class="card-img-top" id="img_src_10" alt="Card image cap">
-                            <div class="card-body">
-                                <p class="card-text" id="item_name_10"></p>
-                            </div>
+                    <div class="mb-3 pics animation all 2">
+                        <img class='img-fluid' id="img_src_5" alt="Card image cap">
+                        <p class="text-center text-white font-weight-normal" id="img_title_5" style=" position: absolute; bottom: 20px; right: 20px; background-color: rgba(255, 255, 255, 0.6); color: white; padding-left: 20px; padding-right: 20px"></p>
                         </img>
                     </div>
-                    <div class="card md-auto" id="img_href_11">
-                        <img class="card-img-top" id="img_src_11" alt="Card image cap">
-                            <div class="card-body">
-                                <p class="card-text" id="item_name_11"></p>
-                            </div>
-                        </img>
+                    <div class="mb-3 pics animation all 2">
+                        <img class='img-fluid' id="img_src_6" alt="Card image cap">
+                        <p class="text-center text-white font-weight-normal" id="img_title_6" style=" position: absolute; bottom: 20px; right: 20px; background-color: rgba(255, 255, 255, 0.6); color: white; padding-left: 20px; padding-right: 20px"></p>
                     </div>
-                    <div class="card md-auto" id="img_href_12">
-                        <img class="card-img-top" id="img_src_12" alt="Card image cap">
-                            <div class="card-body">
-                                <p class="card-text" id="item_name_12"></p>
-                            </div>
-                        </img>
+                    <div class="mb-3 pics animation all 3">
+                        <img class='img-fluid' id="img_src_7" alt="Card image cap">
+                        <p class="text-center text-white font-weight-normal" id="img_title_7" style=" position: absolute; bottom: 20px; right: 20px; background-color: rgba(255, 255, 255, 0.6); color: white; padding-left: 20px; padding-right: 20px"></p>
                     </div>
-                </div>
+                    <div class="mb-3 pics animation all 3">
+                        <img class='img-fluid' id="img_src_8" alt="Card image cap">
+                        <p class="text-center text-white font-weight-normal" id="img_title_8" style=" position: absolute; bottom: 20px; right: 20px; background-color: rgba(255, 255, 255, 0.6); color: white; padding-left: 20px; padding-right: 20px"></p>
+                    </div>
+                    <div class="mb-3 pics animation all 3">
+                        <img class='img-fluid' id="img_src_9" alt="Card image cap">
+                        <p class="text-center text-white font-weight-normal" id="img_title_9" style=" position: absolute; bottom: 20px; right: 20px; background-color: rgba(255, 255, 255, 0.6); color: white; padding-left: 20px; padding-right: 20px"></p>
+                    </div>
+                    <div class="mb-3 pics animation all 4">
+                        <img class='img-fluid' id="img_src_10" alt="Card image cap">
+                        <p class="text-center text-white font-weight-normal" id="img_title_10" style=" position: absolute; bottom: 20px; right: 20px; background-color: rgba(255, 255, 255, 0.6); color: white; padding-left: 20px; padding-right: 20px"></p>
+                    </div>
+                    <div class="mb-3 pics animation all 4">
+                        <img class='img-fluid' id="img_src_11" alt="Card image cap">
+                        <p class="text-center text-white font-weight-normal" id="img_title_11" style=" position: absolute; bottom: 20px; right: 20px; background-color: rgba(255, 255, 255, 0.6); color: white; padding-left: 20px; padding-right: 20px"></p>
+                    </div>
+                    <div class="mb-3 pics animation all 4">
+                        <img class='img-fluid' id="img_src_12" alt="Card image cap">
+                        <p class="text-center text-white font-weight-normal" id="img_title_12" style=" position: absolute; bottom: 20px; right: 20px; background-color: rgba(255, 255, 255, 0.6); color: white; padding-left: 20px; padding-right: 20px"></p>
+                    </div>
                 </div>
             </div>
             </section>
