@@ -16,19 +16,23 @@ from time import time
 import numpy as np
 import re
 
-# data import and dataype forcing for smooth analysis
-all_bars = pd.read_csv('result_no_TBD.csv', delimiter=',', index_col=0)
-
-beers_price_columns = []
-beers_volume_columns = []
-for i in range(7):
-    beers_price_columns += [9+i*4,10+i*4]
-    beers_volume_columns += [11+i*4]
-for i in beers_price_columns:
-    all_bars.iloc[:, i] = pd.to_numeric(all_bars.iloc[:, i], errors='coerce')
-
 earth_circum = 40075e3  # earth circumference at equator (meters)
 circularity_error = 1.01  # earth is not circular but here calculation suppose so -> 0.5% error
+
+def data_import():
+    # data import and datatype forcing for smooth analysis
+    all_bars = pd.read_csv('result_no_TBD.csv', delimiter=',', index_col=0)
+
+    HH_columns = (5,6)
+    beers_price_columns = []
+    beers_volume_columns = []
+    for i in range(7):
+        beers_price_columns += [9+i*4,10+i*4]
+        beers_volume_columns += [11+i*4]
+    for i in beers_price_columns:
+        all_bars.iloc[:, i] = pd.to_numeric(all_bars.iloc[:, i], errors='coerce')
+
+    return all_bars
 
 
 def is_in_square(coords1, coords2, radius):
@@ -64,6 +68,7 @@ class Bars():
 
     def __init__(self, data=None, type=None, location=None, radius=None):
         if data is None:
+            all_bars = data_import()
             self.data = pd.DataFrame(columns=list(all_bars.columns))
         if data is not None:
             self.data = data
@@ -82,7 +87,7 @@ class Bars():
         radius
         """
         df = Bars()
-        df.data = all_bars
+        df.data = data_import()
         df.data['distance'] = haversine(coordinates[1], coordinates[0], all_bars['latitude'].values, all_bars['longitude'].values)
         radius = radius * 1.005 #Harvesine approximation
         df.data = df.data[df.data['distance']<=radius]
@@ -96,7 +101,7 @@ class Bars():
         :return: Bars class object with data of the bars in the specified postcode
         """
         df = Bars()
-        df.data = all_bars
+        df.data = data_import()
         df.data = df.data[df.data['postcode'] == str(postcode)]
         return cls(df.data, "from_postcode", postcode)
 
@@ -108,7 +113,7 @@ class Bars():
         :return: Bars class object with data of the bars in the specified location name
         """
         df = Bars()
-        df.data = all_bars
+        df.data = data_import()
         name = name.lower()
         df.data = df.data[(df.data["city_district"].str.lower() == name) | (df.data["city"].str.lower() == name) | (df.data["municipality"].str.lower() == name) | (df.data["suburb"].str.lower() == name) | (df.data["town"].str.lower() == name) | (df.data["village"].str.lower() == name)]
         return cls(df.data, "from_location_name", name)
@@ -124,14 +129,17 @@ class Bars():
         if beer_name == None:
             HH_prices = bars_list.filter(regex="^HHprice_").values
             min_HH_prices = np.nanmin(HH_prices, axis=1)
-            cheapest_index = np.where(min_HH_prices == np.nanmin(min_HH_prices))
+            min_HH_price = np.nanmin(min_HH_prices)
+            cheapest_index = np.where(min_HH_prices == min_HH_price)
             cheapest_HH = bars_list.iloc[cheapest_index]
 
             nHH_prices = bars_list.filter(regex="^nHHprice_").values
             min_nHH_prices = np.nanmin(nHH_prices, axis=1)
-            cheapest_index = np.where(min_nHH_prices == np.nanmin(min_nHH_prices))
+            min_nHH_price = np.nanmin(min_nHH_prices)
+            cheapest_index = np.where(min_nHH_prices == min_nHH_price)
             cheapest_nHH = bars_list.iloc[cheapest_index]
-        else:
+
+        else: #specific beer has been specified
             # finds indices of all bars having the searched beer with the corresponding beer column (case insensitive)
             bars_list.reset_index(inplace = True)
             beer_name = beer_name.capitalize()
@@ -149,9 +157,11 @@ class Bars():
                 beer_nHHprice_list.append( self.data.iloc[bars_indices[0][i], beer_nHHprice_index[i]] )
                 beer_HHprice_list.append(self.data.iloc[bars_indices[0][i], beer_HHprice_index[i]])
                 i += 1
-            # find the list indices of all the bars having the lowest price (one or several)
-            cheapest_nHH_list_indices = [i for i, x in enumerate(beer_nHHprice_list) if x == min(beer_nHHprice_list)]
-            cheapest_HH_list_indices = [i for i, x in enumerate(beer_HHprice_list) if x == min(beer_HHprice_list)]
+            # find the cheapest price and the list indices of all the bars having this cheapest price (one or several)
+            min_nHH_price = min(beer_nHHprice_list)
+            min_HH_price  = min(beer_HHprice_list)
+            cheapest_nHH_list_indices = [i for i, x in enumerate(beer_nHHprice_list) if x == min_nHH_price]
+            cheapest_HH_list_indices = [i for i, x in enumerate(beer_HHprice_list) if x == min_HH_price]
             # translates list indices into list of dataframe indices
             cheapest_nHH_df_indices = [bars_indices[0][i] for i in cheapest_nHH_list_indices]
             cheapest_HH_df_indices = [bars_indices[0][i] for i in cheapest_HH_list_indices]
@@ -159,21 +169,24 @@ class Bars():
             cheapest_HH = bars_list.iloc[cheapest_HH_df_indices]
             cheapest_nHH = bars_list.iloc[cheapest_nHH_df_indices]
 
-        return cheapest_HH, cheapest_nHH
+        return (cheapest_HH, min_HH_price), (cheapest_nHH, min_nHH_price)
 
-    def _get_cheapest_beer(self):
-        cheapest_HH, cheapest_nHH = self._get_cheapest_bars()
-        cheapest_HH_infos = cheapest_HH.loc[:, cheapest_HH.columns.map(lambda x: x.startswith(('name','beer', 'HHprice')))].min()
-        return cheapest_HH_infos
 
-    #def _how_many(self):
+    def _how_many(self):
+        """
+        count the number of bars in the dataframe
+        :return: number of bars
+        """
+        return len(self.data.index)
 
+    def _HH_infos(self):
+        HH_hours = self.data["HH_start"].values
+
+        return  HH_hours
 
 tic = time()
 test = Bars.from_location_name("paris")
-output = test._get_cheapest_bars(beer_name="la Chouffe")
+output = test._HH_infos()
 toc = time()
-toc = time()
-print('number of bars listed : ', len(test.data.index))
 print(output)
 print('temps nécessaire', toc-tic)
