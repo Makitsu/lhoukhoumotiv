@@ -13,13 +13,10 @@
                             <div class="mx-auto col-sm-3 text-center col-sm-offset-1">
                                 <p></p>
                                 <p></p>
-                                <a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">Que boire ?</a>
+                                <a class="btn btn-primary btn-lg js-scroll-trigger" href="#items_container">C'est beau ! Montre moi en plus !</a>
                                 <p></p>
                                 <p></p>
-                                <a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">Que faire ?</a>
-                                <p></p>
-                                <p></p>
-                                <a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">Que voir ?</a>
+                                <a class="btn btn-primary btn-lg js-scroll-trigger" href="#biere">Et où est la bodega ?</a>
                                 <p></p>
                                 <p></p>
                             </div>
@@ -28,7 +25,7 @@
                                 <p><strong>Département : </strong><label id="city_departement"></label></p>
                                 <p><strong>Région : </strong><label id="city_region"></label></p>
                                 <p><strong>Population : </strong><label id="city_population"></label> habitants</p>
-                                <p><strong>Densité de population : </strong><label id="city_densite"></label></p>
+                                <p><strong>Densité de population : </strong><label id="city_densite"></label> hab/km2</p>
                                 <p><strong>Gentillé : </strong><label id="city_gentile"></label></p>
                                 <p><strong>Superficie : </strong><label id="city_superficie"></label></p>
                                 <p><strong>Altitude : </strong><label id="city_altitude"></label></p>
@@ -37,13 +34,10 @@
                         </div>
                         <div class="row h-100">
                             <div class="col-sm"></div></div>
-                        <div class="row justify-content-center">
-                            <a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">En savoir plus</a>
-                        </div>
                     </div>
 
                     </header>
-                    <section class="container-flex h-100"  style="background: url(/static/img/bar.jpg) no-repeat center center fixed; min-height : 100vh; background-position: center; background-size: cover;">
+                    <section class="container-flex h-100"  style="display: none; background: url(/static/img/bar.jpg) no-repeat center center fixed; min-height : 100vh; background-position: center; background-size: cover;">
                         <div class="container">
                             <div class="row"><div class="col-12"></div></div>
                             <div class="row justify-content-center" >
@@ -57,7 +51,7 @@
                         </div>
                     </section>
 
-            <section id="items_container">
+            <div id="items_container">
             <script>$(function() {
                      var selectedClass = "";
                         $(".filter").click(function(){
@@ -72,7 +66,7 @@
                     });
             </script>
             <div class="row"></div>
-            <div class="container mx-auto" id="items_container" style="width: 150vh; background-color: rgba(255, 255, 255, 0.6)">
+            <div class="container mx-auto" style="width: 150vh; background-color: rgba(255, 255, 255, 0.6)">
                 <div class="row">
                     <div class="col-md-12 d-flex justify-content-center mb-5">
                         <button type="button" class="btn btn-outline-black waves-effect filter" data-rel="all">All</button>
@@ -137,7 +131,7 @@
                     </div>
                 </div>
             </div>
-            </section>
+            </div>
         </div>
         <script src="{{ url_for('static', filename='js/provide_info.js') }}"></script>
 {% endblock %}
