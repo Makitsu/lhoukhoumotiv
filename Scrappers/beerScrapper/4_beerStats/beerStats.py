@@ -185,7 +185,12 @@ class Bars():
         return  HH_hours
 
 tic = time()
-test = Bars.from_location_name("paris")
+test = Bars.from_location_name("lyon")
+print(test.data.columns)
+sample_df = test.data[['name','latitude','longitude']]
+sample_df['position'] = sample_df.apply(lambda row: [row['latitude'],row['longitude']], axis=1)
+print(sample_df)
+sample_df.to_csv('sample_test.csv',sep=';',index=False)
 output = test._HH_infos()
 toc = time()
 print(output)
