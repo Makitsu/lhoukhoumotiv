@@ -12,7 +12,7 @@ $(document).ready(function() {
         },
         success: function(answer) {
             data = answer
-            alert('fonctionne')
+            console.log('function provide info launched')
             $( "#city_welcome" ).append(data['city_name']);
             $( "#city_region" ).append(data['region']);
             $( "#city_departement" ).append(data['departement']);
@@ -23,7 +23,7 @@ $(document).ready(function() {
             $( "#city_superficie" ).append(data['superficie']);
             $('#background').css({'background-image': data['city_img']});
             if (data['items']['availability'] != 0) {
-                alert(data['items']['link'][0])
+                console.log('items available')
                 for (let i = 0; i < 13; i++){
                     let str = "img_src_%s".replace('%s',(i + 1).toString())
                     let str2 = "img_title_%s".replace('%s',(i + 1).toString())
@@ -33,10 +33,9 @@ $(document).ready(function() {
                     document.getElementById(str).src = data['items']['img'][i];
                     document.getElementById(str2).append(data['items']['name'][i]);
                 }
-
             } else {
-                document.getElementById("#items_container").style.display = "none";
-              }
+                document.getElementById("items_container").style.display = "none";
+            }
             },
         error: function(output){
             console.log('error');
