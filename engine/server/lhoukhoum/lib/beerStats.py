@@ -191,18 +191,11 @@ class Bars():
         HH_mins = [i%100 if len(str(i)) == 4 else 0 for i in HH_times]
         return  HH_hours
 
-#<<<<<<< Updated upstream
-# tic = time()
-# test = Bars.from_location_name("paris")
-# output = test._get_cheapest_bars(beer_name="chouffe", partial_match=True)
-# toc = time()
-# print(output)
-# print('temps nécessaire', toc-tic)
-#=======
-# tic = time()
-# test = Bars.from_location_name("paris")
-# output = test._get_cheapest_bars(beer_name="Triple Karmeliet")
-# toc = time()
-# print(output)
-# print('temps nécessaire', toc-tic)
-#>>>>>>> Stashed changes
+    @classmethod
+    def from_location_name_to_leaflet(cls, name):
+        """
+        finds all bar filtered via location name from the specified name (case insensitive)
+        :param name (str) city_district, city, municipality, suburb, town, village
+        :return: Bars class object with data of the bars in the specified location name
+        """
+
