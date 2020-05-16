@@ -37,16 +37,40 @@
                     </div>
 
                     </header>
-                    <section class="container-flex h-100"  style="display: none; background: url(/static/img/bar.jpg) no-repeat center center fixed; min-height : 100vh; background-position: center; background-size: cover;">
+                    <section class="container-flex" id="beer_container" style="background: url(/static/img/bar.jpg) no-repeat center center fixed; min-height : 100vh; background-position: center; background-size: cover;">
                         <div class="container">
-                            <div class="row"><div class="col-12"></div></div>
+                            <div class="row"><div class="col-12"><p></p></div></div>
                             <div class="row justify-content-center" >
                                 <div class="col-lg-8 text-center" id="about">
-                                    <h2 class="text-white mt-0">We've got what you need!</h2>
+                                    <h2 class="text-white mt-0">Par ici la boisson ! </h2>
                                     <hr class="divider light my-4" />
-                                    <p class="text-white-50 mb-4">Start Bootstrap has everything you need to get your new website up and running in no time! Choose one of our open source, free to download, and easy to use themes! No strings attached!</p>
-                                    <a class="btn btn-light btn-xl js-scroll-trigger" href="#services">Get Started!</a>
                                 </div>
+                            </div>
+                            <div class="row">
+                                    <div class="col md-auto">
+                                        <div class ='d-flex justify-content-between'>
+                                        <div class="col"><img src="/static/img/mug.png" height="100"></div>
+                                        <div class="md-auto col">
+                                            <div class="card" style="min-width: 300px; background-color: rgba(255, 255, 255, 0.6)">
+                                                <p style="margin: 10px"><strong>Prix moyen de la pinte</strong><br>
+                                                    <span style="margin-left : 5px">En HH : <strong><label id="av_HH"></label></strong></span> euros<br>
+                                                    <span style="margin-left : 5px">Hors HH : <label id="av_nHH"></label> euros</span>
+                                                </p>
+                                                <p style="margin: 10px"><strong>Prix minimum de la pinte</strong><br>
+                                                    <span style="margin-left : 5px">En HH : <strong><label id="min_HH"></label></strong></span> euros<br>
+                                                    <span style="margin-left : 5px">Hors HH : <label id="min_nHH"></label> euros </span>
+                                                </p>
+                                                <p style="margin: 10px"><strong>Les favorites :</strong><br>
+                                                    <p style="margin-left : 20px" id="ranking"></p>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="col md-auto">
+                                        <div class="col 1"><img src="/static/img/sign.png" height="100"></div>
+                                        <div class="mx-auto col-sm-4 text-center"><p class="text-white-50 mb-4 center">Col 2</p></div>
+                                    </div>
                             </div>
                         </div>
                     </section>

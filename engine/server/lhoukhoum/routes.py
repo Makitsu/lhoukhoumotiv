@@ -9,6 +9,8 @@ from .lib.import_train import Station
 from .lib.import_tool import get_map_html
 from .lib.map_tool.map_generator import map_from_list, map_from_departure
 from .lib.import_train.test_normal import search_fares
+from .lib.beerStats import Bars
+
 import os
 
 city = 'Not defined'
@@ -224,14 +226,15 @@ def station_info():
     dest = request.form.get('city_name').capitalize()
     print(dest)
     info = summary_info[summary_info['ville'] == dest].iloc[0]  # first row of filtered df
-    print(info)
     if request.method == 'POST':
         ## Get general info ##
         ## Get items if available ##
         ## cities in lowercase => the items list csv ##
         dest = dest.lower()
+        output = Bars.from_location_name(dest)
         found_count = item_results.ville.str.count(dest).sum()
         print(found_count)
+        #ITEM SEARCH#
         if found_count > 0:
             items_availability = 1
             print('items available')
@@ -255,6 +258,29 @@ def station_info():
             item_link = 0
             print('items unavailable')
 
+        #BEER SEARCH#
+        found_count = output.data.name.count()
+        if found_count > 0:
+            beer_availability = 1
+            cheap = output._get_cheapest_bars(partial_match=True)
+            df = pd.DataFrame(output.data)
+            min_price_HH = cheap[0][1]
+            min_price_nHH = cheap[1][1]
+            df2 = df.filter(like='HHprice_')
+            average_price_HH = round(df2.mean(axis=1).mean(axis=0),1)
+            df2 = df.filter(like='nHHprice')
+            average_price_nHH = round(df2.mean(axis=1).mean(axis=0),1)
+            df2 = df.filter(like='beer_')
+            ranking = df2.apply(pd.Series.value_counts).sum(axis=1).round().sort_values(ascending=True).drop(
+                index=['Cheapest beer', 'TBD']).iloc[0:4].to_dict()
+        else:
+            beer_availability = 0
+            min_price_HH = 0
+            min_price_nHH = 0
+            average_price_HH = 0
+            average_price_nHH = 0
+            ranking = 0
+
         info_results = {'city_name': dest,
                         'region': info['region'],
                         'departement': info['departement'],
@@ -268,7 +294,13 @@ def station_info():
                                    'name': item_name,
                                    #'summary': item_summary,
                                    'img':item_img,
-                                   'link': item_link}
+                                   'link': item_link},
+                        'beer' : {'availability' : beer_availability,
+                                'average_price_HH' : average_price_HH,
+                                'average_price_nHH' : average_price_nHH,
+                                'cheapest_price_HH' : min_price_HH,
+                                'cheapest_price_nHH' : min_price_nHH,
+                                'beer_ranking' : ranking},
                         }
         print(info_results)
         return jsonify(info_results)
