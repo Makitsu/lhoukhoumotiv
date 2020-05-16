@@ -61,6 +61,7 @@ def haversine(lat1, lon1, lat2, lon2):
 
 
 
+
 class Bars():
     """
         contains dataframe of bars with the data and the filters used to generate it
@@ -86,7 +87,7 @@ class Bars():
         Output : Bars dataframe with filtered bars data (within the radiys), type set as "from_coord", location set as "gps coordinates", and radius set with the specified
         radius
         """
-        df = Bars()
+        df = all_bars = data_import()
         df.data = data_import()
         df.data['distance'] = haversine(coordinates[1], coordinates[0], all_bars['latitude'].values, all_bars['longitude'].values)
         radius = radius * 1.005 #Harvesine approximation
@@ -118,10 +119,11 @@ class Bars():
         df.data = df.data[(df.data["city_district"].str.lower() == name) | (df.data["city"].str.lower() == name) | (df.data["municipality"].str.lower() == name) | (df.data["suburb"].str.lower() == name) | (df.data["town"].str.lower() == name) | (df.data["village"].str.lower() == name)]
         return cls(df.data, "from_location_name", name)
 
-    def _get_cheapest_bars(self, beer_name = None):
+    def _get_cheapest_bars(self, beer_name = None, partial_match = True):
         """
         Finds the cheapest bars within the list of bars
         :param beer_name (opt): name of the beer you are particularly interested in, if not specified all beers will be taken into account
+               partial_match (opt) : optional for partial or strict match with specified name, default as True
         :return: 2 dataframes: the first one contains bars with the cheapest Happy Hour price, the second the cheapset non Happy Hour bars
         """
 
@@ -145,7 +147,10 @@ class Bars():
             beer_name = beer_name.capitalize()
             beers_list = bars_list.filter(regex="^beer_").astype(str).values.tolist()
             beers_list = np.char.capitalize(beers_list)
-            bars_indices = np.where(np.char.capitalize(beers_list) == beer_name)
+            if partial_match is False :
+                bars_indices = np.where(beers_list == beer_name)
+            else:
+                bars_indices = np.where(np.char.find(beers_list, beer_name) != -1)
             # translates list indices into dataframe indices
             beer_nHHprice_index = bars_indices[1] * 4 + 9
             beer_HHprice_index = bars_indices[1] * 4 + 10
@@ -154,12 +159,12 @@ class Bars():
             beer_HHprice_list = []
             i=0
             while i < len(bars_indices[0]):
-                beer_nHHprice_list.append( self.data.iloc[bars_indices[0][i], beer_nHHprice_index[i]] )
+                beer_nHHprice_list.append(self.data.iloc[bars_indices[0][i], beer_nHHprice_index[i]])
                 beer_HHprice_list.append(self.data.iloc[bars_indices[0][i], beer_HHprice_index[i]])
                 i += 1
             # find the cheapest price and the list indices of all the bars having this cheapest price (one or several)
-            min_nHH_price = min(beer_nHHprice_list)
-            min_HH_price  = min(beer_HHprice_list)
+            min_nHH_price = np.nanmin(beer_nHHprice_list)
+            min_HH_price  = np.nanmin(beer_HHprice_list)
             cheapest_nHH_list_indices = [i for i, x in enumerate(beer_nHHprice_list) if x == min_nHH_price]
             cheapest_HH_list_indices = [i for i, x in enumerate(beer_HHprice_list) if x == min_HH_price]
             # translates list indices into list of dataframe indices
@@ -180,13 +185,14 @@ class Bars():
         return len(self.data.index)
 
     def _HH_infos(self):
-        HH_hours = self.data["HH_start"].values
-
+        HH_times = self.data["HH_start"].values
+        HH_hours = [i if len(str(i)) == 2 else 0 for i in HH_times]
+        HH_mins = [i%100 if len(str(i)) == 4 else 0 for i in HH_times]
         return  HH_hours
 
 tic = time()
 test = Bars.from_location_name("paris")
-output = test._HH_infos()
+output = test._get_cheapest_bars(beer_name="chouffe", partial_match=True)
 toc = time()
 print(output)
 print('temps nécessaire', toc-tic)
