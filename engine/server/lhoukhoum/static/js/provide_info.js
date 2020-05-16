@@ -24,7 +24,8 @@ $(document).ready(function() {
             $('#background').css({'background-image': data['city_img']});
             if (data['items']['availability'] != 0) {
                 console.log('items available')
-                for (let i = 0; i < 13; i++){
+                console.log(data['items']['name'][13])
+                for (let i = 0; i < 11; i++){
                     let str = "img_src_%s".replace('%s',(i + 1).toString())
                     let str2 = "img_title_%s".replace('%s',(i + 1).toString())
                     console.log(str)
@@ -35,6 +36,27 @@ $(document).ready(function() {
                 }
             } else {
                 document.getElementById("items_container").style.display = "none";
+            }
+            if (data['beer']['availability'] != 0) {
+                console.log('beer available')
+                $( "#av_HH" ).append(data['beer']['average_price_HH']);
+                $( "#av_nHH" ).append(data['beer']['average_price_nHH']);
+                $( "#min_HH" ).append(data['beer']['cheapest_price_HH']);
+                $( "#min_nHH" ).append(data['beer']['cheapest_price_nHH']);
+                dict = data['beer']['beer_ranking']
+                console.log(dict)
+                for(var key in dict) {
+                    var value = dict[key];
+                    console.log(value);
+                    var key = key;
+                    console.log(key);
+                    document.getElementById("ranking").append(key);
+                    document.getElementById("ranking").appendChild(document.createElement('br'));
+                }
+
+            } else {
+                console.log('beer unavailable')
+                document.getElementById("beer_container").style.display = "none";
             }
             },
         error: function(output){
