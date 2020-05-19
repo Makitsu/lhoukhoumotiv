@@ -119,6 +119,41 @@ class Bars():
         df.data = df.data[(df.data["city_district"].str.lower() == name) | (df.data["city"].str.lower() == name) | (df.data["municipality"].str.lower() == name) | (df.data["suburb"].str.lower() == name) | (df.data["town"].str.lower() == name) | (df.data["village"].str.lower() == name)]
         return cls(df.data, "from_location_name", name)
 
+    def _get_beer_infos(self, beer_name, partial_match = True):
+        """
+        intermediate method to extract all bars serving the specified beer and the beer associated infos
+        :param beer_name: name of the searched beer
+        :param partial_match: optional for partial or strict match with specified name, default as True
+        :return:beer_nHH_price_list, all prices of the searched beer (nHH).
+                beer_HH_price_list, all prices of the searched beer (HH).
+                bars_indices
+        """
+        bars_list = self.data
+        # finds indices of all bars having the searched beer with the corresponding beer column (case insensitive)
+        bars_list.reset_index(inplace=True)
+        beer_name = beer_name.capitalize()
+        beers_list = bars_list.filter(regex="^beer_").astype(str).values.tolist()
+        beers_list = np.char.capitalize(beers_list)
+        if partial_match is False:
+            bars_indices = np.where(beers_list == beer_name)
+        else:
+            bars_indices = np.where(np.char.find(beers_list, beer_name) != -1)
+        # translates list indices into dataframe indices
+        beer_nHHprice_index = bars_indices[1] * 4 + 9
+        beer_HHprice_index = bars_indices[1] * 4 + 10
+        # loop to extract all prices of the searched beer
+        beer_nHHprice_list = []
+        beer_HHprice_list = []
+        i = 0
+        while i < len(bars_indices[0]):
+            beer_nHHprice_list.append(float(self.data.iloc[bars_indices[0][i], beer_nHHprice_index[i]]))
+            beer_HHprice_list.append(float(self.data.iloc[bars_indices[0][i], beer_HHprice_index[i]]))
+            i += 1
+
+        bars_indices = bars_indices[0]
+
+        return beer_nHHprice_list, beer_nHHprice_index, beer_HHprice_list, beer_HHprice_index, bars_indices
+
     def _get_cheapest_bars(self, beer_name = None, partial_match = True):
         """
         Finds the cheapest bars within the list of bars
@@ -142,35 +177,17 @@ class Bars():
             cheapest_nHH = bars_list.iloc[cheapest_index]
 
         else: #specific beer has been specified
-            # finds indices of all bars having the searched beer with the corresponding beer column (case insensitive)
-            bars_list.reset_index(inplace = True)
-            beer_name = beer_name.capitalize()
-            beers_list = bars_list.filter(regex="^beer_").astype(str).values.tolist()
-            beers_list = np.char.capitalize(beers_list)
-            if partial_match is False :
-                bars_indices = np.where(beers_list == beer_name)
-            else:
-                bars_indices = np.where(np.char.find(beers_list, beer_name) != -1)
-            # translates list indices into dataframe indices
-            beer_nHHprice_index = bars_indices[1] * 4 + 9
-            beer_HHprice_index = bars_indices[1] * 4 + 10
-            # loop to extract all prices of the searched beer
-            beer_nHHprice_list = []
-            beer_HHprice_list = []
-            i=0
-            while i < len(bars_indices[0]):
-                beer_nHHprice_list.append(self.data.iloc[bars_indices[0][i], beer_nHHprice_index[i]])
-                beer_HHprice_list.append(self.data.iloc[bars_indices[0][i], beer_HHprice_index[i]])
-                i += 1
+            (beer_nHHprice_list, beer_nHHprice_index, beer_HHprice_list, beer_HHprice_index, bars_indices) = \
+                self._get_beer_infos(beer_name, partial_match)
             # find the cheapest price and the list indices of all the bars having this cheapest price (one or several)
             min_nHH_price = np.nanmin(beer_nHHprice_list)
             min_HH_price  = np.nanmin(beer_HHprice_list)
             cheapest_nHH_list_indices = [i for i, x in enumerate(beer_nHHprice_list) if x == min_nHH_price]
             cheapest_HH_list_indices = [i for i, x in enumerate(beer_HHprice_list) if x == min_HH_price]
             # translates list indices into list of dataframe indices
-            cheapest_nHH_df_indices = [bars_indices[0][i] for i in cheapest_nHH_list_indices]
-            cheapest_HH_df_indices = [bars_indices[0][i] for i in cheapest_HH_list_indices]
-            # results 
+            cheapest_nHH_df_indices = [bars_indices[i] for i in cheapest_nHH_list_indices]
+            cheapest_HH_df_indices = [bars_indices[i] for i in cheapest_HH_list_indices]
+            # results
             cheapest_HH = bars_list.iloc[cheapest_HH_df_indices]
             cheapest_nHH = bars_list.iloc[cheapest_nHH_df_indices]
 
@@ -184,22 +201,38 @@ class Bars():
         """
         return len(self.data.index)
 
-    def _HH_infos(self):
-        HH_times = self.data["HH_start"].values
-        HH_hours = [i if len(str(i)) == 2 else 0 for i in HH_times]
-        HH_mins = [i%100 if len(str(i)) == 4 else 0 for i in HH_times]
-        return  HH_hours
+    def _filter(self, max_price = 99, min_price = 0, include_HH = True, beer_name = None, partial_match = True):
+
+        bars_list = self.data
+
+        if beer_name is not None:
+            (beer_nHHprice_list, beer_nHHprice_index, beer_HHprice_list, beer_HHprice_index, bars_indices) = \
+                self._get_beer_infos(beer_name, partial_match)
+            bars_list= bars_list.iloc[bars_indices]
+
+        if max_price != 99 | min_price != 0:
+            prices = bars_list.filter(regex="HHprice_").values
+            prices_in_range = prices.max(axis=1, skipna = True)<= max_price
+            min_price = np.nanmin(min_prices)
+            cheapest_index = np.where(min_prices == min_price)
+            cheapest_HH = bars_list.iloc[cheapest_index]
+
+
+
+        return bars_list
+
+        #return bars_list
 
 tic = time()
-test = Bars.from_location_name("lyon")
-print(test.data.columns)
-sample_df = test.data[['name','latitude','longitude']]
-sample_df['position'] = sample_df.apply(lambda row: [row['latitude'],row['longitude']], axis=1)
-print(sample_df)
-sample_df.to_csv('sample_test.csv',sep=';',index=False)
-output = test._HH_infos()
+# test = Bars.from_location_name("lyon")
+# print(test.data.columns)
+# sample_df = test.data[['name','latitude','longitude']]
+# sample_df['position'] = sample_df.apply(lambda row: [row['latitude'],row['longitude']], axis=1)
+# print(sample_df)
+# sample_df.to_csv('sample_test.csv',sep=';',index=False)
+# output = test._HH_infos()
 test = Bars.from_location_name("paris")
-output = test._get_cheapest_bars(beer_name="chouffe", partial_match=True)
+output = test._filter(beer_name="La Chouffe", max_price= 5)
 toc = time()
 print(output)
 print('temps nécessaire', toc-tic)

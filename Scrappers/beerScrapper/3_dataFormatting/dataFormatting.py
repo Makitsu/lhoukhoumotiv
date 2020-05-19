@@ -12,7 +12,8 @@ from geopy import Nominatim
 dataProc = False #True if need to extract and reaarang beer data (is is saved at the end)
 dataFormating = False
 normaliseAddress = False
-no_TDB_price = True
+no_TDB_price = False
+get_HH_infos = False
 
 if dataProc is True:
     #Initiate new data structure
@@ -125,30 +126,43 @@ if normaliseAddress is True:
             break
 
     print(counter)
+
+if get_HH_infos is True:
+    result_no_TBD = pd.read_csv("SAVE (old)/result_no_TBD.csv", delimiter=",")
+    result_no_TBD = result_no_TBD.drop(["Unnamed: 0"], axis = 1)
+    result_no_TBD["HH_start"] = result_no_TBD.apply(
+        lambda row: [int(str(row.HH_start)[0:2]), 0] if len(str(row.HH_start)) == 2
+        else ( [int(str(row.HH_start)[0:2]), int(str(row.HH_start)[2:4])] if len(str(row.HH_start)) == 4 else 0), axis = 1)
+    result_no_TBD["HH_end"] = result_no_TBD.apply(
+        lambda row: [int(str(row.HH_end)[0:2]), 0] if len(str(row.HH_end)) == 2
+        else ([int(str(row.HH_end)[0:2]), int(str(row.HH_end)[2:4])] if len(str(row.HH_end)) == 4 else 0), axis=1)
+
+if no_TDB_price is True:
+    result_no_TBD = pd.read_csv("result_no_TBD.csv", delimiter=",")
+    result_no_TBD.loc[:,['HHprice_8','nHHprice_8', "volume_8"]] = result_no_TBD.loc[:,['HHprice_8','nHHprice_8', 'volume_8']].replace("TBD","nan")
+
 #Saving
 #result.to_csv('result.csv')
 #result.to_excel('result.xlsx')
 #result_no_TBD.to_csv('result_no_TBD.csv')
 
-if no_TDB_price is True:
-    result_no_TBD = pd.read_csv("SAVE (old)/result_no_TBD.csv", delimiter=",")
-    result_no_TBD.loc[:,['HHprice_8','nHHprice_8']] = result_no_TBD.loc[:,['HHprice_8','nHHprice_8']].replace("TBD","")
 
-
-#data = pd.read_csv("SAVE (old)/result_no_TBD.csv", index_col = 0)
-#result_no_TBD = result_no_TBD.drop(["Unnamed: 0.1"], axis = 1)
+#
+#
+result_no_TBD = pd.read_csv("result_no_TBD.csv", index_col = 0)
+result_no_TBD = result_no_TBD.drop(["Unnamed: 0.1.1"], axis = 1)
 result_no_TBD.to_csv('result_no_TBD.csv')
-
-
-# Datatype forcing for smooth analysis
-all_bars = pd.read_csv('result_no_TBD.csv', delimiter=',', index_col=0)
-beers_price_columns = []
-beers_volume_columns = []
-for i in range(7):
-    beers_price_columns += [9+i*4,10+i*4]
-    beers_volume_columns += [11+i*4]
-for i in beers_price_columns:
-    all_bars.iloc[:, i] = pd.to_numeric(all_bars.iloc[:, i], errors='coerce')
-
-all_bars = all_bars.drop(["Unnamed: 0.1"], axis = 1)
-all_bars.to_csv('result_no_TBD.csv')
+#
+#
+# # Datatype forcing for smooth analysis
+# all_bars = pd.read_csv('result_no_TBD.csv', delimiter=',', index_col=0)
+# beers_price_columns = []
+# beers_volume_columns = []
+# for i in range(7):
+#     beers_price_columns += [9+i*4,10+i*4]
+#     beers_volume_columns += [11+i*4]
+# for i in beers_price_columns:
+#     all_bars.iloc[:, i] = pd.to_numeric(all_bars.iloc[:, i], errors='coerce')
+#
+# all_bars = all_bars.drop(["Unnamed: 0.1"], axis = 1)
+# all_bars.to_csv('result_no_TBD.csv')
