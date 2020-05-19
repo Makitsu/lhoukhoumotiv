@@ -205,14 +205,18 @@ class Bars():
 
         bars_list = self.data
 
+        if max_price == "cheapest":
+            (cheapest_HH, min_HH_price), (cheapest_nHH, min_nHH_price) = self._get_cheapest_bars(beer_name, partial_match)
+            return (cheapest_HH, min_HH_price), (cheapest_nHH, min_nHH_price)
+
         if beer_name is not None:
             (beer_nHHprice_list, beer_nHHprice_index, beer_HHprice_list, beer_HHprice_index, bars_indices) = \
                 self._get_beer_infos(beer_name, partial_match)
-            bars_list= bars_list.iloc[bars_indices]
+            bars_list = bars_list.iloc[bars_indices]
 
         if max_price != 99 | min_price != 0:
             prices = bars_list.filter(regex="HHprice_").values
-            prices_in_range = prices.max(axis=1, skipna = True)<= max_price
+            prices_in_range = np.nanmax(prices,axis=1) > max_price
             min_price = np.nanmin(min_prices)
             cheapest_index = np.where(min_prices == min_price)
             cheapest_HH = bars_list.iloc[cheapest_index]

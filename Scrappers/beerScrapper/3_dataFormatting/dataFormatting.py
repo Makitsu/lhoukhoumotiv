@@ -12,7 +12,7 @@ from geopy import Nominatim
 dataProc = False #True if need to extract and reaarang beer data (is is saved at the end)
 dataFormating = False
 normaliseAddress = False
-no_TDB_price = False
+no_TDB_price = True
 get_HH_infos = False
 
 if dataProc is True:
@@ -139,7 +139,11 @@ if get_HH_infos is True:
 
 if no_TDB_price is True:
     result_no_TBD = pd.read_csv("result_no_TBD.csv", delimiter=",")
-    result_no_TBD.loc[:,['HHprice_8','nHHprice_8', "volume_8"]] = result_no_TBD.loc[:,['HHprice_8','nHHprice_8', 'volume_8']].replace("TBD","nan")
+    i = 1
+    while i <= 8:
+        list = ['HHprice_' +str(i), 'nHHprice_' +str(i), 'volume_' +str(i)]
+        result_no_TBD.loc[:,list] = result_no_TBD.loc[:,list].replace("TBD","nan")
+        i += 1
 
 #Saving
 #result.to_csv('result.csv')
@@ -149,8 +153,8 @@ if no_TDB_price is True:
 
 #
 #
-result_no_TBD = pd.read_csv("result_no_TBD.csv", index_col = 0)
-result_no_TBD = result_no_TBD.drop(["Unnamed: 0.1.1"], axis = 1)
+#result_no_TBD = pd.read_csv("result_no_TBD.csv", index_col = 0)
+result_no_TBD = result_no_TBD.drop(["Unnamed: 0"], axis = 1)
 result_no_TBD.to_csv('result_no_TBD.csv')
 #
 #
