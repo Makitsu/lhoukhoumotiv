@@ -14,6 +14,7 @@ import pandas as pd
 from math import *
 from time import time
 import numpy as np
+import matplotlib.pyplot as plt
 import re
 
 earth_circum = 40075e3  # earth circumference at equator (meters)
@@ -119,7 +120,7 @@ class Bars():
         df.data = df.data[(df.data["city_district"].str.lower() == name) | (df.data["city"].str.lower() == name) | (df.data["municipality"].str.lower() == name) | (df.data["suburb"].str.lower() == name) | (df.data["town"].str.lower() == name) | (df.data["village"].str.lower() == name)]
         return cls(df.data, "from_location_name", name)
 
-    def _get_beer_infos(self, beer_name, partial_match = True):
+    def _get_bars_serving(self, beer_name, partial_match = True):
         """
         intermediate method to extract all bars serving the specified beer and the beer associated infos
         :param beer_name: name of the searched beer
@@ -178,7 +179,7 @@ class Bars():
 
         else: #specific beer has been specified
             (beer_nHHprice_list, beer_nHHprice_index, beer_HHprice_list, beer_HHprice_index, bars_indices) = \
-                self._get_beer_infos(beer_name, partial_match)
+                self._get_bars_serving(beer_name, partial_match)
             # find the cheapest price and the list indices of all the bars having this cheapest price (one or several)
             min_nHH_price = np.nanmin(beer_nHHprice_list)
             min_HH_price  = np.nanmin(beer_HHprice_list)
@@ -201,31 +202,148 @@ class Bars():
         """
         return len(self.data.index)
 
-    def _filter(self, max_price = 99, min_price = 0, include_HH = True, beer_name = None, partial_match = True):
-
-        bars_list = self.data
-
+    def _filter(self, max_price = None, min_price = None, include_HH = True, beer_name = None, partial_match = True, HH_from = None, HH_to = None):
+        """
+        General filtering beer data method allowing to filter according to specified parameters. All the parameters are optional.
+        The returned bars dataframe is the cumulation of all the filters specified
+        :param max_price (float): keeps bars having at least one beer below the specified price
+        if max_price = "cheapest" the _get_cheapest_bars method is called and returned, there are four returning values
+        :param min_price (float): keeps bars having at least one beer above the specified price
+        :param include_HH (boolean): takes into account or not happy hour prices when price filtering
+        :param beer_name (str): keeps bars having the specified beer
+        :param partial_match (boolean): takes into account or not beers only containing specified (no exact match) beer name when name filtering
+        :param HH_from (list[HH:mm]): keeps bars having happy hour beginning before or at the specified time
+        :param HH_to (list[HH:mm]): keeps bars having happy hour ending after or at the specified time
+        :return: filtered bars dataframe (exception when max_price = "cheapest")
+        """
+        ###################   CHEAPEST FILTER  ###################
         if max_price == "cheapest":
             (cheapest_HH, min_HH_price), (cheapest_nHH, min_nHH_price) = self._get_cheapest_bars(beer_name, partial_match)
             return (cheapest_HH, min_HH_price), (cheapest_nHH, min_nHH_price)
 
+        ###################   BEER NAME FILTER   ###################
         if beer_name is not None:
             (beer_nHHprice_list, beer_nHHprice_index, beer_HHprice_list, beer_HHprice_index, bars_indices) = \
-                self._get_beer_infos(beer_name, partial_match)
-            bars_list = bars_list.iloc[bars_indices]
+                self._get_bars_serving(beer_name, partial_match)
+            self.data = self.data.iloc[bars_indices]
 
-        if max_price != 99 | min_price != 0:
-            prices = bars_list.filter(regex="HHprice_").values
-            prices_in_range = np.nanmax(prices,axis=1) > max_price
-            min_price = np.nanmin(min_prices)
-            cheapest_index = np.where(min_prices == min_price)
-            cheapest_HH = bars_list.iloc[cheapest_index]
+        ###################   HAPPY HOUR FILTER   ###################
+        #Isolate time data and convert time into handable algebric unit --> minutes from the beginning of the day
+        if HH_from is not None:
+            #read HH string data and convert it into two integer columns
+            HH_start = self._HH_conversion("HH_start")
+            HH_from = HH_from[0] * 60 + HH_from[1]
+            #Filtering bars
+            HH_start_in_range = [HH_from >= time if time is not None else None for time in HH_start]
+        if HH_to is not None:
+            #read HH string data and convert it into two integer columns
+            HH_end = self._HH_conversion("HH_end")
+            HH_to = HH_to[0] * 60 + HH_to[1]
+            #Filtering bars
+            HH_end_in_range = [HH_to <= time if time is not None else None for time in HH_end]
 
+        #Filtering bars data
+        if HH_from is not None and HH_to is not None:
+            HH_in_range = [ a and b if (a and b) is not None else(False if (a and b) is None else a or b)
+                           for a,b in zip(HH_start_in_range,HH_end_in_range) ]
+        elif HH_from is not None and HH_to is None:
+            HH_in_range = [x if x is not None else False for x in HH_start_in_range]
+        elif HH_from is None and HH_to is not None:
+            HH_in_range = HH_end_in_range.replace(None,False)
 
+        self.data = self.data[HH_in_range]
 
-        return bars_list
+        ###################   PRICE RANGE FILTER   ###################
+        if max_price is not None or min_price is not None:
+            if include_HH is True:
+                price_columns = "HHprice_"
+            else:
+                price_columns = "nHHprice_"
+            prices = self.data.filter(regex=price_columns).values
+            if max_price is not None and min_price is not None:
+                prices_in_max =  [x <= max_price for x in np.nanmin(prices,axis=1) ]
+                prices_in_min = [x >= min_price for x in np.nanmax(prices, axis=1)]
+                prices_in_range = [a and b for a,b in zip(prices_in_min, prices_in_max)]
+            elif max_price is not None and min_price is None:
+                prices_in_range =  [x <= max_price for x in np.nanmin(prices,axis=1)]
+            elif max_price is None and min_price is not None:
+                prices_in_range = [x >= min_price for x in np.nanmax(prices, axis=1)]
+            self.data = self.data[prices_in_range]
 
-        #return bars_list
+        return self.data
+
+        ###################   CLOSEST BAR    ###################
+    def _closest(self, lat, long):
+        """
+        Compute from the list of bars the closest one from the specified coordinates
+        :param lat (float): latitude of your location
+        :param long (float): longitude of your location
+        :return closest_bar, closest_dist: dataframe row of the closest bar and distance of the closest bar
+        """
+        bars_list = self.data #load bars data
+
+        bars_lat = bars_list["latitude"].values
+        bars_long = bars_list["longitude"].values
+        distance = [haversine(lat,long,a,b) for a,b in zip(bars_lat,bars_long)]
+        closest_index = np.argmin(distance)
+        closest_bar = bars_list.iloc[closest_index]
+        closest_dist = np.min(distance)
+
+        return closest_bar, closest_dist
+
+    def _HH_conversion(self, column_name):
+        """
+        Converts time from [HH,MM] format into minutes passed from the beginning of the day (example : 4pm will return 16*60 = 960)
+        :param column_name (str): name of the dataframe column containing time data in [HH,MM] format
+        :return: corresponding list of times in minutes from the beginning of the day (example : 4pm = 16*60)
+        """
+
+        #read HH string data and convert it into two integer columns
+        HH_time = self.data.filter(regex=column_name).values
+        HH = [str(time[0]).replace("\'", "").replace("[", "").replace("]", "") if len(str(time)) !=5 else "" for time in HH_time]
+        HH_hours = [int(str(time).split(",")[0]) if len(time) != 0 else None for time in HH]
+        HH_mins = [int(str(time).split(",")[1]) if len(time) != 0 else None for time in HH]
+        #convert hours into minutes from the beginning of the day (example : 4pm = 16*60)
+        HH_hours = [hour * 60 if hour is not None else None for hour in HH_hours]
+        HH_algebric = [a + b if a is not None else None for a,b in zip(HH_hours,HH_mins)]
+        return HH_algebric
+
+    def _stats_prices(self, include_HH = False, only_HH = False):
+        if only_HH is True:
+            prices = self.data.filter(regex="^HHprice_").values
+        elif include_HH is True:
+            prices = self.data.filter(regex="HHprice_").values
+        else:
+            prices = self.data.filter(regex="nHHprice_").values
+        mean_prices = np.nanmean(prices)
+        max_prices = np.nanmax(prices)
+        min_prices = np.nanmin(prices)
+
+        return mean_prices, max_prices, min_prices
+
+    def _advanced_stats_prices(self, include_HH = False, only_HH = False):
+        if only_HH is True:
+            prices = self.data.filter(regex="^HHprice_").values
+        elif include_HH is True:
+            prices = self.data.filter(regex="HHprice_").values
+        else:
+            prices = self.data.filter(regex="nHHprice_").values
+        bars_mean = np.nanmean(prices, axis=1)
+        bars_mean = [floor(x) for x in bars_mean]
+        mean_floor_values = []
+        mean_values_counts = []
+        for i in range (np.min(bars_mean), np.max(bars_mean)+1):
+            mean_floor_values.append(i)
+            mean_values_counts.append(bars_mean.count(i))
+        mean_values_range = [str(i)+'-'+str(i+1) for i in mean_floor_values]
+        # graphics
+        plt.bar(mean_values_range, mean_values_counts)
+        plt.title('Bars mean price distribution')
+        plt.xlabel('Price range')
+        plt.ylabel('number of bars')
+        plt.xticks(mean_values_range)
+        plt.show()
+        return bars_mean
 
 tic = time()
 # test = Bars.from_location_name("lyon")
@@ -236,7 +354,7 @@ tic = time()
 # sample_df.to_csv('sample_test.csv',sep=';',index=False)
 # output = test._HH_infos()
 test = Bars.from_location_name("paris")
-output = test._filter(beer_name="La Chouffe", max_price= 5)
+output = test._advanced_stats_prices(include_HH= True)
 toc = time()
 print(output)
 print('temps nécessaire', toc-tic)
