@@ -10,6 +10,8 @@ import pandas as pd
 import os
 import difflib
 
+# Nécessite pour fonctionner le csv city_items contenant la liste des items à chercher sur wikipédia par ville
+
 result = {'initial_search':[],
           'name' : [],
           #'ratio' : [],
