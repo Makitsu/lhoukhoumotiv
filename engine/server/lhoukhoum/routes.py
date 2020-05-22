@@ -304,3 +304,18 @@ def station_info():
                         }
         print(info_results)
         return jsonify(info_results)
+
+@bp.route('/station/beer/map', methods=['GET', 'POST'])
+def station_beer_map():
+    if request.method == 'GET':
+        return redirect('/')
+    elif request.method == 'POST':
+        city = request.args['city']
+        bars = Bars.from_location_name(city)
+        bars_df = test.data[['name', 'latitude', 'longitude']]
+        bars_df['position'] = bars_df.apply(lambda row: [row['latitude'], row['longitude']], axis=1)
+        output_dict = {
+            'name':bars_df['name'].tolist(),
+            'position':bars_df['position'].tolist()
+        }
+        return jsonify(output_dict)
