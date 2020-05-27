@@ -15,7 +15,6 @@ _STOP_POS = [[2.35915061,48.87656977],[7.73396834,48.5851719],[7.34708413,48.073
 
 _STOP_CITY = ['Paris', 'Strasbourg', 'Colmar', 'Sacy', 'Les Trois-Domaines', 'Forbach-Boulay-Moselle', 'Metz', 'Thionville', 'Lyon', 'Lyon', 'Torcy', 'Chessy', 'Nancy', 'Mulhouse', 'Meroux-Moval', 'Les Auxons', 'Dijon', 'Mâcon', 'Nîmes', 'Montpellier', 'Avignon', 'Cabriès', 'Marseille', 'Chalon-sur-Saône', 'Alixan', 'Beaune', 'Nice', 'Antibes', 'Cannes', 'Saint-Raphaël', 'Les Arcs-sur-Argens', 'Toulon', 'Remiremont', 'Épinal', 'Saint-Dié-des-Vosges', 'Lunéville', 'Saverne', 'Sarrebourg', 'Châlons-en-Champagne', 'Vitry-le-François', 'Bar-le-Duc', 'Reims', 'Rethel', 'Charleville-Mézières', 'Sedan', 'Lille', 'Ablaincourt-Pressoir', 'Roissy-en-France', 'Arras', 'Redessan', 'Montpellier', 'Sète', 'Agde', 'Béziers', 'Narbonne', 'Perpignan', 'Lille', 'Montbard', 'Douai', 'Massy', 'Saint-Pierre-des-Corps', 'Poitiers', 'Angoulême', 'Bordeaux', 'Le Mans', 'Angers', 'Nantes', 'Rennes', 'Laval', 'Le Havre', 'Rouen', 'Mantes-la-Jolie', 'Versailles', 'Massy', 'Saumur', 'Louvigny', 'Paris', 'Hyères', 'Colombier-Saugnieu', 'Menton', 'Valence', 'Montélimar', 'Orange', 'Avignon', 'Miramas', 'Mâcon', 'Bourg-en-Bresse', 'Chambéry', 'Valserhône', 'Annemasse', 'Thonon-les-Bains', 'Évian-les-Bains', 'Saint-Jean-de-Maurienne', 'Modane', 'Saint-Étienne', 'Dole', 'Besançon', 'Carcassonne', 'Toulouse', 'Grenoble', 'Aix-les-Bains', 'Annecy', 'Paris', 'Fréthun', 'Boulogne-sur-Mer', 'Calais', 'Dunkerque', 'Lens', 'Béthune', 'Hazebrouck', 'Étaples', 'Verton', 'Wasquehal', 'Roubaix', 'Tourcoing', 'Valenciennes', 'Paris', 'Agen', 'Montauban', 'Saint-Brieuc', 'Guingamp', 'Morlaix', 'Brest', 'Lamballe-Armor', 'Plouaret', 'Landerneau', 'Redon', 'Vannes', 'Auray', 'Lorient', 'Vitré', 'Quimper', 'Quimperlé', 'Rosporden', 'Saint-Malo', 'Dol-de-Bretagne', 'La Roche-sur-Yon', 'Saint-Nazaire', 'La Baule-Escoublac', 'Le Croisic', 'Pornichet', 'Le Pouliguen', 'Sablé-sur-Sarthe', "Les Sables-d\'Olonne", 'Biganos', 'Arcachon', 'La Teste-de-Buch', 'Libourne', 'Vendôme', 'Châtellerault', 'Dax', 'Bayonne', 'Biarritz', 'Saint-Jean-de-Luz', 'Hendaye', 'Niort', 'Surgères', 'La Rochelle', "Saint-Maixent-l\'École", 'Chasseneuil-du-Poitou', 'Tours', 'Orthez', 'Pau', 'Lourdes', 'Tarbes']
 
-
 class Category(Enum):
     S = 'seconde classe'
     SM = 'seconde classe (billet modifiable)'
@@ -159,4 +158,20 @@ class Station(object):
 #
 # print(error_list)
 # print(_STOP_CITY)
+import json
+
+export = []
+keys = range(len(_STOP_NAME))
+for i in keys:
+        export[i] = {
+            'name':_STOP_NAME[i],
+            'city':_STOP_CITY[i],
+            'uic':_STOP_UIC[i],
+            'coords':_STOP_POS[i]
+        }
+print(export)
+
+with open('test.txt', 'w') as file:
+    json_string = json.dump(export,file)
+    file.write(json_string)
 
