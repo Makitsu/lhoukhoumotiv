@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+        <div>
+            <div class="container" style="margin-left: 10em; ">
+                <div class="card shadow my-3" id="test_2" style="width:150%;background-color:rgba(255, 255, 255, 0.2) !important; ">
+
+                    <div class="card-body">
+                        <div class="d-flex flex-column mb-3">
+                            <div class="p-2"  >
+                                <!-- Research bar container -->
+                                <form class="needs-validation" novalidate>
+                                    <div class="form-inline">
+                                        <!-- departure selection -->
+                                        <label for="list_stations" id="st" class="mr-sm-2">Departure </label>
+                                        <input type="text" class="form-control mb-2 mr-sm-2" id="list_stations" name="stations" list="stations" placeholder="Departure" required>
+                                        <datalist id="stations">
+                                            {% for stat in stations %}
+                                            <option value="{{ stat }}">{{ stat }}</option>
+                                            {% endfor %}
+                                        </datalist>
+                                        <script src="{{ url_for('static', filename='js/populate_station.js') }}"></script>
+                                        <div class="invalid-feedback">
+                                            Please select a valid station.
+                                        </div>
+                                        <!-- arrival selection -->
+                                        <label for="list_arrival" class="mr-sm-2">Arrival </label>
+                                        <select multiple class="form-control mb-2 mr-sm-2 " id="list_arrival" name="arrivals" size="3" required>
+                                            <option value="select">Arrival </option>
+                                        </select>
+                                        <script src="{{ url_for('static', filename='js/populate_arrivals.js') }}"></script>
+                                        <!-- date selection -->
+                                        <label for="trip_date" class="mr-sm-2">Date </label>
+                                        <input type="date" id="trip_date" class="form-control mb-2 mr-sm-2" name="date" required>
+                                        <!-- api button -->
+                                        <button class ="btn" style="background-color:transparent" id="api_call" >
+                                                <img src="{{ url_for('static', filename='img/miya_launch.png') }}" width="150" height="150" alt=""/>
+                                        </button>
+                                        <script src="{{ url_for('static', filename='js/api_call.js') }}"></script>
+                                    </div>
+                                </form>
+
+                                <div class="row flex-fill d-flex justify-content-start" id="test2" >
+
+                                    <div class="col-md-8" id = "map_container" style="min-height: 500px;" >
+                                        <!-- map container (generated dynamically)-->
+                                    </div>
+
+                                    <div class="col-md-4" >
+                                        <div>
+                                            <table class="table table-striped table-hover table-condensed" >
+                                                <thead>
+                                                    <tr>
+                                                        <th width="25%" class="text-center">Destination</th>
+                                                        <th width="25%" class="text-center">Price</th>
+                                                        <th width="25%" class="text-center">Type</th>
+                                                        <th width="25%" class="text-center">Cat.</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                        <div id="table_container" style="max-height: 400px; overflow-y: auto;">
+                                            <table  id="content_table" class="table table-striped table-hover table-condensed" style="background-color:rgba(255, 255, 255, 0.5) !important;">
+                                                <tbody id="trip_table">
+                                                    <!-- rows added here -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>  
+                    </div>
+                </div>     
+            </div>
+        </div>
+{% endblock %}

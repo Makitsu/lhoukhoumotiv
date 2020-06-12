@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% block title %}Destination{% endblock %}
+{% block content %}
+        <div class="background">
+                    <div class="container-flex h-100" id="background" style="no-repeat center center fixed; min-height: 90vh; background-position: center; background-size: cover">
+                        <div class="row h-100">
+                            <div class="col-5">
+                                <h1 class="text-center text-uppercase text-white font-weight-bold" id="city_welcome">Bienvenue à </h1></div>
+                            <div class="col-6 col-md-4">
+                                <h2 class="text-center text-white font-weight-normal"></h2></div>
+                        </div>
+                        <div class="row h-100">
+                            <div class="mx-auto col-sm-3 text-center col-sm-offset-1">
+                                <p></p>
+                                <p></p>
+                                <a class="btn btn-primary btn-lg js-scroll-trigger" href="#items_container">C'est beau ! Montre moi en plus !</a>
+                                <p></p>
+                                <p></p>
+                                <a class="btn btn-primary btn-lg js-scroll-trigger" href="#biere">Et où est la bodega ?</a>
+                                <p></p>
+                                <p></p>
+                            </div>
+                            <div class="mx-auto col-sm-4 text-center">
+                            <div class="card" style="background-color: rgba(255, 255, 255, 0.6)">
+                                <p><strong>Département : </strong><label id="city_departement"></label></p>
+                                <p><strong>Région : </strong><label id="city_region"></label></p>
+                                <p><strong>Population : </strong><label id="city_population"></label> habitants</p>
+                                <p><strong>Densité de population : </strong><label id="city_densite"></label> hab/km2</p>
+                                <p><strong>Gentillé : </strong><label id="city_gentile"></label></p>
+                                <p><strong>Superficie : </strong><label id="city_superficie"></label></p>
+                                <p><strong>Altitude : </strong><label id="city_altitude"></label></p>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row h-100">
+                            <div class="col-sm"></div></div>
+                    </div>
+
+                    </header>
+                    <section class="container-flex" id="beer_container" style="background: url(/static/img/bar.jpg) no-repeat center center fixed; min-height : 100vh; background-position: center; background-size: cover;">
+                        <div class="container">
+                            <div class="row"><div class="col-12"><p></p></div></div>
+                            <div class="row justify-content-center" >
+                                <div class="col-lg-8 text-center" id="about">
+                                    <h2 class="text-white mt-0">Par ici la boisson ! </h2>
+                                    <hr class="divider light my-4" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                    <div class="col md-auto">
+                                        <div class ='d-flex justify-content-between'>
+                                        <div class="col"><img src="/static/img/mug.png" height="100"></div>
+                                        <div class="md-auto col">
+                                            <div class="card" style="min-width: 300px; background-color: rgba(255, 255, 255, 0.6)">
+                                                <p style="margin: 10px"><strong>Prix moyen de la pinte</strong><br>
+                                                    <span style="margin-left : 5px">En HH : <strong><label id="av_HH"></label></strong></span> euros<br>
+                                                    <span style="margin-left : 5px">Hors HH : <label id="av_nHH"></label> euros</span>
+                                                </p>
+                                                <p style="margin: 10px"><strong>Prix minimum de la pinte</strong><br>
+                                                    <span style="margin-left : 5px">En HH : <strong><label id="min_HH"></label></strong></span> euros<br>
+                                                    <span style="margin-left : 5px">Hors HH : <label id="min_nHH"></label> euros </span>
+                                                </p>
+                                                <p style="margin: 10px"><strong>Les favorites :</strong><br>
+                                                    <p style="margin-left : 20px" id="ranking"></p>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="col md-auto">
+                                        <div class="col 1"><img src="/static/img/sign.png" height="100"></div>
+                                        <div class="mx-auto col-sm-4 text-center"><p class="text-white-50 mb-4 center">Col 2</p></div>
+                                    </div>
+                            </div>
+                        </div>
+                    </section>
+
+            <div id="items_container">
+            <script>$(function() {
+                     var selectedClass = "";
+                        $(".filter").click(function(){
+                        selectedClass = $(this).attr("data-rel");
+                        $("#gallery").fadeTo(100, 0.1);
+                        $("#gallery div").not("."+selectedClass).fadeOut().removeClass('animation');
+                    setTimeout(function() {
+                    $("."+selectedClass).fadeIn().addClass('animation');
+                    $("#gallery").fadeTo(300, 1);
+                    }, 300);
+                    });
+                    });
+            </script>
+            <div class="row"></div>
+            <div class="container mx-auto" style="width: 150vh; background-color: rgba(255, 255, 255, 0.6)">
+                <div class="row">
+                    <div class="col-md-12 d-flex justify-content-center mb-5">
+                        <button type="button" class="btn btn-outline-black waves-effect filter" data-rel="all">All</button>
+                        <button type="button" class="btn btn-outline-black waves-effect filter" data-rel="1">Monuments</button>
+                        <button type="button" class="btn btn-outline-black waves-effect filter" data-rel="2">Lieux</button>
+                        <button type="button" class="btn btn-outline-black waves-effect filter" data-rel="3">Musées</button>
+                        <button type="button" class="btn btn-outline-black waves-effect filter" data-rel="4">Gastronomie</button>
+                    </div>
+                </div>
+                <div class="gallery" id="gallery">
+                    <div class="mb-3 pics animation all 1" style="position: relative">
+                        <img class='img-fluid' id="img_src_1" alt="Card image cap">
+                        <p class="text-center text-white font-weight-light" id="img_title_1" style=" position: absolute; bottom: 20px; right: 20px; background-color: rgba(255, 255, 255, 0.6); color: white; padding-left: 20px; padding-right: 20px"></p>
+                    </div>
+                    <div class="mb-3 pics animation all 1">
+                        <img class='img-fluid' id="img_src_2" alt="Card image cap">
+                        <p class="text-center text-white font-weight-normal" id="img_title_2" style=" position: absolute; bottom: 20px; right: 20px; background-color: rgba(255, 255, 255, 0.6); color: white; padding-left: 20px; padding-right: 20px"></p>
+                        </img>
+                    </div>
+                    <div class="mb-3 pics animation all 1">
+                        <img class='img-fluid' id="img_src_3" alt="Card image cap">
+                        <p class="text-center text-white font-weight-normal" id="img_title_3" style=" position: absolute; bottom: 20px; right: 20px; background-color: rgba(255, 255, 255, 0.6); color: white; padding-left: 20px; padding-right: 20px"></p>
+                        </img>
+                    </div>
+                    <div class="mb-3 pics animation all 2">
+                        <img class='img-fluid' id="img_src_4" alt="Card image cap">
+                        <p class="text-center text-white font-weight-normal" id="img_title_4" style=" position: absolute; bottom: 20px; right: 20px; background-color: rgba(255, 255, 255, 0.6); color: white; padding-left: 20px; padding-right: 20px"></p>
+                        </img>
+                    </div>
+                    <div class="mb-3 pics animation all 2">
+                        <img class='img-fluid' id="img_src_5" alt="Card image cap">
+                        <p class="text-center text-white font-weight-normal" id="img_title_5" style=" position: absolute; bottom: 20px; right: 20px; background-color: rgba(255, 255, 255, 0.6); color: white; padding-left: 20px; padding-right: 20px"></p>
+                        </img>
+                    </div>
+                    <div class="mb-3 pics animation all 2">
+                        <img class='img-fluid' id="img_src_6" alt="Card image cap">
+                        <p class="text-center text-white font-weight-normal" id="img_title_6" style=" position: absolute; bottom: 20px; right: 20px; background-color: rgba(255, 255, 255, 0.6); color: white; padding-left: 20px; padding-right: 20px"></p>
+                    </div>
+                    <div class="mb-3 pics animation all 3">
+                        <img class='img-fluid' id="img_src_7" alt="Card image cap">
+                        <p class="text-center text-white font-weight-normal" id="img_title_7" style=" position: absolute; bottom: 20px; right: 20px; background-color: rgba(255, 255, 255, 0.6); color: white; padding-left: 20px; padding-right: 20px"></p>
+                    </div>
+                    <div class="mb-3 pics animation all 3">
+                        <img class='img-fluid' id="img_src_8" alt="Card image cap">
+                        <p class="text-center text-white font-weight-normal" id="img_title_8" style=" position: absolute; bottom: 20px; right: 20px; background-color: rgba(255, 255, 255, 0.6); color: white; padding-left: 20px; padding-right: 20px"></p>
+                    </div>
+                    <div class="mb-3 pics animation all 3">
+                        <img class='img-fluid' id="img_src_9" alt="Card image cap">
+                        <p class="text-center text-white font-weight-normal" id="img_title_9" style=" position: absolute; bottom: 20px; right: 20px; background-color: rgba(255, 255, 255, 0.6); color: white; padding-left: 20px; padding-right: 20px"></p>
+                    </div>
+                    <div class="mb-3 pics animation all 4">
+                        <img class='img-fluid' id="img_src_10" alt="Card image cap">
+                        <p class="text-center text-white font-weight-normal" id="img_title_10" style=" position: absolute; bottom: 20px; right: 20px; background-color: rgba(255, 255, 255, 0.6); color: white; padding-left: 20px; padding-right: 20px"></p>
+                    </div>
+                    <div class="mb-3 pics animation all 4">
+                        <img class='img-fluid' id="img_src_11" alt="Card image cap">
+                        <p class="text-center text-white font-weight-normal" id="img_title_11" style=" position: absolute; bottom: 20px; right: 20px; background-color: rgba(255, 255, 255, 0.6); color: white; padding-left: 20px; padding-right: 20px"></p>
+                    </div>
+                    <div class="mb-3 pics animation all 4">
+                        <img class='img-fluid' id="img_src_12" alt="Card image cap">
+                        <p class="text-center text-white font-weight-normal" id="img_title_12" style=" position: absolute; bottom: 20px; right: 20px; background-color: rgba(255, 255, 255, 0.6); color: white; padding-left: 20px; padding-right: 20px"></p>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        <script src="{{ url_for('static', filename='js/provide_info.js') }}"></script>
+{% endblock %}

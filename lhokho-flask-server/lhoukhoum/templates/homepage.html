@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Homepage{% endblock %}
+{% block content %}
+    <div class="folium-map" id="map" ></div>
+    <meta id="stations_name" data-playlist="{{ stations_name }}">
+    <meta id="stations_pos" data-playlist="{{ stations_pos }}">
+    <script src="{{ url_for('static', filename='js/homepage.js') }}"></script>
+
+{% endblock %}

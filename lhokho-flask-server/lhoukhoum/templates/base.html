@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<html>
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
+        <!-- Add icon library -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <!-- Font Awesome JS -->
+        <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+        <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+
+        <!-- CSS file-->
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.5.1/dist/leaflet.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+        <link rel="stylesheet" href="https://rawcdn.githack.com/python-visualization/folium/master/folium/templates/leaflet.awesome.rotate.css"/>
+        <!-- JavaScript file extern -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/leaflet@1.5.1/dist/leaflet.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+         <!-- JavaScript file intern -->
+
+        <!-- Title -->
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="icon" href="{{ url_for('static', filename='img/porco_logo.png') }}" type="image/png">
+
+    </head>
+	<body style="background: url(/static/img/train_station.jpg) no-repeat center center fixed; min-height: 100vh; background-position: center; background-size: cover;">
+        <style>
+            .flex-fill {
+                flex:1;
+            }
+        </style>
+        <nav class="navbar sticky-top navbar-expand-lg navbar-light navbar-fixed-top" style="background-color:rgba(255, 255, 255, 0.7)">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <img class="d-inline-block align-top" src="{{ url_for('static', filename='img/porco_transparent.gif') }}" width="75" height="75" alt="">
+                </a>
+                <p class="navbar-text" style="font-size: xx-large !important;">LhoKho</p>
+
+                <div class="collapse navbar-collapse" id="navbarNav" >
+                    <ul class="navbar-nav ml-auto">
+                        <style>
+                          font-size: larger !important;
+                          list-style-type: none;
+                          padding: 15;
+                          display: flex;
+                          flex-direction: row;
+                          justify-content: space-around;
+                          flex-wrap: nowrap;
+                        </style>
+                        <div class="login-container">
+                            <div class="form-inline">
+                                <label id="infos" class="mr-sm-2"></label>
+
+                                <input type="text" class="form-control mb-2 mr-sm-2" placeholder="Username" name="username" id="user">
+                                <input type="password" class="form-control mb-2 mr-sm-2" placeholder="Password" name="password" id="password">
+                                <button id="signin" class="btn btn-primary mb-2 mr-sm-2">Sign in</button>
+                                <button id="signup" class="btn btn-primary mb-2 mr-sm-2">Sign up</button>
+                            </div>
+                            <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+                        </div>
+                        <button type="button" id="sidebarCollapse" class="btn btn-info">
+                            <i class="fas fa-align-left"></i>
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal" id="myModal" role="dialog" data-backdrop="false">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Vos informations...</h4>
+                                    </div>
+                                    <div class="modal-body" id="user_msg">
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" id="close" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                    <script>$(document).on('click','#close',function(){$('.modal').hide();});</script>
+                                </div>
+
+                            </div>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+         <!-- Sidebar  -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3>Bootstrap Sidebar</h3>
+            </div>
+
+            <ul class="list-unstyled components">
+                <p>Dummy Heading</p>
+                <li class="active">
+                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>
+                    <ul class="collapse list-unstyled" id="homeSubmenu">
+                        <li>
+                            <a href="#">Home 1</a>
+                        </li>
+                        <li>
+                            <a href="#">Home 2</a>
+                        </li>
+                        <li>
+                            <a href="#">Home 3</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">About</a>
+                </li>
+                <li>
+                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
+                    <ul class="collapse list-unstyled" id="pageSubmenu">
+                        <li>
+                            <a href="#">Page 1</a>
+                        </li>
+                        <li>
+                            <a href="#">Page 2</a>
+                        </li>
+                        <li>
+                            <a href="#">Page 3</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">Portfolio</a>
+                </li>
+                <li>
+                    <a href="#">Contact</a>
+                </li>
+            </ul>
+
+            <ul class="list-unstyled CTAs">
+                <li>
+                    <a href="https://bootstrapious.com/tutorial/files/sidebar.zip" class="download">Download source</a>
+                </li>
+                <li>
+                    <a href="https://bootstrapious.com/p/bootstrap-sidebar" class="article">Back to article</a>
+                </li>
+            </ul>
+        </nav>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#sidebarCollapse').on('click', function () {
+                    $('#sidebar').toggleClass('active');
+                });
+            });
+        </script>
+        <!-- Page Content  -->
+        <div id="content">
+
+            {% block content %}
+
+            {% endblock %}
+        </div>
+        <footer class="page-footer text-black pt-4 " style="background-color:rgba(255, 255, 255, 0.7);">
+            <!-- Footer Links -->
+            <div class="container text-md-left">
+                <!-- Grid row -->
+                <div class="row text-justify">
+                    <!-- Grid column -->
+                    <div class="col-md-4 mx-auto">
+                        <h5 class="font-weight-bold text-uppercase mt-3 mb-4 text-center">Informations</h5>
+                        <hr class="light">
+                        <p>Lockdown project</p>
+                    </div>
+
+                    <div class="col-md-2 mx-auto text-center">
+                        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Ressources</h5>
+                        <hr class="light">
+                        <ul class="list-unstyled">
+                        </ul>
+                    </div>
+
+                    <div class="col-md-2 mx-auto text-center">
+                        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">A Propos</h5>
+                        <hr class="light">
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="dicoloco_faq.html">FAQ</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-2 mx-auto text-center">
+                        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Contact</h5>
+                        <hr class="light">
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="dicoloco_index.html#dicoTeam">Lhokho</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-copyright text-center py-3">© 2020 Copyright:
+                <a href="https://github.com/Makitsu/lhoukhoumotiv">Lhokho</a>
+            </div>
+        </footer>
+
+        <!-- JS Scripts -->
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery/jquery-latest.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery/jquery-ui.js') }}"></script>
+        <script type=text/javascript src="{{url_for('static', filename='js/jquery/jquery-3.5.0.js') }}"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+        <!-- Smooth slider-->
+        <script src="{{url_for('static', filename='js/jquery/jquery.easing.min.js') }}"></script>
+    </body>
+</html>

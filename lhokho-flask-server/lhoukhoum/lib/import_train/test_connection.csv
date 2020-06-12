@@ -1,0 +1,7 @@
+departure_date;arrival_date;nb_segments;name;name_arrival;cents;train_name;train_number;travel_class_seg
+2020-06-07T07:26:00+02:00;2020-06-07T09:32:00+02:00;1;Paris Montparnasse;Poitiers;0;TGV;8331;economy
+2020-06-07T14:03:00+02:00;2020-06-07T15:41:00+02:00;1;Paris Montparnasse;Poitiers;0;TGV;8485;economy
+2020-06-07T08:22:00+02:00;2020-06-07T09:45:00+02:00;1;Paris Montparnasse;Poitiers;0;TGV INOUI;8483;economy
+2020-06-07T09:07:00+02:00;2020-06-07T10:47:00+02:00;1;Paris Montparnasse;Poitiers;0;TGV;8375;economy
+2020-06-07T12:13:00+02:00;2020-06-07T13:50:00+02:00;1;Paris Montparnasse;Poitiers;0;TGV;8377;economy
+2020-06-07T10:07:00+02:00;2020-06-07T11:45:00+02:00;1;Paris Montparnasse;Poitiers;0;TGV INOUI;8433;economy
