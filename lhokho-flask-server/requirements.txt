@@ -82,7 +82,7 @@ traitlets==4.3.3
 twine==1.12.1
 tzlocal==2.0.0
 urllib3==1.24.2
-waitress==1.4.3
+waitress==2.1.1
 wcwidth==0.1.9
 webencodings==0.5.1
 Werkzeug==0.16.1
